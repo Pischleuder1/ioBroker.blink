@@ -163,6 +163,9 @@
       "type": "staticText",
       "text": "Wenn status.battery_volt kleiner/gleich dem Grenzwert ist, wird pro Kamera höchstens einmal innerhalb des Cooldowns eine Pushover-Nachricht gesendet.",
       "sm": 12,
+      "xs": 12,
+      "lg": 4,
+      "xl": 4,
       "md": 12
     }
   }
