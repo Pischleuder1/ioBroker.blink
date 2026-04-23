@@ -1,14 +1,14 @@
 ![Logo](admin/blink.png)
 # ioBroker.blink
 
-[![NPM version](https://img.shields.io/npm/v/iobroker.blinkpy.svg)](https://www.npmjs.com/package/iobroker.blinkpy)
-[![Downloads](https://img.shields.io/npm/dm/iobroker.blinkpy.svg)](https://www.npmjs.com/package/iobroker.blinkpy)
-![Number of Installations](https://iobroker.live/badges/blinkpy-installed.svg)
-![Current version in stable repository](https://iobroker.live/badges/blinkpy-stable.svg)
+[![NPM version](https://img.shields.io/npm/v/iobroker.blink.svg)](https://www.npmjs.com/package/iobroker.blink)
+[![Downloads](https://img.shields.io/npm/dm/iobroker.blink.svg)](https://www.npmjs.com/package/iobroker.blink)
+![Number of Installations](https://iobroker.live/badges/blink-installed.svg)
+![Current version in stable repository](https://iobroker.live/badges/blink-stable.svg)
 
-[![NPM](https://nodei.co/npm/iobroker.blinkpy.png?downloads=true)](https://nodei.co/npm/iobroker.blinkpy/)
+[![NPM](https://nodei.co/npm/iobroker.blink.png?downloads=true)](https://nodei.co/npm/iobroker.blink/)
 
-**Tests:** ![Test and Release](https://github.com/Pischleuder1/ioBroker.blinkpy/workflows/Test%20and%20Release/badge.svg)
+**Tests:** ![Test and Release](https://github.com/Pischleuder1/ioBroker.blink/workflows/Test%20and%20Release/badge.svg)
 
 ## blink adapter for ioBroker
 
