@@ -109,6 +109,9 @@
       "type": "staticText",
       "text": "<h3>Batteriewarnung per Pushover</h3>",
       "sm": 12,
+      "xs": 12,
+      "lg": 4,
+      "xl": 4,
       "md": 12
     },
     "batteryWarningEnabled": {
@@ -116,6 +119,9 @@
       "label": "Batteriewarnung aktivieren",
       "default": false,
       "sm": 12,
+      "xs": 12,
+      "lg": 4,
+      "xl": 4,
       "md": 6
     },
     "batteryWarningThresholdVolt": {
@@ -126,6 +132,9 @@
       "max": 5,
       "step": 0.01,
       "sm": 12,
+      "xs": 12,
+      "lg": 4,
+      "xl": 4,
       "md": 6
     },
     "batteryWarningPushoverInstance": {
@@ -133,6 +142,9 @@
       "label": "Pushover Instanz",
       "default": "pushover.0",
       "sm": 12,
+      "xs": 12,
+      "lg": 4,
+      "xl": 4,
       "md": 6
     },
     "batteryWarningCooldownHours": {
@@ -142,6 +154,9 @@
       "min": 1,
       "max": 720,
       "sm": 12,
+      "xs": 12,
+      "lg": 4,
+      "xl": 4,
       "md": 6
     },
     "batteryWarningInfo": {
