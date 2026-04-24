@@ -1,8 +1,13 @@
 {
 	"common": {
 		"name": "blink",
-		"version": "0.0.1",
+		"version": "0.0.2",
 		"news": {
+                        "0.0.2": {
+        "en": "Updated Blink API integration and package metadata.",
+        "de": "Blink-API-Integration und Paket-Metadaten aktualisiert.",
+        "ru": "Обновлена интеграция Blink API и метаданные пакета."
+      },
 			"0.0.1": {
 				"en": "initial release",
 				"de": "Erstveröffentlichung",
