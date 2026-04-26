@@ -35,6 +35,9 @@ class BlinkAdapter extends utils.Adapter {
 	// ─── Lifecycle ──────────────────────────────────────────────────────────
 
 	async onReady() {
+                try {
+                 fs.rmSync ('/tmp/blink_debug.log', { force: true });
+                 } catch (e) {}
 		this.setState('info.connection', false, true);
 
 		const email = (this.config.email || '').trim();
