@@ -1,172 +1,258 @@
 {
   "i18n": true,
-  "type": "panel",
+  "type": "tabs",
+  "tabsStyle": {
+    "width": "calc(100% - 100px)"
+  },
   "items": {
-    "email": {
-      "type": "text",
-      "label": "Blink Benutzername / E-Mail",
-      "sm": 12,
-      "xs": 12,
-      "lg": 4,
-      "xl": 4,
-      "md": 6
+    "tab_connection": {
+      "type": "panel",
+      "label": "Connection",
+      "items": {
+        "email": {
+          "type": "text",
+          "label": "Blink Benutzername / E-Mail",
+          "sm": 12,
+          "xs": 12,
+          "lg": 4,
+          "xl": 4,
+          "md": 6
+        },
+        "password": {
+          "type": "password",
+          "label": "Passwort",
+          "newLine": true,
+          "sm": 12,
+          "xs": 12,
+          "lg": 4,
+          "xl": 4,
+          "md": 6
+        },
+        "pin": {
+          "type": "password",
+          "label": "PIN / 2FA-Code (optional)",
+          "sm": 12,
+          "xs": 12,
+          "lg": 4,
+          "xl": 4,
+          "md": 6
+        },
+        "settings_header": {
+          "type": "header",
+          "text": "Settings",
+          "size": 4,
+          "newLine": true,
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
+        },
+        "pollIntervalSec": {
+          "type": "number",
+          "label": "Status-Polling Intervall (Sek.)",
+          "min": 15,
+          "max": 3600,
+          "default": 60,
+          "sm": 12,
+          "xs": 12,
+          "lg": 4,
+          "xl": 4,
+          "md": 6
+        },
+        "snapshotDir": {
+          "type": "text",
+          "label": "Snapshot-Verzeichnis",
+          "default": "/opt/iobroker/iobroker-data/blinkpy",
+          "sm": 12,
+          "xs": 12,
+          "lg": 4,
+          "xl": 4,
+          "md": 6
+        },
+        "liveSnapshotEnabled": {
+          "type": "checkbox",
+          "label": "Livebild per Snapshot aktivieren",
+          "default": true,
+          "sm": 12,
+          "xs": 12,
+          "lg": 4,
+          "xl": 4,
+          "md": 6
+        },
+        "liveSnapshotIntervalSec": {
+          "type": "number",
+          "label": "Livebild Intervall (Sek.)",
+          "min": 5,
+          "max": 3600,
+          "default": 10,
+          "sm": 12,
+          "xs": 12,
+          "lg": 4,
+          "xl": 4,
+          "md": 6
+        },
+        "storeBase64": {
+          "type": "checkbox",
+          "label": "Bild zusätzlich als Base64-Data-URL im State speichern",
+          "default": true,
+          "sm": 12,
+          "xs": 12,
+          "lg": 4,
+          "xl": 4,
+          "md": 6
+        },
+        "cleanupOldSnapshots": {
+          "type": "checkbox",
+          "label": "Alte Snapshot-Dateien automatisch löschen",
+          "default": true,
+          "sm": 12,
+          "xs": 12,
+          "lg": 4,
+          "xl": 4,
+          "md": 6
+        },
+        "maxSnapshotAgeHours": {
+          "type": "number",
+          "label": "Max. Alter Snapshot-Dateien (Stunden)",
+          "min": 1,
+          "max": 168,
+          "default": 24,
+          "sm": 12,
+          "xs": 12,
+          "lg": 4,
+          "xl": 4,
+          "md": 6
+        }
+      }
     },
-    "password": {
-      "type": "password",
-      "label": "Passwort",
-      "sm": 12,
-      "xs": 12,
-      "lg": 4,
-      "xl": 4,
-      "md": 6
-    },
-    "pin": {
-      "type": "password",
-      "label": "PIN / 2FA-Code (optional)",
-      "sm": 12,
-      "xs": 12,
-      "lg": 4,
-      "xl": 4,
-      "md": 6
-    },
-    "pollIntervalSec": {
-      "type": "number",
-      "label": "Status-Polling Intervall (Sek.)",
-      "min": 15,
-      "max": 3600,
-      "default": 60,
-      "sm": 12,
-      "xs": 12,
-      "lg": 4,
-      "xl": 4,
-      "md": 6
-    },
-    "snapshotDir": {
-      "type": "text",
-      "label": "Snapshot-Verzeichnis",
-      "default": "/opt/iobroker/iobroker-data/blinkpy",
-      "sm": 12,
-      "xs": 12,
-      "lg": 4,
-      "xl": 4,
-      "md": 6
-    },
-    "liveSnapshotEnabled": {
-      "type": "checkbox",
-      "label": "Livebild per Snapshot aktivieren",
-      "default": true,
-      "sm": 12,
-      "xs": 12,
-      "lg": 4,
-      "xl": 4,
-      "md": 6
-    },
-    "liveSnapshotIntervalSec": {
-      "type": "number",
-      "label": "Livebild Intervall (Sek.)",
-      "min": 5,
-      "max": 3600,
-      "default": 10,
-      "sm": 12,
-      "xs": 12,
-      "lg": 4,
-      "xl": 4,
-      "md": 6
-    },
-    "storeBase64": {
-      "type": "checkbox",
-      "label": "Bild zusätzlich als Base64-Data-URL im State speichern",
-      "default": true,
-      "sm": 12,
-      "xs": 12,
-      "lg": 4,
-      "xl": 4,
-      "md": 6
-    },
-    "cleanupOldSnapshots": {
-      "type": "checkbox",
-      "label": "Alte Snapshot-Dateien automatisch löschen",
-      "default": true,
-      "sm": 12,
-      "xs": 12,
-      "lg": 4,
-      "xl": 4,
-      "md": 6
-    },
-    "maxSnapshotAgeHours": {
-      "type": "number",
-      "label": "Max. Alter Snapshot-Dateien (Stunden)",
-      "min": 1,
-      "max": 168,
-      "default": 24,
-      "sm": 12,
-      "xs": 12,
-      "lg": 4,
-      "xl": 4,
-      "md": 6
-    },
-    "batteryWarningHeader": {
-      "type": "staticText",
-      "text": "Batteriewarnung per Pushover",
-      "sm": 12,
-      "xs": 12,
-      "lg": 4,
-      "xl": 4,
-      "md": 12
-    },
-    "batteryWarningEnabled": {
-      "type": "checkbox",
-      "label": "Batteriewarnung aktivieren",
-      "default": false,
-      "sm": 12,
-      "xs": 12,
-      "lg": 4,
-      "xl": 4,
-      "md": 6
-    },
-    "batteryWarningThresholdVolt": {
-      "type": "number",
-      "label": "Grenzwert Batteriespannung (V)",
-      "default": 1.1,
-      "min": 0,
-      "max": 5,
-      "step": 0.01,
-      "sm": 12,
-      "xs": 12,
-      "lg": 4,
-      "xl": 4,
-      "md": 6
-    },
-    "batteryWarningPushoverInstance": {
-      "type": "text",
-      "label": "Pushover Instanz",
-      "default": "pushover.0",
-      "sm": 12,
-      "xs": 12,
-      "lg": 4,
-      "xl": 4,
-      "md": 6
-    },
-    "batteryWarningCooldownHours": {
-      "type": "number",
-      "label": "Warn-Cooldown pro Kamera (Stunden)",
-      "default": 24,
-      "min": 1,
-      "max": 720,
-      "sm": 12,
-      "xs": 12,
-      "lg": 4,
-      "xl": 4,
-      "md": 6
-    },
-    "batteryWarningInfo": {
-      "type": "staticText",
-      "text": "Wenn status.battery_volt kleiner/gleich dem Grenzwert ist, wird pro Kamera höchstens einmal innerhalb des Cooldowns eine Pushover-Nachricht gesendet.",
-      "sm": 12,
-      "xs": 12,
-      "lg": 4,
-      "xl": 4,
-      "md": 12
+    "tab_notifications": {
+      "type": "panel",
+      "label": "Notifications",
+      "items": {
+        "notify_batt_header": {
+          "type": "header",
+          "text": "Batteriewarnung",
+          "size": 4,
+          "newLine": true,
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
+        },
+        "batteryWarningEnabled": {
+          "type": "checkbox",
+          "label": "Batteriewarnung aktivieren",
+          "default": false,
+          "newLine": true,
+          "sm": 12,
+          "xs": 12,
+          "lg": 4,
+          "xl": 4,
+          "md": 6
+        },
+        "batteryWarningThresholdVolt": {
+          "type": "number",
+          "label": "Grenzwert Batteriespannung (V)",
+          "default": 1.1,
+          "newLine": true,
+          "min": 0,
+          "max": 5,
+          "step": 0.01,
+          "sm": 12,
+          "xs": 12,
+          "lg": 4,
+          "xl": 4,
+          "md": 6
+        },
+        
+        "batteryWarningCooldownHours": {
+          "type": "number",
+          "label": "Warn-Cooldown pro Kamera (Stunden)",
+          "default": 24,
+          "newLine": true,
+          "min": 1,
+          "max": 720,
+          "sm": 12,
+          "xs": 12,
+          "lg": 4,
+          "xl": 4,
+          "md": 6
+        },                
+        "notify_header": {
+          "type": "header",
+          "text": "Wenn status.battery_volt kleiner/gleich dem Grenzwert ist, wird pro Kamera höchstens einmal innerhalb des Cooldowns eine Pushover-Nachricht gesendet",
+          "size": 4,
+          "newLine": true,
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
+        },
+        "notify_telegram_enabled": {
+          "type": "checkbox",
+          "label": "Enable Telegram notifications",
+          "default": false,
+          "newLine": true,
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
+        },
+        "notify_telegram_instance": {
+          "type": "instance",
+          "adapter": "telegram",
+          "label": "Telegram instance",
+          "default": "telegram.0",
+          "hidden": "!data.notify_telegram_enabled",
+          "newLine": true,
+          "xs": 12,
+          "sm": 6,
+          "md": 4,
+          "lg": 4,
+          "xl": 4
+        },
+        "notify_telegram_users": {
+          "type": "text",
+          "label": "Recipients (usernames, comma-separated – empty = all users)",
+          "help": "Example: John,Jane   (leave empty to send to all users)",
+          "default": "",
+          "hidden": "!data.notify_telegram_enabled",
+          "xs": 12,
+          "sm": 6,
+          "md": 6,
+          "lg": 6,
+          "xl": 6
+        },
+
+        "notify_pushover_enabled": {
+          "type": "checkbox",
+          "label": "Enable pushover notifications",
+          "default": false,
+          "newLine": true,
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
+        },
+        "notify_pushover_instance": {
+          "type": "instance",
+          "adapter": "pushover",
+          "label": "pushover instance",
+          "default": "pushover.0",
+          "hidden": "!data.notify_pushover_enabled",
+          "newLine": true,
+          "xs": 12,
+          "sm": 6,
+          "md": 4,
+          "lg": 4,
+          "xl": 4
+        }
+      }
     }
   }
 }
