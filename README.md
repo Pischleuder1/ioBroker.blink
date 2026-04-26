@@ -100,7 +100,10 @@ This adapter provides the following states:
 All product and company names or logos are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them or any associated subsidiaries! This personal project is maintained in spare time and has no business goal. Blink is a trademark of Amazon Technologies, Inc..
 
 ## Changelog
-
+### 0.0.4 (2026-04-26)
+* integrated Amazon Video Doorbell
+* Log is now deleted after adapter restart
+  
 ### 0.0.2 (2026-04-24)
 * update language
 * Updated Blink API integration and package metadata.
