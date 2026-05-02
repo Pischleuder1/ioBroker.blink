@@ -28,7 +28,7 @@ jobs:
     steps:
       - uses: ioBroker/testing-action-check@v1
         with:
-          node-version: '20.x'
+          node-version: '22.x'
           lint: true
 
   # Runs adapter tests on all supported node versions and OSes
@@ -39,7 +39,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node-version: [20.x, 22.x]
+        node-version: [22.x]
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
@@ -68,7 +68,7 @@ jobs:
     steps:
       - uses: ioBroker/testing-action-deploy@v1
         with:
-          node-version: '20.x'
+          node-version: '22.x'
           github-token: ${{ secrets.GITHUB_TOKEN }}
           # Sentry ist aktiviert, benötigt aber den SENTRY_AUTH_TOKEN in den Secrets
           sentry: true
