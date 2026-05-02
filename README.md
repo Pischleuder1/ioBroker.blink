@@ -16,6 +16,11 @@ ioBroker adapter for Blink cameras
 ## Getting started
 
 Install via the ioBroker Admin interface : https://github.com/Pischleuder1/ioBroker.blink
+-----------------------------------------------------------------------------------------
+Fill out your credentials:
+<img width="2356" height="880" alt="image" src="https://github.com/user-attachments/assets/cdc22784-309f-4514-bfe4-abb93625958c" />
+<img width="2364" height="1044" alt="image" src="https://github.com/user-attachments/assets/fc9e9a79-f512-4675-b0f0-e6a998a91894" />
+
 
 ## Developer manual
 
