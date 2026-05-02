@@ -5,7 +5,7 @@
 [![Downloads](https://img.shields.io/npm/dm/iobroker.blink.svg)](https://www.npmjs.com/package/iobroker.blink)
 ![Number of Installations](https://iobroker.live/badges/blink-installed.svg)
 ![Current version in stable repository](https://iobroker.live/badges/blink-stable.svg)
-
+[![Test and Release](https://github.com/Pischleuder1/ioBroker.blink/actions/workflows/test-and-release.yml/badge.svg)](https://github.com/Pischleuder1/ioBroker.blink/actions/workflows/test-and-release.yml)
 [![NPM](https://nodei.co/npm/iobroker.blink.png?downloads=true)](https://nodei.co/npm/iobroker.blink/)
 
 
