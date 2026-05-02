@@ -1,22 +1,26 @@
 version: 2
 updates:
   - package-ecosystem: npm
-    directory: "/"
+    directory: '/'
     cooldown: { default: 7 }
     schedule:
       interval: cron
-      cronjob: "5 4 7 * *"
+      cronjob: '5 4 7 * *'
       timezone: Europe/Berlin
     open-pull-requests-limit: 15
     assignees:
       - Pischleuder1
     versioning-strategy: increase
+    ignore:
+      - dependency-name: '@types/node'
+        update-types:
+          - 'version-update:semver-major'
 
   - package-ecosystem: github-actions
-    directory: "/"
+    directory: '/'
     schedule:
       interval: cron
-      cronjob: "35 6 19 * *"
+      cronjob: '35 6 19 * *'
       timezone: Europe/Berlin
     open-pull-requests-limit: 15
     assignees:
