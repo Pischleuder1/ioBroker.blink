@@ -53,6 +53,7 @@ This adapter provides the following states:
 | **battery.LastWarning** | date | info.status | Date of the last battery warning |
 | **battery.low** | boolean | indicator.lowbat | True if battery is low |
 | **battery.WarningSent** | boolean | indicator.maintenance | Indicates if a warning was already sent |
+| **battery.text** | text | info.status | Indicates if a battery is not built in |
 | **commands.clearSession** | boolean | button | Clear the current session |
 | **commands.fetch_video** | boolean | button | Fetch the last saved video |
 | **commands.motion_detect** | boolean | switch | Toggle motion detection (set by app) |
@@ -71,6 +72,7 @@ This adapter provides the following states:
 | **status.motion_detect_enabled** | boolean | indicator.status | Status of motion detection |
 | **status.temperature** | number | value.temperature | Temperature in Volts (raw) |
 | **status.temperature_f** | number | value.temperature | Temperature in Fahrenheit |
+| **status.temperature_text** | text | info.status | Indicates if no Temperature sensor is built in |
 | **video.file** | text | value.path | Filename of the last video |
 | **video.id** | text | info.name | Video identification ID |
 | **video.lastError** | text | info.error | Last error message |
