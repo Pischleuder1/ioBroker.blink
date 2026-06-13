@@ -250,7 +250,7 @@ All product and company names or logos are trademarks™ or registered® tradema
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.0.15 (2026-06-13)
 * (Pischleuder1) LiveView: Camera model recognition (XT/XT2 without LiveView)
 * correct entry point for cameras
 * fix: several cameras showing the same video
@@ -271,9 +271,6 @@ All product and company names or logos are trademarks™ or registered® tradema
 ### 0.0.11 (2026-05-27)
 * (Pischleuder1) maximal 3 login attempts to avoid locked account
 * Video busy cooldown for HTTP 409 / code 307 error
-
-### 0.0.10 (2026-05-23)
-* (Pischleuder1) Fix trusted publisher case mismatch
 
 ## License
 

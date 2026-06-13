@@ -1,13 +1,26 @@
 {
   "common": {
     "name": "blink",
-"version": "0.0.15-alpha.1",
+    "version": "0.0.15",
     "news": {
+      "0.0.15": {
+        "en": "LiveView: Camera model recognition (XT/XT2 without LiveView)\ncorrect entry point for cameras\nfix: several cameras showing the same video",
+        "de": "LiveView: Kameramodellerkennung (XT/XT2 ohne LiveView)\nkorrekter einstiegspunkt für kameras\nfix: mehrere kameras zeigen dasselbe video",
+        "ru": "Распознавание моделей камер (XT/XT2 без LiveView)\nправильная точка входа для камер\nремонт: несколько камер показывают одно и то же видео",
+        "pt": "LiveView: Reconhecimento de modelo de câmera (XT/XT2 sem LiveView)\nponto de entrada correto para câmeras\ncorreção: várias câmeras mostrando o mesmo vídeo",
+        "nl": "LiveView: Camera modelherkenning (XT/XT2 zonder LiveView)\ncorrect ingangspunt voor camera's\nfix: meerdere camera's met dezelfde video",
+        "fr": "LiveView: Reconnaissance du modèle de caméra (XT/XT2 sans LiveView)\npoint d'entrée correct pour les caméras\ncorrection : plusieurs caméras montrant la même vidéo",
+        "it": "LiveView: Riconoscimento del modello di fotocamera (XT/XT2 senza LiveView)\ncorretto punto di ingresso per le telecamere\ncorrezione: diverse telecamere che mostrano lo stesso video",
+        "es": "LiveView: Reconocimiento del modelo de cámara (XT/XT2 sin LiveView)\npunto de entrada correcto para las cámaras\nfijación: varias cámaras mostrando el mismo vídeo",
+        "pl": "LiveView: Rozpoznawanie modelu kamery (XT / XT2 bez LiveView)\nwłaściwy punkt wejścia dla kamer\nfix: kilka kamer pokazujących ten sam film",
+        "uk": "LiveView: розпізнавання моделі камери (XT/XT2 без LiveView)\nправильну точку входу для камер\nвиправити: кілька камер, що показують той самий відео",
+        "zh-cn": "LiveView:相机型号识别(XT/XT2没有LiveView)\n摄像头的正确入口\n固定: 显示相同视频的多个相机"
+      },
       "0.0.15-alpha.1": {
         "en": "integrated live view for cameras",
         "de": "Live-View für Kameras integriert",
         "ru": "интегрированный живой просмотр для камер"
-    },
+      },
       "0.0.14": {
         "en": "fixed some sync module busy errors",
         "de": "einige sync-modul geschäftsfehler behoben",
@@ -72,32 +85,6 @@
         "pl": "Napraw błąd w przypadku zaufanego wydawcy",
         "uk": "Виправлення перевірених випадків видавця",
         "zh-cn": "修复信任的出版商大小写不匹配"
-      },
-      "0.0.7": {
-        "en": "Adapter requires node.js >= 22 now\nadded MJPEG streaming\nSupports Smart Detection states for classified motion events\nSupports cloud stored videos and local stored videos on sc-card",
-        "de": "Adapter benötigt node.js >= 22 jetzt\nmJPEG Streaming hinzugefügt\nUnterstützt Smart Detection Zustände für geheime Bewegungsereignisse\nUnterstützt Cloud gespeicherte Videos und lokale gespeicherte Videos auf sc-card",
-        "ru": "Адаптер требует node.js >= 22 сейчас\nдобавить MJPEG Streaming\nПоддержка состояний Smart Detection для классифицированных событий движения\nПоддержка облачных сохраненных видео и локальных сохраненных видео на sc-карте",
-        "pt": "Adaptador requer nod.js >= 22 agora\nadicionou streaming MJPEG\nSuporta estados de detecção inteligente para eventos de movimento classificados\nSuporta vídeos armazenados na nuvem e vídeos armazenados no sc-card",
-        "nl": "Voor de adapter zijn node.js < 22 nu nodig\nmJPEG-streaming toegevoegd\nOndersteunt Smart Detectie toestanden voor geclassificeerde motie evenementen\nOndersteunt cloud opgeslagen video's en lokale opgeslagen video's op sc-card",
-        "fr": "Adaptateur nécessite node.js >= 22 maintenant\najouté MJPEG streaming\nPrend en charge les états de détection intelligente pour les événements de mouvement classifiés\nPrise en charge des vidéos stockées dans le cloud et des vidéos stockées localement sur sc-card",
-        "it": "Adattatore richiede node.js >= 22 ora\nmJPEG streaming\nSupporta gli stati di rilevamento intelligente per eventi di movimento classificati\nSupporta video memorizzati cloud e video memorizzati localmente su sc-card",
-        "es": "Adaptador requiere node.js ю= 22 ahora\nmJPEG streaming\nSoporta estados de detección inteligente para eventos de movimiento clasificados\nSoporta videos almacenados en la nube y videos almacenados locales en sc-card",
-        "pl": "Adapter wymaga node.js > = 22\ndodany strumieniowy MJPEG\nObsługuje stany inteligentnego wykrywania dla tajnych zdarzeń ruchu\nObsługuje pliki wideo przechowywane w chmurze i lokalne pliki wideo przechowywane na karcie sc-",
-        "uk": "Адаптер вимагає node.js >= 22 тепер\nдодано MJPEG потокове передавання\nПідтримка смарт-детекційних станів для тематичних заходів руху\nПідтримка хмарних збережених відео та місцевих збережених відео на sc-card",
-        "zh-cn": "适配器需要节点.js 现在22\n添加 MJPEG 流线\n支持对机密运动事件的智能检测状态\n支持云存储视频和存储在sc-card上的本地视频"
-      },
-      "0.0.6": {
-        "en": "Blink PanTilt and Blink Mini - temperature_text and battery_text set to \"not available\" because of no built in temperature and battery indicator\nblink.0.xxx.xxx.status.wifi_strength fixed\n \n",
-        "de": "Blink PanTilt und Blink Mini - temperatur text und akku text gesetzt auf \"nicht verfügbar\" weil keine eingebaute Temperatur- und Batterieanzeige\nblink.0.xxx.xxx.status.wifi strength fix\n \n",
-        "ru": "Blink PanTilt и Blink Mini - temperature text и battery text настроены на «недоступность» из-за отсутствия встроенного индикатора температуры и батареи\nblink.0.xxx.xxx.status.wifi strengthed\n \n",
-        "pt": "Blink PanTilt e Blink Mini - temperatura texto e bateria texto definido para \"não disponível\" por não ter incorporado em indicador de temperatura e bateria\nblink.0.xxxxxx.status.wifi  strength fixed\n \n",
-        "nl": "Knipper PanTilt en Blink Mini - temperatuur tekst en batterij tekst ingesteld op \"niet beschikbaar\" vanwege geen ingebouwde temperatuur en batterij indicator\nblink.0.xxx.xxx.status.wifi sterkfixed\n \n",
-        "fr": "Blink PanTilt et Blink Mini - temperature text et batterie text réglé à \"non disponible\" en raison de l'absence d'indicateur de température et de batterie\nclignotant.0.xxx.xxx.status.wifi resistance corrigé\n \n",
-        "it": "Blink PanTilt e Blink Mini - temperatura text e batteria text impostato per \"non disponibile\" a causa di nessun built in temperatura e indicatore della batteria\nblink.0.xxx.xxx.status.wifi strength fisso\n \n",
-        "es": "Blink PanTilt y Blink Mini - temperature text y Battery text fijados a \"no disponible\" debido a que no se construye en el indicador de temperatura y batería\nblink.0.xxx.xxx.status.wifi strength fijo\n \n",
-        "pl": "Blink PanTilt i Blink Mini - temperatura _ tekst i bateria _ tekst ustawić na \"niedostępny\" ze względu na brak wbudowany wskaźnik temperatury i baterii\nblink.0.xxx.xxx.status.wifi _ stand\n \n",
-        "uk": "Blink PanTilt і Blink Mini - температура текст і акумулятор текстовий набір до \"не доступний\" через не вбудований індикатор температури і батареї\njavascript licenses api веб-сайт go1.13.8\n \n",
-        "zh-cn": "Blink Pantilt 和 Blink Mini - 温度  text 和电池  text 设置为\"不可用\",因为没有在温度和电池指标中构建\n闪烁0.xxxxxx.status.wifi strength 已固定\n \n"
       }
     },
     "titleLang": {
