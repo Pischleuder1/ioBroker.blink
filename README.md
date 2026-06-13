@@ -250,6 +250,9 @@ All product and company names or logos are trademarks™ or registered® tradema
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (Pischleuder) fix: chaged roles and hierachy
+
 ### 0.0.15 (2026-06-13)
 * (Pischleuder1) LiveView: Camera model recognition (XT/XT2 without LiveView)
 * correct entry point for cameras
