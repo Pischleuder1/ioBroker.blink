@@ -250,6 +250,11 @@ All product and company names or logos are trademarks™ or registered® tradema
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (Pischleuder1) LiveView: Camera model recognition (XT/XT2 without LiveView)
+* correct entry point for cameras
+* fix: several cameras showing the same video
+
 ### 0.0.14 (2026-05-29)
 * fixed some sync module busy errors
 
