@@ -128,11 +128,11 @@ class BlinkAdapter extends utils.Adapter {
 
 	stopLoginRelatedTimers() {
 		if (this.pollTimer) {
-			clearInterval(this.pollTimer);
+			this.clearInterval(this.pollTimer);
 			this.pollTimer = null;
 		}
 		if (this.liveTimer) {
-			clearInterval(this.liveTimer);
+			this.clearInterval(this.liveTimer);
 			this.liveTimer = null;
 		}
 	}
@@ -788,7 +788,7 @@ class BlinkAdapter extends utils.Adapter {
 			this.setState('info.connection', false, true);
 		}
 
-		this.pollTimer = setInterval(async () => {
+		this.pollTimer = this.setInterval(async () => {
 			try {
 				pin = this.cfg?.pin || '';
 				this.session = await this.getBlinkSessionSafe(email, password, pin);
@@ -805,7 +805,7 @@ class BlinkAdapter extends utils.Adapter {
 		}, pollIntervalSec * 1000);
 
 		if (liveSnapshotEnabled) {
-			this.liveTimer = setInterval(
+			this.liveTimer = this.setInterval(
 				() => this.updateLiveSnapshots().catch(e => this.log.warn(`Live-Snapshot-Fehler: ${e?.message || e}`)),
 				liveSnapshotIntervalSec * 1000,
 			);
@@ -993,8 +993,7 @@ class BlinkAdapter extends utils.Adapter {
 		await this.ensureObjectWithType('info', 'channel', { name: 'Info' }, {});
 
 		// Unter cameras.<id> und sync.<id> liegen Geräte (type=device).
-		// Deshalb müssen cameras/sync selbst folder sein, nicht channel,
-		// sonst meldet der ioBroker Object-Checker E2003.
+		// Deshalb müssen cameras/sync selbst folder sein, nicht channel.
 		await this.ensureObjectWithType('cameras', 'folder', { name: 'Cameras' }, {});
 		await this.ensureObjectWithType('sync', 'folder', { name: 'Sync modules' }, {});
 	}
@@ -1633,7 +1632,7 @@ class BlinkAdapter extends utils.Adapter {
 			await this.setStateAsync(`cameras.${devId}.live.stream_url`, this.mjpegServer.streamUrl(devId), true);
 		}
 
-		this.mjpegStatusTimer = setInterval(() => {
+		this.mjpegStatusTimer = this.setInterval(() => {
 			if (!this.mjpegServer) {
 				return;
 			}
@@ -1777,7 +1776,7 @@ class BlinkAdapter extends utils.Adapter {
 			if (proc.exitCode != null && proc.exitCode !== 0) {
 				throw new Error(`ffmpeg beendet mit Code ${proc.exitCode}: ${stderr.slice(-500)}`);
 			}
-			await new Promise(resolve => setTimeout(resolve, 250));
+			await new Promise(resolve => this.setTimeout(resolve, 250));
 		}
 		if (!fs.existsSync(playlist)) {
 			throw new Error(`HLS-Playlist wurde nicht erzeugt: ${stderr.slice(-500)}`);
@@ -1928,7 +1927,7 @@ class BlinkAdapter extends utils.Adapter {
 				backend,
 			});
 
-			const t = setTimeout(() => {
+			const t = this.setTimeout(() => {
 				this.stopRealLive(devId, 'timeout').catch(e =>
 					this.log.warn(`stopRealLive timeout ${devId}: ${e?.message || e}`),
 				);
@@ -1947,7 +1946,7 @@ class BlinkAdapter extends utils.Adapter {
 	async stopRealLive(devId, reason = 'manual') {
 		const timer = this.liveStopTimers.get(devId);
 		if (timer) {
-			clearTimeout(timer);
+			this.clearTimeout(timer);
 			this.liveStopTimers.delete(devId);
 		}
 
@@ -2812,18 +2811,18 @@ class BlinkAdapter extends utils.Adapter {
 	onUnload(cb) {
 		try {
 			if (this.pollTimer) {
-				clearInterval(this.pollTimer);
+				this.clearInterval(this.pollTimer);
 			}
 			if (this.liveTimer) {
-				clearInterval(this.liveTimer);
+				this.clearInterval(this.liveTimer);
 			}
 			if (this.mjpegStatusTimer) {
-				clearInterval(this.mjpegStatusTimer);
+				this.clearInterval(this.mjpegStatusTimer);
 				this.mjpegStatusTimer = null;
 			}
 
 			for (const timer of this.liveStopTimers.values()) {
-				clearTimeout(timer);
+				this.clearTimeout(timer);
 			}
 			this.liveStopTimers.clear();
 
