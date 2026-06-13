@@ -36,6 +36,10 @@ class BlinkAdapter extends utils.Adapter {
 		this.session = null;
 		this.loginFailureCount = 0;
 		this.loginBlocked = false;
+		this.loginRateLimitUntil = 0;
+		this.loginRateLimitMessage = '';
+		this.login2faRequired = false;
+		this.login2faMessage = '';
 		this.maxLoginFailures = 3;
 		this.mjpegServer = null;
 		this.mjpegStatusTimer = null;
@@ -59,6 +63,69 @@ class BlinkAdapter extends utils.Adapter {
 		);
 	}
 
+	isLogin2faRequiredError(err) {
+		const msg = String(err?.message || err || '').toLowerCase();
+		return (
+			err?.code === 'NEED_2FA' ||
+			msg.includes('tsv/2fa erforderlich') ||
+			msg.includes('2fa/pin erforderlich') ||
+			(msg.includes('http 202') && msg.includes('tsv_methods'))
+		);
+	}
+
+	isLoginRateLimitError(err) {
+		const msg = String(err?.message || err || '').toLowerCase();
+		const body = err?.body && typeof err.body === 'object' ? err.body : null;
+		const bodyCause = String(body?.error_cause || body?.error || '').toLowerCase();
+		const bodyDescription = String(body?.error_description || body?.message || '').toLowerCase();
+
+		return (
+			err?.code === 'BLINK_2FA_RATE_LIMIT' ||
+			err?.statusCode === 429 ||
+			msg.includes('2fa_rate_limit_exceeded') ||
+			msg.includes('2fa rate limit exceeded') ||
+			msg.includes('2fa-rate-limit') ||
+			(msg.includes('http 429') && msg.includes('too_many_requests')) ||
+			bodyCause.includes('2fa_rate_limit_exceeded') ||
+			bodyDescription.includes('2fa rate limit')
+		);
+	}
+
+	getLoginRateLimitWaitMs(err) {
+		const body = err?.body && typeof err.body === 'object' ? err.body : null;
+		let sec = Number(err?.nextTimeInSecs || body?.next_time_in_secs);
+
+		if (!Number.isFinite(sec) || sec <= 0) {
+			const msg = String(err?.message || err || '');
+			const m = msg.match(/"next_time_in_secs"\s*:\s*(\d+)/) || msg.match(/next_time_in_secs[^0-9]+(\d+)/i);
+			sec = m ? Number(m[1]) : 600;
+		}
+
+		return Math.max(60, Math.ceil(sec)) * 1000;
+	}
+
+	getLoginRateLimitRemainingMs() {
+		const until = this.loginRateLimitUntil || 0;
+		if (!until) {
+			return 0;
+		}
+
+		const remaining = until - Date.now();
+		if (remaining <= 0) {
+			this.loginRateLimitUntil = 0;
+			this.loginRateLimitMessage = '';
+			this.log.info('Blink 2FA-Rate-Limit abgelaufen, Login wird beim nächsten Poll wieder versucht.');
+			return 0;
+		}
+
+		return remaining;
+	}
+
+	formatLoginRateLimitMessage(remainingMs) {
+		const retryAt = new Date(Date.now() + remainingMs).toISOString();
+		return `Blink 2FA-Rate-Limit aktiv. Login pausiert noch ${Math.ceil(remainingMs / 1000)}s bis ${retryAt}.`;
+	}
+
 	stopLoginRelatedTimers() {
 		if (this.pollTimer) {
 			clearInterval(this.pollTimer);
@@ -70,6 +137,30 @@ class BlinkAdapter extends utils.Adapter {
 		}
 	}
 
+	async clearStoredPinAfterSuccessfulLogin() {
+		try {
+			await this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
+				native: { pin: '' },
+			});
+
+			if (this.config) {
+				this.config.pin = '';
+			}
+			if (this.cfg) {
+				this.cfg.pin = '';
+			}
+
+			this.log.info(
+				'Blink 2FA/PIN wurde nach erfolgreichem Login automatisch aus der Adapter-Konfiguration entfernt.',
+			);
+		} catch (e) {
+			this.log.warn(
+				`Blink Login war erfolgreich, aber der 2FA/PIN konnte nicht automatisch aus der Konfiguration entfernt werden. ` +
+					`Bitte PIN manuell löschen: ${e?.message || e}`,
+			);
+		}
+	}
+
 	async getBlinkSessionSafe(email, password, pin) {
 		if (this.loginBlocked) {
 			throw new Error(
@@ -78,12 +169,69 @@ class BlinkAdapter extends utils.Adapter {
 			);
 		}
 
+		if (this.login2faRequired) {
+			const err = new Error(
+				this.login2faMessage ||
+					'Blink 2FA/TSV-Code erforderlich. Code in der Adapter-Konfiguration eintragen und Adapter neu starten.',
+			);
+			err.code = 'LOGIN_2FA_REQUIRED_ACTIVE';
+			throw err;
+		}
+
+		const rateLimitRemainingMs = this.getLoginRateLimitRemainingMs();
+		if (rateLimitRemainingMs > 0) {
+			const err = new Error(this.formatLoginRateLimitMessage(rateLimitRemainingMs));
+			err.code = 'LOGIN_RATE_LIMIT_ACTIVE';
+			err.retryAt = this.loginRateLimitUntil;
+			throw err;
+		}
+
 		try {
 			const session = await blinkApi.getSession(email, password, pin);
 			this.loginFailureCount = 0;
 			this.loginBlocked = false;
+			this.login2faRequired = false;
+			this.login2faMessage = '';
+
+			if (String(pin || '').trim()) {
+				await this.clearStoredPinAfterSuccessfulLogin();
+			}
+
 			return session;
 		} catch (err) {
+			if (this.isLoginRateLimitError(err)) {
+				const waitMs = this.getLoginRateLimitWaitMs(err);
+				this.loginRateLimitUntil = Date.now() + waitMs;
+				this.loginRateLimitMessage = err?.message || 'Blink 2FA-Rate-Limit aktiv.';
+				this.session = null;
+				this.setState('info.connection', false, true);
+
+				this.log.warn(
+					`Blink 2FA-Rate-Limit erkannt. Weitere Login-Versuche werden bis ` +
+						`${new Date(this.loginRateLimitUntil).toISOString()} lokal blockiert. ` +
+						`Ursache: ${err?.message || err}`,
+				);
+
+				err.code = err.code || 'BLINK_2FA_RATE_LIMIT';
+				err.retryAt = this.loginRateLimitUntil;
+				throw err;
+			}
+
+			if (this.isLogin2faRequiredError(err)) {
+				this.login2faRequired = true;
+				this.login2faMessage = err?.message || 'Blink 2FA/TSV-Code erforderlich.';
+				this.session = null;
+				this.setState('info.connection', false, true);
+
+				this.log.warn(
+					`${this.login2faMessage} Es werden bis zum Adapter-Neustart keine weiteren Blink-Login-Versuche gesendet. ` +
+						`Code eintragen und Adapter neu starten.`,
+				);
+
+				err.code = err.code || 'NEED_2FA';
+				throw err;
+			}
+
 			if (this.isCredentialError(err)) {
 				this.loginFailureCount += 1;
 
@@ -483,7 +631,7 @@ class BlinkAdapter extends utils.Adapter {
 
 		const email = (this.config.email || '').trim();
 		const password = this.config.password || '';
-		const pin = this.config.pin || '';
+		let pin = this.config.pin || '';
 		const pollIntervalSec = Math.max(15, Number(this.config.pollIntervalSec) || 60);
 		const snapshotDir = (this.config.snapshotDir || '/opt/iobroker/iobroker-data/blink').trim();
 		const liveSnapshotEnabled = this.config.liveSnapshotEnabled !== false;
@@ -624,6 +772,7 @@ class BlinkAdapter extends utils.Adapter {
 
 		try {
 			this.session = await this.getBlinkSessionSafe(email, password, pin);
+			pin = this.cfg?.pin || '';
 			await this.pollOnce();
 			if (cleanupOldSnapshots) {
 				this.cleanupSnapshots();
@@ -639,9 +788,15 @@ class BlinkAdapter extends utils.Adapter {
 
 		this.pollTimer = setInterval(async () => {
 			try {
+				pin = this.cfg?.pin || '';
 				this.session = await this.getBlinkSessionSafe(email, password, pin);
 				await this.pollOnce();
 			} catch (err) {
+				if (err?.code === 'LOGIN_RATE_LIMIT_ACTIVE' || err?.code === 'LOGIN_2FA_REQUIRED_ACTIVE') {
+					this.log.debug(err.message);
+					this.setState('info.connection', false, true);
+					return;
+				}
 				this.log.warn(`Poll-Fehler: ${err?.message || err}`);
 				this.setState('info.connection', false, true);
 			}
