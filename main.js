@@ -960,24 +960,43 @@ class BlinkAdapter extends utils.Adapter {
 		return null;
 	}
 
+	async ensureObjectWithType(id, type, common = {}, native = {}) {
+		const existing = await this.getObjectAsync(id);
+
+		if (!existing || existing.type !== type) {
+			await this.setObjectAsync(id, {
+				...(existing || {}),
+				type,
+				common: {
+					...(existing?.common || {}),
+					...common,
+				},
+				native: {
+					...(existing?.native || {}),
+					...native,
+				},
+			});
+
+			if (existing && existing.type !== type) {
+				this.log.info(`Objekttyp korrigiert: ${id} ${existing.type} → ${type}`);
+			}
+			return;
+		}
+
+		await this.extendObjectAsync(id, {
+			common,
+			native,
+		});
+	}
+
 	async ensureRootObjects() {
-		await this.setObjectNotExistsAsync('info', {
-			type: 'channel',
-			common: { name: 'Info' },
-			native: {},
-		});
+		await this.ensureObjectWithType('info', 'channel', { name: 'Info' }, {});
 
-		await this.setObjectNotExistsAsync('cameras', {
-			type: 'channel',
-			common: { name: 'Cameras' },
-			native: {},
-		});
-
-		await this.setObjectNotExistsAsync('sync', {
-			type: 'channel',
-			common: { name: 'Sync modules' },
-			native: {},
-		});
+		// Unter cameras.<id> und sync.<id> liegen Geräte (type=device).
+		// Deshalb müssen cameras/sync selbst folder sein, nicht channel,
+		// sonst meldet der ioBroker Object-Checker E2003.
+		await this.ensureObjectWithType('cameras', 'folder', { name: 'Cameras' }, {});
+		await this.ensureObjectWithType('sync', 'folder', { name: 'Sync modules' }, {});
 	}
 
 	async pollOnce() {
@@ -2708,11 +2727,52 @@ class BlinkAdapter extends utils.Adapter {
 	}
 
 	async ensureState(id, name, type, role, writable) {
-		await this.setObjectNotExistsAsync(id, {
+		const desiredCommon = {
+			name,
+			type,
+			role,
+			read: true,
+			write: !!writable,
+		};
+
+		const existing = await this.getObjectAsync(id);
+		if (!existing) {
+			await this.setObjectNotExistsAsync(id, {
+				type: 'state',
+				common: desiredCommon,
+				native: {},
+			});
+			return;
+		}
+
+		const currentCommon = existing.common || {};
+		const needsRepair =
+			existing.type !== 'state' ||
+			currentCommon.type !== desiredCommon.type ||
+			currentCommon.role !== desiredCommon.role ||
+			currentCommon.read !== desiredCommon.read ||
+			currentCommon.write !== desiredCommon.write;
+
+		if (!needsRepair) {
+			return;
+		}
+
+		await this.setObjectAsync(id, {
+			...existing,
 			type: 'state',
-			common: { name, type, role, read: true, write: !!writable },
-			native: {},
+			common: {
+				...currentCommon,
+				...desiredCommon,
+			},
+			native: existing.native || {},
 		});
+
+		this.log.debug(
+			`State-Objekt repariert: ${id} ` +
+				`role=${currentCommon.role || ''}→${desiredCommon.role}, ` +
+				`type=${currentCommon.type || ''}→${desiredCommon.type}, ` +
+				`write=${currentCommon.write}→${desiredCommon.write}`,
+		);
 	}
 
 	async initStateIfUnset(id, defaultValue) {
