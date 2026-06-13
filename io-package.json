@@ -29,11 +29,6 @@
         "uk": "LiveView: розпізнавання моделі камери (XT/XT2 без LiveView)\nправильну точку входу для камер\nвиправити: кілька камер, що показують той самий відео",
         "zh-cn": "LiveView:相机型号识别(XT/XT2没有LiveView)\n摄像头的正确入口\n固定: 显示相同视频的多个相机"
       },
-      "0.0.15-alpha.1": {
-        "en": "integrated live view for cameras",
-        "de": "Live-View für Kameras integriert",
-        "ru": "интегрированный живой просмотр для камер"
-      },
       "0.0.14": {
         "en": "fixed some sync module busy errors",
         "de": "einige sync-modul geschäftsfehler behoben",
