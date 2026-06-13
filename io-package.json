@@ -3,11 +3,11 @@
     "name": "blink",
 "version": "0.0.15-alpha.1",
     "news": {
-      "0.0.15.alpha.1": {
+      "0.0.15-alpha.1": {
         "en": "integrated live view for cameras",
         "de": "Live-View für Kameras integriert",
-"ru": "интегрированный живой просмотр для камер"
-},
+        "ru": "интегрированный живой просмотр для камер"
+    },
       "0.0.14": {
         "en": "fixed some sync module busy errors",
         "de": "einige sync-modul geschäftsfehler behoben",
