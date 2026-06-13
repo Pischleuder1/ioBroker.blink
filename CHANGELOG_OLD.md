@@ -3,6 +3,10 @@
 Older changelog entries that have been moved out of `README.md` will appear below.
 This file is managed by [@alcalzone/release-script](https://github.com/AlCalzone/release-script)
 when newer entries are added to the README.
+## 0.0.11 (2026-05-27)
+* (Pischleuder1) maximal 3 login attempts to avoid locked account
+* Video busy cooldown for HTTP 409 / code 307 error
+
 ## 0.0.10 (2026-05-23)
 * (Pischleuder1) Fix trusted publisher case mismatch
 

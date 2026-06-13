@@ -250,7 +250,7 @@ All product and company names or logos are trademarks™ or registered® tradema
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.0.16 (2026-06-13)
 * (Pischleuder) fix: chaged roles and hierachy
 
 ### 0.0.15 (2026-06-13)
@@ -270,10 +270,6 @@ All product and company names or logos are trademarks™ or registered® tradema
 * USB/Local Storage manifest is checked first
 * Cloud storage is now used only as a fallback
 * More robust Local Storage matching: camera_id / cameraId / device_id / deviceId, if present in the manifest otherwise, camera names (trimmed and lowercased)
-
-### 0.0.11 (2026-05-27)
-* (Pischleuder1) maximal 3 login attempts to avoid locked account
-* Video busy cooldown for HTTP 409 / code 307 error
 
 ## License
 

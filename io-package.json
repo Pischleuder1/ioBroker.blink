@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "blink",
-    "version": "0.0.15",
+    "version": "0.0.16",
     "news": {
+      "0.0.16": {
+        "en": "fix: chaged roles and hierachy",
+        "de": "fix: chaged rollen und hierarchie",
+        "ru": "исправление: выхолощенные роли и иерархия",
+        "pt": "correção: papéis changed e hierachy",
+        "nl": "fix: chaged rollen en hierachy",
+        "fr": "fix : rôles chagués et hiérachy",
+        "it": "correzione: ruoli casti e gerarchia",
+        "es": "fijación: roles encapsulados y jerarquía",
+        "pl": "fix: zawiązane role i hierarchia",
+        "uk": "фіксація: хатні ролі і херахія",
+        "zh-cn": "修饰: 调整的角色和高阶"
+      },
       "0.0.15": {
         "en": "LiveView: Camera model recognition (XT/XT2 without LiveView)\ncorrect entry point for cameras\nfix: several cameras showing the same video",
         "de": "LiveView: Kameramodellerkennung (XT/XT2 ohne LiveView)\nkorrekter einstiegspunkt für kameras\nfix: mehrere kameras zeigen dasselbe video",
@@ -72,19 +85,6 @@
         "pl": "maximal 3 próby logowania, aby uniknąć zablokowanego konta\nOchłodzenie wideo dla błędu HTTP 409 / kod 307",
         "uk": "максимальний 3 спроби входу, щоб уникнути блокування облікового запису\nВідео зайнятий охолоджувач для HTTP 409 / код 307 помилка",
         "zh-cn": "最大 3 登录试图避免锁定账户\nHTTP 409 / 代码 307 错误的视频忙于冷却"
-      },
-      "0.0.10": {
-        "en": "Fix trusted publisher case mismatch",
-        "de": "Fehler bei vertrauenswürdigen Verlegern behoben",
-        "ru": "Исправить доверенное дело издателя несоответствие",
-        "pt": "Corrigir o erro do caso do editor confiável",
-        "nl": "Fix trusted publisher case mismatch",
-        "fr": "Correction erreur de cas d'éditeur de confiance",
-        "it": "Fissare il caso dell'editore fidato sbagliato",
-        "es": "Corrección de caso editor de confianza",
-        "pl": "Napraw błąd w przypadku zaufanego wydawcy",
-        "uk": "Виправлення перевірених випадків видавця",
-        "zh-cn": "修复信任的出版商大小写不匹配"
       }
     },
     "titleLang": {
