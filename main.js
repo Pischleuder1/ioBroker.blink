@@ -2103,10 +2103,29 @@ class BlinkAdapter extends utils.Adapter {
 				if (!mod) {
 					throw new Error('Sync-Modul unbekannt (warte auf nächsten Poll)');
 				}
-
 				if (cmd === 'armed') {
 					const armed = state.val === true;
-					await blinkApi.setArmed(this.session, mod.network_id, armed);
+					try {
+						await blinkApi.setArmed(this.session, mod.network_id, armed);
+					} catch (e) {
+						if (this.isBlinkSystemBusyError(e)) {
+							await this.setStateAsync(`sync.${devId}.status.armed`, armed, true);
+							await this.setStateAsync(this.stripNs(id), armed, true);
+							this.log.info(
+								`Blink Sync-Modul ${devId}: Schaltbefehl ${armed ? 'scharf' : 'unscharf'} wurde gesendet, ` +
+									`Blink meldet während der Verarbeitung noch "System is busy". Status wird beim nächsten Poll bestätigt.`,
+							);
+							this.setTimeout(() => {
+								this.pollOnce().catch(err => {
+									this.log.debug(
+										`Poll nach Sync-Schaltbefehl fehlgeschlagen: ${err?.message || err}`,
+									);
+								});
+							}, 15000);
+							return;
+						}
+						throw e;
+					}
 					await this.setStateAsync(`sync.${devId}.status.armed`, armed, true);
 					await this.setStateAsync(this.stripNs(id), armed, true);
 				}
