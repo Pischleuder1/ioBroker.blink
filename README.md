@@ -253,6 +253,9 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (Pischleuder) fix: avoid interactive Blink 2FA prompt in LiveView helper (LiveView not comming up)
+
 ### 0.0.16 (2026-06-13)
 * (Pischleuder) fix: chaged roles and hierachy
 
