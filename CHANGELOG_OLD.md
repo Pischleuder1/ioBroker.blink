@@ -3,6 +3,11 @@
 Older changelog entries that have been moved out of `README.md` will appear below.
 This file is managed by [@alcalzone/release-script](https://github.com/AlCalzone/release-script)
 when newer entries are added to the README.
+## 0.0.12 (2026-05-28)
+* USB/Local Storage manifest is checked first
+* Cloud storage is now used only as a fallback
+* More robust Local Storage matching: camera_id / cameraId / device_id / deviceId, if present in the manifest otherwise, camera names (trimmed and lowercased)
+
 ## 0.0.11 (2026-05-27)
 * (Pischleuder1) maximal 3 login attempts to avoid locked account
 * Video busy cooldown for HTTP 409 / code 307 error

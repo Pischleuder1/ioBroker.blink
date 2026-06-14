@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "blink",
-    "version": "0.0.16",
+    "version": "0.0.17",
     "news": {
+      "0.0.17": {
+        "en": "fix: avoid interactive Blink 2FA prompt in LiveView helper (LiveView not comming up)",
+        "de": "fix: Vermeiden Sie die interaktive Blink 2FA-Eingabeaufforderung im LiveView-Helfer (LiveView kommt nicht zusammen)",
+        "ru": "исправление: избегайте интерактивной подсказки Blink 2FA в LiveView (LiveView не работает)",
+        "pt": "correção: evite o prompt Blink 2FA interativo no helper LiveView (LiveView não chegando)",
+        "nl": "fix: vermijd interactieve Blink 2FA prompt in LiveView helper (LiveView not comming up)",
+        "fr": "correction : évitez l'invite Blink 2FA interactive dans LiveView helper (LiveView ne se téléphonant pas)",
+        "it": "correzione: evitare interattivo Blink 2FA prompt in LiveView helper (LiveView non in arrivo)",
+        "es": "fijación: evitar el impulso interactivo de Blink 2FA en LiveView helper (LiveView no se comunica)",
+        "pl": "fix: unikać interaktywnego Blink 2FA w LiveView helper (LiveView nie dojeżdża)",
+        "uk": "виправити: уникнути інтерактивних Blink 2FA підказка в програмі LiveView (LiveView не вдається)",
+        "zh-cn": "固定: 在 LiveView 帮助器中避免交互 Blink 2FA 提示( LiveView 不混合)"
+      },
       "0.0.16": {
         "en": "fix: chaged roles and hierachy",
         "de": "fix: chaged rollen und hierarchie",

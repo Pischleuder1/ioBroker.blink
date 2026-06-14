@@ -253,7 +253,7 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.0.17 (2026-06-14)
 * (Pischleuder) fix: avoid interactive Blink 2FA prompt in LiveView helper (LiveView not comming up)
 
 ### 0.0.16 (2026-06-13)
@@ -271,11 +271,6 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
 * If video.history.* states still contain clip IDs but the corresponding MP4 files are missing, the history is no longer considered current.
 * Missing or zero-byte history files are redownloaded during the next sync
 * Reuse of old slots now occurs only if the old MP4 file actually exists and is larger than 0 bytes
-
-### 0.0.12 (2026-05-28)
-* USB/Local Storage manifest is checked first
-* Cloud storage is now used only as a fallback
-* More robust Local Storage matching: camera_id / cameraId / device_id / deviceId, if present in the manifest otherwise, camera names (trimmed and lowercased)
 
 ## License
 
