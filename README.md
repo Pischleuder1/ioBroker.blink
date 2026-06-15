@@ -253,6 +253,9 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (Pischleuder1) fix: expose Blink account id for LiveView helper (blink.0.info.account_id)
+
 ### 0.0.17 (2026-06-14)
 * (Pischleuder) fix: avoid interactive Blink 2FA prompt in LiveView helper (LiveView not comming up)
 
