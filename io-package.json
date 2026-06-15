@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "blink",
-    "version": "0.0.17",
+    "version": "0.0.18",
     "news": {
+      "0.0.18": {
+        "en": "fix: expose Blink account id for LiveView helper (blink.0.info.account_id)",
+        "de": "fix: Blink-Konto-ID für LiveView-Helfer freilegen (blink.0.info.account id)",
+        "ru": "исправить: раскрыть идентификатор учетной записи Blink для помощника LiveView (blink.0.info.account id)",
+        "pt": "correção: expor o id da conta Blink para o helper do LiveView (blink.0.info.account id)",
+        "nl": "fix: ontmasker Blink account id voor LiveView helper (blink.0.info.account id)",
+        "fr": "correction : exposer l'identifiant du compte Blink pour l'aide LiveView (blink.0.info.account id)",
+        "it": "fix: esporre account Blink id per helper LiveView (blink.0.info.account id)",
+        "es": "fijación: exponer la cuenta Blink id para el ayudante LiveView (blink.0.info.account id)",
+        "pl": "fix: defense Blink account id for LiveView helper (blink.0.info.account _ id)",
+        "uk": "javaScript licenses API Веб-сайт Go1.13.8",
+        "zh-cn": "fix: 曝光 LiveView 帮助器的 Blink 账户 id (blink.0.info.count id)"
+      },
       "0.0.17": {
         "en": "fix: avoid interactive Blink 2FA prompt in LiveView helper (LiveView not comming up)",
         "de": "fix: Vermeiden Sie die interaktive Blink 2FA-Eingabeaufforderung im LiveView-Helfer (LiveView kommt nicht zusammen)",
@@ -80,19 +93,6 @@
         "pl": "Najpierw jest sprawdzany manifest pamięci USB / Local Storage\nChmura pamięci masowej jest teraz używana tylko jako zapas\nBardziej solidne dopasowanie do pamięci lokalnej: camera _ id / cameraId / device _ id / deviceId, jeżeli w manifeście występują w inny sposób, nazwy kamer (przycięte i przycinane)",
         "uk": "USB/Local Storage проявляється спочатку\nХмарне сховище тепер використовується тільки як падає\nБільш надійний Local Storage matching: camera id / cameraId / device id / deviceId, якщо присутній в прояві інакше, назви камери (триммовані і знижені)",
         "zh-cn": "先检查USB/当地储存清单\n云存储器现在仅用作倒置\n更坚固的本地存储匹配: 相机 id / 相机Id / 设备 id / 设备Id, 如果显示在显示器中, 相机名称( trimmed 和 小写)"
-      },
-      "0.0.11": {
-        "en": "maximal 3 login attempts to avoid locked account\nVideo busy cooldown for HTTP 409 / code 307 error",
-        "de": "maximal 3 login versucht, gesperrtes konto zu vermeiden\nVideo-belastete Abklingzeit für HTTP 409 / Code 307 Fehler",
-        "ru": "3 попытки входа, чтобы избежать заблокированного аккаунта\nВидео занято охлаждение HTTP 409 / код 307 ошибка",
-        "pt": "máximo 3 tentativas de login para evitar conta bloqueada\nRemoção do vídeo ocupado para erro HTTP 409 / código 307",
-        "nl": "maximaal 3 aanmeldpogingen om vergrendeld account te vermijden\nVideo drukke afkoeling voor HTTP 409 / code 307 fout",
-        "fr": "maximal 3 tentatives de connexion pour éviter le compte verrouillé\nVidéo occupée pour l'erreur HTTP 409 / code 307",
-        "it": "maximal 3 tentativi di login per evitare il conto bloccato\nVideo cooldown occupato per HTTP 409 / codice 307 errore",
-        "es": "maximal 3 intentos de inicio de sesión para evitar la cuenta bloqueada\nVideo enfriamiento ocupado para HTTP 409 / código 307 error",
-        "pl": "maximal 3 próby logowania, aby uniknąć zablokowanego konta\nOchłodzenie wideo dla błędu HTTP 409 / kod 307",
-        "uk": "максимальний 3 спроби входу, щоб уникнути блокування облікового запису\nВідео зайнятий охолоджувач для HTTP 409 / код 307 помилка",
-        "zh-cn": "最大 3 登录试图避免锁定账户\nHTTP 409 / 代码 307 错误的视频忙于冷却"
       }
     },
     "titleLang": {

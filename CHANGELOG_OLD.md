@@ -3,6 +3,11 @@
 Older changelog entries that have been moved out of `README.md` will appear below.
 This file is managed by [@alcalzone/release-script](https://github.com/AlCalzone/release-script)
 when newer entries are added to the README.
+## 0.0.13 (2026-05-28)
+* If video.history.* states still contain clip IDs but the corresponding MP4 files are missing, the history is no longer considered current.
+* Missing or zero-byte history files are redownloaded during the next sync
+* Reuse of old slots now occurs only if the old MP4 file actually exists and is larger than 0 bytes
+
 ## 0.0.12 (2026-05-28)
 * USB/Local Storage manifest is checked first
 * Cloud storage is now used only as a fallback

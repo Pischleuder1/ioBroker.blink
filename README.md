@@ -253,7 +253,7 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.0.18 (2026-06-15)
 * (Pischleuder1) fix: expose Blink account id for LiveView helper (blink.0.info.account_id)
 
 ### 0.0.17 (2026-06-14)
@@ -269,11 +269,6 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
 
 ### 0.0.14 (2026-05-29)
 * fixed some sync module busy errors
-
-### 0.0.13 (2026-05-28)
-* If video.history.* states still contain clip IDs but the corresponding MP4 files are missing, the history is no longer considered current.
-* Missing or zero-byte history files are redownloaded during the next sync
-* Reuse of old slots now occurs only if the old MP4 file actually exists and is larger than 0 bytes
 
 ## License
 
