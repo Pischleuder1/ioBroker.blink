@@ -253,8 +253,7 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 0.0.19 (2026-06-24)
 * (Pischleuder1) fix: handle unsupported XT2 live view and avoid early HLS state
 
 ### 0.0.18 (2026-06-15)
@@ -270,9 +269,6 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
 * (Pischleuder1) LiveView: Camera model recognition (XT/XT2 without LiveView)
 * correct entry point for cameras
 * fix: several cameras showing the same video
-
-### 0.0.14 (2026-05-29)
-* fixed some sync module busy errors
 
 ## License
 

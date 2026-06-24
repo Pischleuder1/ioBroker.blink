@@ -3,6 +3,9 @@
 Older changelog entries that have been moved out of `README.md` will appear below.
 This file is managed by [@alcalzone/release-script](https://github.com/AlCalzone/release-script)
 when newer entries are added to the README.
+## 0.0.14 (2026-05-29)
+* fixed some sync module busy errors
+
 ## 0.0.13 (2026-05-28)
 * If video.history.* states still contain clip IDs but the corresponding MP4 files are missing, the history is no longer considered current.
 * Missing or zero-byte history files are redownloaded during the next sync
