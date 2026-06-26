@@ -142,7 +142,7 @@
         "tier": 3,
         "mode": "daemon",
         "type": "alarm",
-        "compact": true,
+        "compact": false,
         "connectionType": "cloud",
         "dataSource": "poll",
         "adminUI": {
