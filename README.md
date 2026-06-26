@@ -12,6 +12,16 @@
 
 ioBroker adapter for Blink cameras.
 
+## Supported devices
+
+This adapter is intended for Blink home security cameras and related Blink account devices.
+
+Manufacturer website: Blink
+Device overview: Blink products
+Support / device documentation: Blink Support
+
+This adapter is not affiliated with, maintained by, or endorsed by Blink or Amazon.
+
 ## Getting started
 
 Install via the ioBroker Admin interface
