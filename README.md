@@ -23,9 +23,6 @@ Fill out your credentials:
 -----------------------------------------------------------------------------------------
 
 
-
-## Developer manual
-
 ## Features
 
 - Connects to the Blink Cloud
@@ -241,6 +238,47 @@ For the **history gallery** query slots 0–9 individually:
 - MJPEG stream states are only relevant if streaming is enabled in the adapter configuration.
 - Smart Detection states are updated when classified motion metadata is available from Blink Cloud.
   
+
+## Optional LiveView Web Grid
+
+The adapter can optionally install and update a helper script for the LiveView web grid.
+
+This helper script is created in the ioBroker JavaScript adapter namespace as:
+
+```text
+script.js.common.blink-video-url-server
+```
+
+This is intentional and only used for the optional web grid / LiveView helper functionality. Existing user scripts with the same object ID may be overwritten. If you maintain a customized version of this script, please create a backup before enabling or updating this feature.
+
+### Requirements
+
+The LiveView web grid requires:
+
+* the ioBroker JavaScript adapter
+* `ffmpeg` installed on the host system and available in `PATH`
+* supported Blink cameras using the current IMMI/MCLV LiveView flow
+* network access from the ioBroker host to the Blink cloud services
+
+On Debian/Ubuntu systems, `ffmpeg` can usually be installed with:
+
+```bash
+sudo apt update
+sudo apt install ffmpeg
+```
+
+### Camera compatibility
+
+Not all Blink camera generations expose the same LiveView flow.
+
+Cameras using the current IMMI/MCLV LiveView flow can be converted to an HLS stream for the web grid. Older XT/XT2/LFR based cameras may not provide a usable stream through this method. In that case the adapter detects the unsupported LiveView state and disables the LiveView button for that camera instead of starting a broken stream.
+
+### Notes
+
+The LiveView web grid is a convenience feature. The core adapter functions such as login, device discovery, motion states, battery states, thumbnails and video downloads do not require the JavaScript helper script or `ffmpeg`.
+
+
+
 ## DISCLAIMER
 
 All product and company names or logos are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them or any associated subsidiaries! This personal project is maintained in spare time and has no business goal. Blink is a trademark of Amazon Technologies, Inc..
