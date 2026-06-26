@@ -114,7 +114,7 @@ class BlinkAdapter extends utils.Adapter {
 		if (remaining <= 0) {
 			this.loginRateLimitUntil = 0;
 			this.loginRateLimitMessage = '';
-			this.log.info('Blink 2FA-Rate-Limit abgelaufen, Login wird beim nächsten Poll wieder versucht.');
+			this.log.info('Blink 2FA rate limit expired, login will be retried on the next poll.');
 			return 0;
 		}
 
@@ -123,16 +123,16 @@ class BlinkAdapter extends utils.Adapter {
 
 	formatLoginRateLimitMessage(remainingMs) {
 		const retryAt = new Date(Date.now() + remainingMs).toISOString();
-		return `Blink 2FA-Rate-Limit aktiv. Login pausiert noch ${Math.ceil(remainingMs / 1000)}s bis ${retryAt}.`;
+		return `Blink 2FA rate limit is active. Login is paused for another ${Math.ceil(remainingMs / 1000)}s until ${retryAt}.`;
 	}
 
 	stopLoginRelatedTimers() {
 		if (this.pollTimer) {
-			this.clearInterval(this.pollTimer);
+			clearInterval(this.pollTimer);
 			this.pollTimer = null;
 		}
 		if (this.liveTimer) {
-			this.clearInterval(this.liveTimer);
+			clearInterval(this.liveTimer);
 			this.liveTimer = null;
 		}
 	}
@@ -150,13 +150,11 @@ class BlinkAdapter extends utils.Adapter {
 				this.cfg.pin = '';
 			}
 
-			this.log.info(
-				'Blink 2FA/PIN wurde nach erfolgreichem Login automatisch aus der Adapter-Konfiguration entfernt.',
-			);
+			this.log.info('Blink 2FA/PIN was removed from the adapter configuration after a successful login.');
 		} catch (e) {
 			this.log.warn(
-				`Blink Login war erfolgreich, aber der 2FA/PIN konnte nicht automatisch aus der Konfiguration entfernt werden. ` +
-					`Bitte PIN manuell löschen: ${e?.message || e}`,
+				`Blink login was successful, but the 2FA/PIN could not be removed from the adapter configuration automatically. ` +
+					`Please remove the PIN manually: ${e?.message || e}`,
 			);
 		}
 	}
@@ -164,15 +162,15 @@ class BlinkAdapter extends utils.Adapter {
 	async getBlinkSessionSafe(email, password, pin) {
 		if (this.loginBlocked) {
 			throw new Error(
-				`Blink Login wurde nach ${this.loginFailureCount} fehlgeschlagenen Versuchen blockiert. ` +
-					`Bitte Zugangsdaten prüfen und Adapter neu starten.`,
+				`Blink login was blocked after ${this.loginFailureCount} failed attempts. ` +
+					`Please check the credentials and restart the adapter.`,
 			);
 		}
 
 		if (this.login2faRequired) {
 			const err = new Error(
 				this.login2faMessage ||
-					'Blink 2FA/TSV-Code erforderlich. Code in der Adapter-Konfiguration eintragen und Adapter neu starten.',
+					'Blink 2FA/TSV code is required. Enter the code in the adapter configuration and restart the adapter.',
 			);
 			err.code = 'LOGIN_2FA_REQUIRED_ACTIVE';
 			throw err;
@@ -202,14 +200,14 @@ class BlinkAdapter extends utils.Adapter {
 			if (this.isLoginRateLimitError(err)) {
 				const waitMs = this.getLoginRateLimitWaitMs(err);
 				this.loginRateLimitUntil = Date.now() + waitMs;
-				this.loginRateLimitMessage = err?.message || 'Blink 2FA-Rate-Limit aktiv.';
+				this.loginRateLimitMessage = err?.message || 'Blink 2FA rate limit is active.';
 				this.session = null;
 				this.setState('info.connection', false, true);
 
 				this.log.warn(
-					`Blink 2FA-Rate-Limit erkannt. Weitere Login-Versuche werden bis ` +
-						`${new Date(this.loginRateLimitUntil).toISOString()} lokal blockiert. ` +
-						`Ursache: ${err?.message || err}`,
+					`Blink 2FA rate limit detected. Further login attempts are blocked locally until ` +
+						`${new Date(this.loginRateLimitUntil).toISOString()}. ` +
+						`Reason: ${err?.message || err}`,
 				);
 
 				err.code = err.code || 'BLINK_2FA_RATE_LIMIT';
@@ -219,13 +217,13 @@ class BlinkAdapter extends utils.Adapter {
 
 			if (this.isLogin2faRequiredError(err)) {
 				this.login2faRequired = true;
-				this.login2faMessage = err?.message || 'Blink 2FA/TSV-Code erforderlich.';
+				this.login2faMessage = err?.message || 'Blink 2FA/TSV code required.';
 				this.session = null;
 				this.setState('info.connection', false, true);
 
 				this.log.warn(
-					`${this.login2faMessage} Es werden bis zum Adapter-Neustart keine weiteren Blink-Login-Versuche gesendet. ` +
-						`Code eintragen und Adapter neu starten.`,
+					`${this.login2faMessage} No further Blink login attempts will be sent until the adapter is restarted. ` +
+						`Enter the code and restart the adapter.`,
 				);
 
 				err.code = err.code || 'NEED_2FA';
@@ -236,7 +234,7 @@ class BlinkAdapter extends utils.Adapter {
 				this.loginFailureCount += 1;
 
 				this.log.warn(
-					`Blink Login fehlgeschlagen (${this.loginFailureCount}/${this.maxLoginFailures}): ${err?.message || err}`,
+					`Blink login failed (${this.loginFailureCount}/${this.maxLoginFailures}): ${err?.message || err}`,
 				);
 
 				if (this.loginFailureCount >= this.maxLoginFailures) {
@@ -245,9 +243,9 @@ class BlinkAdapter extends utils.Adapter {
 					this.stopLoginRelatedTimers();
 					this.setState('info.connection', false, true);
 					this.log.error(
-						`Blink Login wurde nach ${this.maxLoginFailures} Fehlversuchen gestoppt. ` +
-							`Es werden keine weiteren Login-Versuche gestartet, um eine Blink-Sperre zu vermeiden. ` +
-							`Bitte E-Mail/Passwort/PIN prüfen und den Adapter neu starten.`,
+						`Blink login was stopped after ${this.maxLoginFailures} failed attempts. ` +
+							`No further login attempts will be started to avoid a Blink lockout. ` +
+							`Please check email/password/PIN and restart the adapter.`,
 					);
 				}
 			}
@@ -298,11 +296,11 @@ class BlinkAdapter extends utils.Adapter {
 			await this.setStateAsync(`cameras.${devId}.video.lastError`, msg, true);
 		} catch (stateErr) {
 			this.log.debug(
-				`Video-Busy-State konnte nicht gesetzt werden (${cam?.name || devId}): ${stateErr?.message || stateErr}`,
+				`Video busy state could not be set (${cam?.name || devId}): ${stateErr?.message || stateErr}`,
 			);
 		}
 
-		this.log.info(`Video-Download pausiert für ${cam?.name || devId}: ${msg} (${err?.message || err})`);
+		this.log.info(`Video download paused for ${cam?.name || devId}: ${msg} (${err?.message || err})`);
 	}
 
 	async writeVideoBusyCooldownState(devId, cam) {
@@ -317,7 +315,7 @@ class BlinkAdapter extends utils.Adapter {
 		await this.setStateAsync(`cameras.${devId}.video.ready`, false, true);
 		await this.setStateAsync(`cameras.${devId}.video.lastError`, msg, true);
 
-		this.log.info(`Video-Download weiterhin pausiert für ${cam?.name || devId}: ${msg}`);
+		this.log.info(`Video download still paused for ${cam?.name || devId}: ${msg}`);
 	}
 
 	isUsableFile(file) {
@@ -354,9 +352,7 @@ class BlinkAdapter extends utils.Adapter {
 		const remaining = until - Date.now();
 		if (remaining <= 0) {
 			this.localStorageBusyUntilBySyncId.delete(key);
-			this.log.info(
-				`Local-Storage/USB Cooldown abgelaufen für Sync-Modul ${key}, versuche beim nächsten Abruf erneut.`,
-			);
+			this.log.info(`Local Storage/USB cooldown expired for sync module ${key}, will retry on the next fetch.`);
 			return 0;
 		}
 
@@ -378,7 +374,7 @@ class BlinkAdapter extends utils.Adapter {
 
 		const retryAt = new Date(until).toISOString();
 		this.log.info(
-			`Local-Storage/USB pausiert für Sync-Modul ${key}` +
+			`Local Storage/USB paused for sync module ${key}` +
 				`${networkId ? ` network_id=${networkId}` : ''}: System is busy, retry after ${retryAt} (${err?.message || err})`,
 		);
 	}
@@ -501,8 +497,8 @@ class BlinkAdapter extends utils.Adapter {
 		const ids = [...new Set(clips.flatMap(clip => this.getClipCameraIds(clip)).filter(Boolean))].slice(0, 20);
 
 		this.log.debug(
-			`Local-Storage: keine Clips passend zu "${cam?.name || ''}" id=${cam?.id || ''} sync=${syncId || ''}. ` +
-				`Manifest-Kameras: names=[${names.join(', ')}], ids=[${ids.join(', ')}]`,
+			`Local Storage: no clips matching "${cam?.name || ''}" id=${cam?.id || ''} sync=${syncId || ''}. ` +
+				`manifest cameras: names=[${names.join(', ')}], ids=[${ids.join(', ')}]`,
 		);
 	}
 
@@ -538,7 +534,7 @@ class BlinkAdapter extends utils.Adapter {
 				return null;
 			}
 
-			this.log.debug(`Local-Storage-Manifest nicht abrufbar (sync ${syncId}): ${e?.message || e}`);
+			this.log.debug(`Local Storage manifest not available (sync ${syncId}): ${e?.message || e}`);
 
 			if (manifestCacheBySyncId) {
 				manifestCacheBySyncId.set(key, null);
@@ -606,12 +602,12 @@ class BlinkAdapter extends utils.Adapter {
 		try {
 			const latest = await blinkApi.getLatestVideoInfo(this.session, cam.network_id, cam.id);
 			if (!latest) {
-				throw new Error('Kein Video in Local Storage oder Cloud gefunden');
+				throw new Error('No video found in Local Storage or cloud');
 			}
 			return await blinkApi.downloadVideo(this.session, cam.network_id, cam.id, file, latest);
 		} catch (e) {
 			if (e?.code === 'NO_VIDEO') {
-				throw new Error('Kein Video in Local Storage oder Cloud gefunden');
+				throw new Error('No video found in Local Storage or cloud');
 			}
 			throw e;
 		}
@@ -699,14 +695,14 @@ class BlinkAdapter extends utils.Adapter {
 		// einem Restart stabil bleibt und in der Admin-UI erscheint.
 		if (streamEnabled && !streamToken) {
 			streamToken = crypto.randomBytes(16).toString('hex');
-			this.log.info('Stream-Token wurde automatisch generiert und in der Adapter-Konfiguration gespeichert.');
+			this.log.info('Stream token was generated automatically and saved to the adapter configuration.');
 			try {
 				await this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
 					native: { streamToken },
 				});
 			} catch (e) {
 				this.log.warn(
-					`Stream-Token konnte nicht persistiert werden – beim n\u00e4chsten Restart wird ein neuer generiert: ${e?.message || e}`,
+					`Stream token could not be persisted; a new one will be generated on the next restart: ${e?.message || e}`,
 				);
 			}
 		}
@@ -741,7 +737,7 @@ class BlinkAdapter extends utils.Adapter {
 		await this.ensureRootObjects();
 
 		if (!email || !password) {
-			this.log.error('Bitte E-Mail und Passwort in der Konfiguration eintragen.');
+			this.log.error('Please enter email and password in the adapter configuration.');
 			return;
 		}
 
@@ -766,7 +762,7 @@ class BlinkAdapter extends utils.Adapter {
 		try {
 			await this.installBlinkVideoUrlServerScript();
 		} catch (e) {
-			this.log.warn(`Blink Video-URL-Server-Script konnte nicht installiert werden: ${e?.message || e}`);
+			this.log.warn(`Blink video URL server script could not be installed: ${e?.message || e}`);
 		}
 
 		this.subscribeStates('cameras.*.commands.*');
@@ -784,11 +780,11 @@ class BlinkAdapter extends utils.Adapter {
 				await this.startMjpegServer();
 			}
 		} catch (e) {
-			this.log.error(`Initialer Connect/Poll fehlgeschlagen: ${e?.message || e}`);
+			this.log.error(`Initial connect/poll failed: ${e?.message || e}`);
 			this.setState('info.connection', false, true);
 		}
 
-		this.pollTimer = this.setInterval(async () => {
+		this.pollTimer = setInterval(async () => {
 			try {
 				pin = this.cfg?.pin || '';
 				this.session = await this.getBlinkSessionSafe(email, password, pin);
@@ -799,16 +795,25 @@ class BlinkAdapter extends utils.Adapter {
 					this.setState('info.connection', false, true);
 					return;
 				}
-				this.log.warn(`Poll-Fehler: ${err?.message || err}`);
+				this.log.warn(`Poll error: ${err?.message || err}`);
 				this.setState('info.connection', false, true);
 			}
 		}, pollIntervalSec * 1000);
 
 		if (liveSnapshotEnabled) {
-			this.liveTimer = this.setInterval(
-				() => this.updateLiveSnapshots().catch(e => this.log.warn(`Live-Snapshot-Fehler: ${e?.message || e}`)),
-				liveSnapshotIntervalSec * 1000,
-			);
+			const scheduleLiveSnapshots = () => {
+				this.liveTimer = setTimeout(async () => {
+					try {
+						await this.updateLiveSnapshots();
+					} catch (e) {
+						this.log.warn(`Live snapshot error: ${e?.message || e}`);
+					}
+					if (this.liveTimer) {
+						scheduleLiveSnapshots();
+					}
+				}, liveSnapshotIntervalSec * 1000);
+			};
+			scheduleLiveSnapshots();
 		}
 	}
 
@@ -818,7 +823,7 @@ class BlinkAdapter extends utils.Adapter {
 
 		try {
 			if (!fs.existsSync(sourceFile)) {
-				this.log.warn(`Blink Video-URL-Server-Vorlage nicht gefunden: ${sourceFile}`);
+				this.log.warn(`Blink video URL server template not found: ${sourceFile}`);
 				return;
 			}
 
@@ -845,7 +850,7 @@ class BlinkAdapter extends utils.Adapter {
 			}
 
 			if (!source.trim()) {
-				this.log.warn(`Blink Video-URL-Server-Vorlage enthält keine Script-Quelle: ${sourceFile}`);
+				this.log.warn(`Blink video URL server template contains no script source: ${sourceFile}`);
 				return;
 			}
 
@@ -859,7 +864,7 @@ class BlinkAdapter extends utils.Adapter {
 				// Version bereits aktuell/neuer ist.
 				if (!templateVersion || this.compareVersions(templateVersion, installedVersion) <= 0) {
 					this.log.debug(
-						`Blink Video-URL-Server-Script aktuell (installiert: ${installedVersion || 'unbekannt'}, Vorlage: ${templateVersion || 'unbekannt'}) – kein Update.`,
+						`Blink video URL server script is current (installed: ${installedVersion || 'unknown'}, template: ${templateVersion || 'unknown'}); no update.`,
 					);
 					return;
 				}
@@ -869,9 +874,9 @@ class BlinkAdapter extends utils.Adapter {
 				// oder Marker fehlt), NICHT automatisch überschreiben, sondern nur hinweisen.
 				if (!installedVersion) {
 					this.log.warn(
-						`Blink Video-URL-Server-Script existiert ohne Versionskennung – vermutlich manuell angepasst. ` +
-							`Automatisches Update wird übersprungen, um Anpassungen nicht zu überschreiben. ` +
-							`Bei Bedarf das Script manuell aus lib/blink-video-url-server.json aktualisieren.`,
+						`Blink video URL server script exists without a version marker and was probably modified manually. ` +
+							`Automatic update is skipped to avoid overwriting custom changes. ` +
+							`Update the script manually from lib/blink-video-url-server.json if needed.`,
 					);
 					return;
 				}
@@ -890,7 +895,7 @@ class BlinkAdapter extends utils.Adapter {
 					},
 				};
 				await this.setForeignObjectAsync(scriptId, updated);
-				this.log.info(`Blink Video-URL-Server-Script aktualisiert: ${installedVersion} → ${templateVersion}.`);
+				this.log.info(`Blink video URL server script updated: ${installedVersion} → ${templateVersion}.`);
 				return;
 			}
 
@@ -914,12 +919,10 @@ class BlinkAdapter extends utils.Adapter {
 
 			await this.setForeignObjectAsync(scriptId, obj);
 			this.log.info(
-				`Blink Video-URL-Server-Script wurde angelegt (Version ${templateVersion || 'unbekannt'}): ${scriptId}`,
+				`Blink video URL server script was created (Version ${templateVersion || 'unknown'}): ${scriptId}`,
 			);
 		} catch (e) {
-			this.log.warn(
-				`Blink Video-URL-Server-Script konnte nicht angelegt/aktualisiert werden: ${e?.message || e}`,
-			);
+			this.log.warn(`Blink video URL server script could not be created/updated: ${e?.message || e}`);
 		}
 	}
 
@@ -960,42 +963,24 @@ class BlinkAdapter extends utils.Adapter {
 		return null;
 	}
 
-	async ensureObjectWithType(id, type, common = {}, native = {}) {
-		const existing = await this.getObjectAsync(id);
-
-		if (!existing || existing.type !== type) {
-			await this.setObjectAsync(id, {
-				...(existing || {}),
-				type,
-				common: {
-					...(existing?.common || {}),
-					...common,
-				},
-				native: {
-					...(existing?.native || {}),
-					...native,
-				},
-			});
-
-			if (existing && existing.type !== type) {
-				this.log.info(`Objekttyp korrigiert: ${id} ${existing.type} → ${type}`);
-			}
-			return;
-		}
-
-		await this.extendObjectAsync(id, {
-			common,
-			native,
-		});
-	}
-
 	async ensureRootObjects() {
-		await this.ensureObjectWithType('info', 'channel', { name: 'Info' }, {});
+		await this.setObjectNotExistsAsync('info', {
+			type: 'channel',
+			common: { name: 'Info' },
+			native: {},
+		});
 
-		// Unter cameras.<id> und sync.<id> liegen Geräte (type=device).
-		// Deshalb müssen cameras/sync selbst folder sein, nicht channel.
-		await this.ensureObjectWithType('cameras', 'folder', { name: 'Cameras' }, {});
-		await this.ensureObjectWithType('sync', 'folder', { name: 'Sync modules' }, {});
+		await this.setObjectNotExistsAsync('cameras', {
+			type: 'channel',
+			common: { name: 'Cameras' },
+			native: {},
+		});
+
+		await this.setObjectNotExistsAsync('sync', {
+			type: 'channel',
+			common: { name: 'Sync modules' },
+			native: {},
+		});
 	}
 
 	async pollOnce() {
@@ -1061,27 +1046,33 @@ class BlinkAdapter extends utils.Adapter {
 
 		await this.ensureState(`${base}.info.name`, 'Name', 'string', 'text', false);
 		await this.ensureState(`${base}.info.serial`, 'Serial', 'string', 'text', false);
-		await this.ensureState(`${base}.info.network_id`, 'Netzwerk-ID', 'number', 'value', false);
-		await this.ensureState(`${base}.info.type`, 'Kameramodell (Blink-Typ)', 'string', 'text', false);
+		await this.ensureState(`${base}.info.network_id`, 'Network ID', 'number', 'value', false);
+		await this.ensureState(`${base}.info.type`, 'Camera model (Blink type)', 'string', 'text', false);
 		await this.ensureState(`${base}.info.account_id`, 'Account-ID', 'string', 'text', false);
 
-		await this.ensureState(`${base}.status.battery`, 'Batterie (V)', 'number', 'value.battery', false);
-		await this.ensureState(`${base}.status.battery_raw`, 'Batterie roh', 'number', 'value', false);
-		await this.ensureState(`${base}.status.battery_volt`, 'Batteriespannung (V)', 'number', 'value.voltage', false);
-		await this.ensureState(`${base}.status.battery_text`, 'Batterie Hinweis', 'string', 'text', false);
-		await this.ensureState(`${base}.status.temperature`, 'Temperatur (°C)', 'number', 'value.temperature', false);
-		await this.ensureState(`${base}.status.temperature_f`, 'Temperatur (°F)', 'number', 'value.temperature', false);
-		await this.ensureState(`${base}.status.temperature_text`, 'Temperatur Hinweis', 'string', 'text', false);
-		await this.ensureState(`${base}.status.wifi_strength`, 'WLAN-Stärke', 'number', 'value', false);
+		await this.ensureState(`${base}.status.battery`, 'Battery (V)', 'number', 'value.battery', false);
+		await this.ensureState(`${base}.status.battery_raw`, 'Raw battery', 'number', 'value', false);
+		await this.ensureState(`${base}.status.battery_volt`, 'Battery voltage (V)', 'number', 'value.voltage', false);
+		await this.ensureState(`${base}.status.battery_text`, 'Battery note', 'string', 'text', false);
+		await this.ensureState(`${base}.status.temperature`, 'Temperature (°C)', 'number', 'value.temperature', false);
+		await this.ensureState(
+			`${base}.status.temperature_f`,
+			'Temperature (°F)',
+			'number',
+			'value.temperature',
+			false,
+		);
+		await this.ensureState(`${base}.status.temperature_text`, 'Temperature note', 'string', 'text', false);
+		await this.ensureState(`${base}.status.wifi_strength`, 'Wi-Fi strength', 'number', 'value', false);
 		await this.ensureState(
 			`${base}.status.motion_detect_enabled`,
-			'Bewegungserkennung',
+			'Motion detection',
 			'boolean',
 			'indicator',
 			false,
 		);
-		await this.ensureState(`${base}.status.armed`, 'Scharf (System)', 'boolean', 'indicator', false);
-		await this.ensureState(`${base}.status.last_update`, 'Letztes Update', 'string', 'date', false);
+		await this.ensureState(`${base}.status.armed`, 'Armed (system)', 'boolean', 'indicator', false);
+		await this.ensureState(`${base}.status.last_update`, 'Last update', 'string', 'date', false);
 		await this.ensureState(
 			`${base}.status.smart_detection`,
 			'Smart Detection aktiv',
@@ -1089,43 +1080,43 @@ class BlinkAdapter extends utils.Adapter {
 			'indicator',
 			false,
 		);
-		await this.ensureState(`${base}.status.person_detected`, 'Person erkannt', 'boolean', 'indicator', false);
-		await this.ensureState(`${base}.status.vehicle_detected`, 'Fahrzeug erkannt', 'boolean', 'indicator', false);
-		await this.ensureState(`${base}.status.animal_detected`, 'Tier erkannt', 'boolean', 'indicator', false);
-		await this.ensureState(`${base}.status.package_detected`, 'Paket erkannt', 'boolean', 'indicator', false);
-		await this.ensureState(`${base}.status.detection_type`, 'Erkennungstyp', 'string', 'text', false);
+		await this.ensureState(`${base}.status.person_detected`, 'Person detected', 'boolean', 'indicator', false);
+		await this.ensureState(`${base}.status.vehicle_detected`, 'Vehicle detected', 'boolean', 'indicator', false);
+		await this.ensureState(`${base}.status.animal_detected`, 'Animal detected', 'boolean', 'indicator', false);
+		await this.ensureState(`${base}.status.package_detected`, 'Package detected', 'boolean', 'indicator', false);
+		await this.ensureState(`${base}.status.detection_type`, 'Detection type', 'string', 'text', false);
 		await this.ensureState(
 			`${base}.status.smart_detection_raw`,
-			'Smart Detection Rohdaten',
+			'Smart Detection raw data',
 			'string',
 			'json',
 			false,
 		);
-		await this.ensureState(`${base}.status.motion_source`, 'Bewegungsquelle', 'string', 'text', false);
+		await this.ensureState(`${base}.status.motion_source`, 'Motion source', 'string', 'text', false);
 
-		await this.ensureState(`${base}.battery.low`, 'Batterie niedrig', 'boolean', 'indicator', false);
-		await this.ensureState(`${base}.battery.lastWarning`, 'Letzter Hinweis', 'string', 'date', false);
-		await this.ensureState(`${base}.battery.warningSent`, 'Warnung gesendet', 'boolean', 'indicator', false);
-		await this.ensureState(`${base}.battery.lastMessage`, 'Letzter Warnhinweis-Text', 'string', 'text', false);
+		await this.ensureState(`${base}.battery.low`, 'Battery low', 'boolean', 'indicator', false);
+		await this.ensureState(`${base}.battery.lastWarning`, 'Last warning', 'string', 'date', false);
+		await this.ensureState(`${base}.battery.warningSent`, 'Warning sent', 'boolean', 'indicator', false);
+		await this.ensureState(`${base}.battery.lastMessage`, 'Last warning message', 'string', 'text', false);
 
 		await this.ensureState(
 			`${base}.commands.motion_detect`,
-			'Bewegungserkennung setzen',
+			'Set motion detection',
 			'boolean',
 			'switch.enable',
 			true,
 		);
-		await this.ensureState(`${base}.commands.snapshot`, 'Snapshot auslösen', 'boolean', 'button', true);
-		await this.ensureState(`${base}.commands.snapshot_file`, 'Letzter Snapshot-Pfad', 'string', 'text', false);
-		await this.ensureState(`${base}.commands.fetch_video`, 'Neuestes MP4 laden', 'boolean', 'button', true);
-		await this.ensureState(`${base}.commands.clear_session`, 'Session-Cache löschen', 'boolean', 'button', true);
+		await this.ensureState(`${base}.commands.snapshot`, 'Trigger snapshot', 'boolean', 'button', true);
+		await this.ensureState(`${base}.commands.snapshot_file`, 'Last snapshot path', 'string', 'text', false);
+		await this.ensureState(`${base}.commands.fetch_video`, 'Load latest MP4', 'boolean', 'button', true);
+		await this.ensureState(`${base}.commands.clear_session`, 'Clear session cache', 'boolean', 'button', true);
 
-		await this.ensureState(`${base}.video.file`, 'MP4-Datei', 'string', 'text', false);
-		await this.ensureState(`${base}.video.timestamp`, 'MP4-Zeitstempel', 'string', 'date', false);
-		await this.ensureState(`${base}.video.id`, 'MP4 Cloud-ID', 'string', 'text', false);
-		await this.ensureState(`${base}.video.size`, 'MP4-Dateigröße', 'number', 'value', false);
-		await this.ensureState(`${base}.video.ready`, 'MP4 bereit', 'boolean', 'indicator', false);
-		await this.ensureState(`${base}.video.lastError`, 'MP4 letzter Fehler', 'string', 'text', false);
+		await this.ensureState(`${base}.video.file`, 'MP4 file', 'string', 'text', false);
+		await this.ensureState(`${base}.video.timestamp`, 'MP4 timestamp', 'string', 'date', false);
+		await this.ensureState(`${base}.video.id`, 'MP4 cloud ID', 'string', 'text', false);
+		await this.ensureState(`${base}.video.size`, 'MP4 file size', 'number', 'value', false);
+		await this.ensureState(`${base}.video.ready`, 'MP4 ready', 'boolean', 'indicator', false);
+		await this.ensureState(`${base}.video.lastError`, 'MP4 last error', 'string', 'text', false);
 
 		await this.setObjectNotExistsAsync(`${base}.video.history`, {
 			type: 'channel',
@@ -1145,14 +1136,14 @@ class BlinkAdapter extends utils.Adapter {
 		for (let i = 0; i < 10; i++) {
 			await this.ensureState(
 				`${base}.video.history.${i}.file`,
-				`History ${i} – MP4-Datei`,
+				`History ${i} – MP4 file`,
 				'string',
 				'text',
 				false,
 			);
 			await this.ensureState(
 				`${base}.video.history.${i}.timestamp`,
-				`History ${i} – Zeitstempel`,
+				`History ${i} – timestamp`,
 				'string',
 				'date',
 				false,
@@ -1160,51 +1151,51 @@ class BlinkAdapter extends utils.Adapter {
 			await this.ensureState(`${base}.video.history.${i}.id`, `History ${i} – Clip-ID`, 'string', 'text', false);
 			await this.ensureState(
 				`${base}.video.history.${i}.source`,
-				`History ${i} – Quelle (cloud|local_storage)`,
+				`History ${i} – source (cloud|local_storage)`,
 				'string',
 				'text',
 				false,
 			);
 		}
 
-		await this.ensureState(`${base}.live.file`, 'Live-Snapshot Datei', 'string', 'text', false);
-		await this.ensureState(`${base}.live.image_base64`, 'Live-Snapshot Base64', 'string', 'text', false);
-		await this.ensureState(`${base}.live.mime_type`, 'Bild MIME-Typ', 'string', 'text', false);
-		await this.ensureState(`${base}.live.timestamp`, 'Live-Snapshot Zeitstempel', 'string', 'date', false);
+		await this.ensureState(`${base}.live.file`, 'Live snapshot file', 'string', 'text', false);
+		await this.ensureState(`${base}.live.image_base64`, 'Live snapshot Base64', 'string', 'text', false);
+		await this.ensureState(`${base}.live.mime_type`, 'Image MIME type', 'string', 'text', false);
+		await this.ensureState(`${base}.live.timestamp`, 'Live snapshot timestamp', 'string', 'date', false);
 		await this.ensureState(`${base}.live.stream_url`, 'MJPEG-Stream URL', 'string', 'text.url', false);
 		await this.ensureState(
 			`${base}.live.stream_active`,
-			'Stream wird aktuell gepollt',
+			'Stream is currently polled',
 			'boolean',
 			'indicator',
 			false,
 		);
 		await this.ensureState(
 			`${base}.commands.live_request`,
-			'Stream-Polling manuell aktivieren (60s)',
+			'Manually enable stream polling (60s)',
 			'boolean',
 			'button',
 			true,
 		);
 
 		// Neues Gerüst für echten 30s-Livestream
-		await this.ensureState(`${base}.live.mode`, 'Live-Modus', 'string', 'text', false);
-		await this.ensureState(`${base}.live.active`, 'Echte Live-Session aktiv', 'boolean', 'indicator', false);
+		await this.ensureState(`${base}.live.mode`, 'Live mode', 'string', 'text', false);
+		await this.ensureState(`${base}.live.active`, 'Real LiveView session active', 'boolean', 'indicator', false);
 		await this.ensureState(`${base}.live.url`, 'Live-URL', 'string', 'text.url', false);
-		await this.ensureState(`${base}.live.expires_at`, 'Live läuft bis', 'string', 'date', false);
-		await this.ensureState(`${base}.live.last_error`, 'Letzter Live-Fehler', 'string', 'text', false);
-		await this.ensureState(`${base}.live.session_id`, 'Live Session-ID', 'string', 'text', false);
+		await this.ensureState(`${base}.live.expires_at`, 'Live expires at', 'string', 'date', false);
+		await this.ensureState(`${base}.live.last_error`, 'Last live error', 'string', 'text', false);
+		await this.ensureState(`${base}.live.session_id`, 'Live session ID', 'string', 'text', false);
 		await this.ensureState(`${base}.live.backend`, 'Live Backend', 'string', 'text', false);
 		await this.ensureState(
 			`${base}.live.unsupported`,
-			'LiveView von dieser Kamera nicht unterstützt (selbstlernend)',
+			'LiveView is not supported by this camera (self-learning)',
 			'boolean',
 			'indicator',
 			false,
 		);
 
-		await this.ensureState(`${base}.commands.start_live`, 'Echten Live-Stream starten', 'boolean', 'button', true);
-		await this.ensureState(`${base}.commands.stop_live`, 'Echten Live-Stream stoppen', 'boolean', 'button', true);
+		await this.ensureState(`${base}.commands.start_live`, 'Start real live stream', 'boolean', 'button', true);
+		await this.ensureState(`${base}.commands.stop_live`, 'Stop real live stream', 'boolean', 'button', true);
 
 		await this.initStateIfUnset(`${base}.status.armed`, false);
 		await this.initStateIfUnset(`${base}.status.battery_text`, '');
@@ -1382,9 +1373,9 @@ class BlinkAdapter extends utils.Adapter {
 
 		await this.ensureState(`${base}.info.name`, 'Name', 'string', 'text', false);
 		await this.ensureState(`${base}.info.serial`, 'Serial', 'string', 'text', false);
-		await this.ensureState(`${base}.status.armed`, 'Scharf', 'boolean', 'indicator', false);
-		await this.ensureState(`${base}.status.last_update`, 'Letztes Update', 'string', 'date', false);
-		await this.ensureState(`${base}.commands.armed`, 'Scharf/Unscharf', 'boolean', 'switch.enable', true);
+		await this.ensureState(`${base}.status.armed`, 'Armed', 'boolean', 'indicator', false);
+		await this.ensureState(`${base}.status.last_update`, 'Last update', 'string', 'date', false);
+		await this.ensureState(`${base}.commands.armed`, 'Arm/disarm', 'boolean', 'switch.enable', true);
 
 		await this.initStateIfUnset(`${base}.commands.armed`, false);
 	}
@@ -1433,9 +1424,9 @@ class BlinkAdapter extends utils.Adapter {
 			} catch (e) {
 				const msg = String(e?.message || e);
 				if (msg.includes('HTTP 409') && msg.includes('System is busy')) {
-					this.log.debug(`Live-Snapshot übersprungen für ${cam.name}: ${msg}`);
+					this.log.debug(`Live snapshot skipped for ${cam.name}: ${msg}`);
 				} else {
-					this.log.warn(`Live-Snapshot Fehler für ${cam.name}: ${msg}`);
+					this.log.warn(`Live snapshot error for ${cam.name}: ${msg}`);
 				}
 			}
 
@@ -1475,7 +1466,7 @@ class BlinkAdapter extends utils.Adapter {
 				return hn;
 			}
 		} catch {
-			// Hostname-Auflösung fehlgeschlagen – weiter mit IP-Detection.
+			// Hostname-Auflösung failed – weiter mit IP-Detection.
 		}
 		try {
 			const ifaces = os.networkInterfaces();
@@ -1564,7 +1555,7 @@ class BlinkAdapter extends utils.Adapter {
 			this.hlsServer.listen(port, () => resolve());
 		});
 
-		this.log.info(`HLS-Server: öffentliche URL-Basis http://${this.resolveStreamHost()}:${port}/live/`);
+		this.log.info(`HLS server: public URL base http://${this.resolveStreamHost()}:${port}/live/`);
 	}
 
 	async stopHlsServer() {
@@ -1605,7 +1596,7 @@ class BlinkAdapter extends utils.Adapter {
 			return;
 		}
 		const publicHost = this.resolveStreamHost();
-		this.log.info(`MJPEG-Server: öffentliche URL-Basis http://${publicHost}:${this.cfg.streamPort}/`);
+		this.log.info(`MJPEG server: public URL base http://${publicHost}:${this.cfg.streamPort}/`);
 
 		this.mjpegServer = new MjpegServer({
 			adapter: this,
@@ -1623,7 +1614,7 @@ class BlinkAdapter extends utils.Adapter {
 		try {
 			await this.mjpegServer.start();
 		} catch (e) {
-			this.log.error(`MJPEG-Server konnte nicht starten: ${e?.message || e}`);
+			this.log.error(`MJPEG server could not start: ${e?.message || e}`);
 			this.mjpegServer = null;
 			return;
 		}
@@ -1632,7 +1623,7 @@ class BlinkAdapter extends utils.Adapter {
 			await this.setStateAsync(`cameras.${devId}.live.stream_url`, this.mjpegServer.streamUrl(devId), true);
 		}
 
-		this.mjpegStatusTimer = this.setInterval(() => {
+		this.mjpegStatusTimer = setInterval(() => {
 			if (!this.mjpegServer) {
 				return;
 			}
@@ -1669,7 +1660,7 @@ class BlinkAdapter extends utils.Adapter {
 
 	requestLive(devId) {
 		if (!this.mjpegServer) {
-			this.log.warn(`Stream-Anforderung ignoriert: MJPEG-Server nicht aktiv (${devId})`);
+			this.log.warn(`Stream request ignored: MJPEG server is not active (${devId})`);
 			return;
 		}
 		this.mjpegServer.manualWake(devId);
@@ -1741,12 +1732,12 @@ class BlinkAdapter extends utils.Adapter {
 		const ffmpegBin = this.resolveFfmpegBinary();
 		let stderr = '';
 		let spawnError = null;
-		this.log.info(`ffmpeg live ${devId} starte: ${ffmpegBin}`);
+		this.log.info(`ffmpeg live ${devId} starting: ${ffmpegBin}`);
 		let proc;
 		try {
 			proc = spawn(ffmpegBin, args, { stdio: ['ignore', 'ignore', 'pipe'] });
 		} catch (e) {
-			throw new Error(`ffmpeg konnte nicht gestartet werden (${ffmpegBin}): ${e?.message || e}`);
+			throw new Error(`ffmpeg could not be started (${ffmpegBin}): ${e?.message || e}`);
 		}
 		proc.on('error', err => {
 			spawnError = err;
@@ -1768,18 +1759,18 @@ class BlinkAdapter extends utils.Adapter {
 		const start = Date.now();
 		while (Date.now() - start < 10000) {
 			if (spawnError) {
-				throw new Error(`ffmpeg Startfehler (${ffmpegBin}): ${spawnError?.message || spawnError}`);
+				throw new Error(`ffmpeg start error (${ffmpegBin}): ${spawnError?.message || spawnError}`);
 			}
 			if (fs.existsSync(playlist)) {
 				break;
 			}
 			if (proc.exitCode != null && proc.exitCode !== 0) {
-				throw new Error(`ffmpeg beendet mit Code ${proc.exitCode}: ${stderr.slice(-500)}`);
+				throw new Error(`ffmpeg exited with code ${proc.exitCode}: ${stderr.slice(-500)}`);
 			}
-			await new Promise(resolve => this.setTimeout(resolve, 250));
+			await new Promise(resolve => setTimeout(resolve, 250));
 		}
 		if (!fs.existsSync(playlist)) {
-			throw new Error(`HLS-Playlist wurde nicht erzeugt: ${stderr.slice(-500)}`);
+			throw new Error(`HLS playlist was not created: ${stderr.slice(-500)}`);
 		}
 
 		return `http://${this.resolveStreamHost()}:${this.cfg.hlsPort}/live/${encodeURIComponent(devId)}/index.m3u8`;
@@ -1813,7 +1804,7 @@ class BlinkAdapter extends utils.Adapter {
 	async startRealLive(devId) {
 		const cam = this.camerasById.get(devId);
 		if (!cam?.id || !cam?.network_id) {
-			this.log.warn(`startRealLive: Kamera ${devId} nicht gefunden`);
+			this.log.warn(`startRealLive: camera ${devId} not found`);
 			return;
 		}
 
@@ -1854,7 +1845,7 @@ class BlinkAdapter extends utils.Adapter {
 
 			if (modelIncapable || unsupportedCached) {
 				this.log.debug(
-					`LiveView für ${devId} (${cam.name || devId}) nicht unterstützt (Modell '${cam.model || '?'}'), nutze MJPEG-Fallback.`,
+					`LiveView for ${devId} (${cam.name || devId}) is not supported (model '${cam.model || '?'}'), using MJPEG fallback.`,
 				);
 				usedFallback = true;
 			} else if (typeof blinkApi.startLiveView === 'function') {
@@ -1869,7 +1860,7 @@ class BlinkAdapter extends utils.Adapter {
 					} else if (backend === 'rtsp_hls') {
 						publicUrl = await this.startHlsProxy(devId, live);
 					} else {
-						throw new Error(`Unbekanntes Live-Backend: ${backend || 'leer'}`);
+						throw new Error(`Unknown live backend: ${backend || 'empty'}`);
 					}
 
 					// Erfolg: einen evtl. zuvor gesetzten unsupported-Marker zurücknehmen.
@@ -1877,19 +1868,15 @@ class BlinkAdapter extends utils.Adapter {
 				} catch (e) {
 					if (this.isLiveViewUnsupportedError(e)) {
 						this.log.info(
-							`LiveView für ${devId} (${cam.name || devId}) wird dauerhaft als nicht unterstützt markiert (${e?.message || e}). Künftig direkt MJPEG-Fallback.`,
+							`LiveView for ${devId} (${cam.name || devId}) is permanently marked as unsupported (${e?.message || e}). Future attempts will use the MJPEG fallback directly.`,
 						);
 						try {
 							await this.setStateAsync(unsupportedStateId, true, true);
 						} catch (markErr) {
-							this.log.debug(
-								`unsupported-Marker konnte nicht gesetzt werden: ${markErr?.message || markErr}`,
-							);
+							this.log.debug(`Unsupported marker could not be set: ${markErr?.message || markErr}`);
 						}
 					} else {
-						this.log.warn(
-							`startLiveView fehlgeschlagen, nutze MJPEG-Fallback für ${devId}: ${e?.message || e}`,
-						);
+						this.log.warn(`startLiveView failed, using MJPEG fallback for ${devId}: ${e?.message || e}`);
 					}
 					usedFallback = true;
 				}
@@ -1899,7 +1886,7 @@ class BlinkAdapter extends utils.Adapter {
 
 			if (usedFallback) {
 				if (!this.mjpegServer) {
-					throw new Error('Weder echter Liveview noch MJPEG-Server verfügbar');
+					throw new Error('Neither real LiveView nor MJPEG server is available');
 				}
 				this.requestLive(devId);
 				backend = 'mjpeg_fallback';
@@ -1927,7 +1914,7 @@ class BlinkAdapter extends utils.Adapter {
 				backend,
 			});
 
-			const t = this.setTimeout(() => {
+			const t = setTimeout(() => {
 				this.stopRealLive(devId, 'timeout').catch(e =>
 					this.log.warn(`stopRealLive timeout ${devId}: ${e?.message || e}`),
 				);
@@ -1946,7 +1933,7 @@ class BlinkAdapter extends utils.Adapter {
 	async stopRealLive(devId, reason = 'manual') {
 		const timer = this.liveStopTimers.get(devId);
 		if (timer) {
-			this.clearTimeout(timer);
+			clearTimeout(timer);
 			this.liveStopTimers.delete(devId);
 		}
 
@@ -2001,7 +1988,7 @@ class BlinkAdapter extends utils.Adapter {
 			return;
 		}
 		if (!this.session) {
-			this.log.warn('Noch nicht verbunden.');
+			this.log.warn('Not connected yet.');
 			return;
 		}
 
@@ -2012,7 +1999,7 @@ class BlinkAdapter extends utils.Adapter {
 
 		if (cmd === 'clear_session') {
 			blinkApi.clearSession(this.cfg.email);
-			this.log.info('Blink Session-Cache gelöscht.');
+			this.log.info('Blink session cache cleared.');
 			await this.setStateAsync(this.stripNs(id), false, true);
 			return;
 		}
@@ -2021,7 +2008,7 @@ class BlinkAdapter extends utils.Adapter {
 			if (group === 'cameras') {
 				const cam = this.camerasById.get(devId);
 				if (!cam) {
-					throw new Error('Kamera unbekannt (warte auf nächsten Poll)');
+					throw new Error('Unknown camera (waiting for next poll)');
 				}
 
 				if (cmd === 'start_live') {
@@ -2069,7 +2056,7 @@ class BlinkAdapter extends utils.Adapter {
 							await this.syncCameraHistory(cam, devId, res.localManifest || null);
 						} catch (histErr) {
 							this.log.debug(
-								`History-Sync nach manuellem Download übersprungen (${cam.name || devId}): ${histErr?.message || histErr}`,
+								`History sync after manual download skipped (${cam.name || devId}): ${histErr?.message || histErr}`,
 							);
 						}
 					} catch (e) {
@@ -2078,7 +2065,7 @@ class BlinkAdapter extends utils.Adapter {
 						} else {
 							await this.setStateAsync(`cameras.${devId}.video.ready`, false, true);
 							await this.setStateAsync(`cameras.${devId}.video.lastError`, String(e?.message || e), true);
-							this.log.warn(`Video-Download fehlgeschlagen (${cam.name}): ${e?.message || e}`);
+							this.log.warn(`Video download failed (${cam.name}): ${e?.message || e}`);
 						}
 					}
 					await this.setStateAsync(this.stripNs(id), false, true);
@@ -2101,37 +2088,18 @@ class BlinkAdapter extends utils.Adapter {
 			} else if (group === 'sync') {
 				const mod = this.syncById.get(devId);
 				if (!mod) {
-					throw new Error('Sync-Modul unbekannt (warte auf nächsten Poll)');
+					throw new Error('Unknown sync module (waiting for next poll)');
 				}
+
 				if (cmd === 'armed') {
 					const armed = state.val === true;
-					try {
-						await blinkApi.setArmed(this.session, mod.network_id, armed);
-					} catch (e) {
-						if (this.isBlinkSystemBusyError(e)) {
-							await this.setStateAsync(`sync.${devId}.status.armed`, armed, true);
-							await this.setStateAsync(this.stripNs(id), armed, true);
-							this.log.info(
-								`Blink Sync-Modul ${devId}: Schaltbefehl ${armed ? 'scharf' : 'unscharf'} wurde gesendet, ` +
-									`Blink meldet während der Verarbeitung noch "System is busy". Status wird beim nächsten Poll bestätigt.`,
-							);
-							this.setTimeout(() => {
-								this.pollOnce().catch(err => {
-									this.log.debug(
-										`Poll nach Sync-Schaltbefehl fehlgeschlagen: ${err?.message || err}`,
-									);
-								});
-							}, 15000);
-							return;
-						}
-						throw e;
-					}
+					await blinkApi.setArmed(this.session, mod.network_id, armed);
 					await this.setStateAsync(`sync.${devId}.status.armed`, armed, true);
 					await this.setStateAsync(this.stripNs(id), armed, true);
 				}
 			}
 		} catch (e) {
-			this.log.warn(`Befehl fehlgeschlagen (${id}): ${e?.message || e}`);
+			this.log.warn(`Command failed (${id}): ${e?.message || e}`);
 		}
 	}
 
@@ -2194,7 +2162,7 @@ class BlinkAdapter extends utils.Adapter {
 								await this.setStateAsync(`cameras.${devId}.video.ready`, false, true);
 								await this.setStateAsync(
 									`cameras.${devId}.video.lastError`,
-									'Kein Video in Local Storage oder Cloud gefunden',
+									'No video found in Local Storage or cloud',
 									true,
 								);
 								continue;
@@ -2206,7 +2174,7 @@ class BlinkAdapter extends utils.Adapter {
 							await this.setStateAsync(`cameras.${devId}.video.ready`, false, true);
 							await this.setStateAsync(
 								`cameras.${devId}.video.lastError`,
-								'Kein Video in Local Storage oder Cloud gefunden',
+								'No video found in Local Storage or cloud',
 								true,
 							);
 							continue;
@@ -2243,7 +2211,7 @@ class BlinkAdapter extends utils.Adapter {
 						try {
 							await this.syncCameraHistory(cam, devId, localManifest);
 						} catch (e) {
-							this.log.debug(`History-Sync übersprungen (${cam.name || devId}): ${e?.message || e}`);
+							this.log.debug(`History sync skipped (${cam.name || devId}): ${e?.message || e}`);
 						}
 						continue;
 					}
@@ -2277,7 +2245,7 @@ class BlinkAdapter extends utils.Adapter {
 								await this.setStateAsync(`cameras.${devId}.video.ready`, false, true);
 								await this.setStateAsync(
 									`cameras.${devId}.video.lastError`,
-									'Kein Video in Local Storage oder Cloud gefunden',
+									'No video found in Local Storage or cloud',
 									true,
 								);
 								continue;
@@ -2291,21 +2259,19 @@ class BlinkAdapter extends utils.Adapter {
 
 					await this.updateVideoStates(devId, res);
 
-					// Bewegungsbenachrichtigung: Es wurde ein NEUES Video heruntergeladen
+					// Motion notification: Es wurde ein NEUES Video heruntergeladen
 					// (isSameVideo war false), das entspricht einer neuen Aufnahme/Bewegung.
 					try {
 						await this.notifyMotion(devId, cam, latestTs);
 					} catch (e) {
-						this.log.debug(
-							`Bewegungsbenachrichtigung übersprungen (${cam.name || devId}): ${e?.message || e}`,
-						);
+						this.log.debug(`Motion notification skipped (${cam.name || devId}): ${e?.message || e}`);
 					}
 
 					// Galerie pflegen – Local-Storage zuerst, Cloud nur Fallback.
 					try {
 						await this.syncCameraHistory(cam, devId, localManifest);
 					} catch (e) {
-						this.log.debug(`History-Sync übersprungen (${cam.name || devId}): ${e?.message || e}`);
+						this.log.debug(`History sync skipped (${cam.name || devId}): ${e?.message || e}`);
 					}
 				} catch (e) {
 					if (this.isBlinkSystemBusyError(e)) {
@@ -2313,7 +2279,7 @@ class BlinkAdapter extends utils.Adapter {
 						continue;
 					}
 
-					this.log.debug(`Video Sync übersprungen (${cam.name || devId}): ${e?.message || e}`);
+					this.log.debug(`Video sync skipped (${cam.name || devId}): ${e?.message || e}`);
 				}
 			}
 		} finally {
@@ -2396,7 +2362,7 @@ class BlinkAdapter extends utils.Adapter {
 			}
 		};
 
-		// 3) History gilt nur als aktuell, wenn Clip-IDs UND lokale MP4-Dateien passen.
+		// 3) History gilt nur als aktuell, wenn Clip-IDs UND lokale MP4 fileen passen.
 		const wantedIds = wanted.map(c => this.getClipId(c));
 		const sameIds = wantedIds.every((id, idx) => id === knownIds[idx]);
 		const sameFilesExist = wantedIds.every((_id, idx) => isValidHistoryFile(slotFile(idx)));
@@ -2406,9 +2372,7 @@ class BlinkAdapter extends utils.Adapter {
 		}
 
 		if (sameIds && !sameFilesExist) {
-			this.log.info(
-				`History-Dateien fehlen oder sind 0 Byte für ${cam.name || devId}; lade betroffene Slots neu.`,
-			);
+			this.log.info(`History files are missing or 0 bytes for ${cam.name || devId}; reloading affected slots.`);
 		}
 
 		// 4) Für jeden Slot festlegen: Reuse aus altem Slot oder neu downloaden?
@@ -2429,7 +2393,7 @@ class BlinkAdapter extends utils.Adapter {
 					fs.copyFileSync(from, to);
 				} catch (e) {
 					sources[i] = 'download';
-					this.log.debug(`History reuse fehlgeschlagen Slot ${oldIdx}→${i}: ${e.message}`);
+					this.log.debug(`History reuse failed for slot ${oldIdx}→${i}: ${e.message}`);
 				}
 			}
 		}
@@ -2467,7 +2431,7 @@ class BlinkAdapter extends utils.Adapter {
 				}
 
 				this.log.warn(
-					`History-Download fehlgeschlagen (${cam.name} Slot ${i}, clip ${this.getClipId(clip)}): ${e.message}`,
+					`History-Download failed (${cam.name} Slot ${i}, clip ${this.getClipId(clip)}): ${e.message}`,
 				);
 				return; // Slot-Lauf abbrechen, alte Daten bleiben erhalten
 			}
@@ -2478,7 +2442,7 @@ class BlinkAdapter extends utils.Adapter {
 			try {
 				fs.renameSync(tmpFile(i), slotFile(i));
 			} catch (e) {
-				this.log.warn(`History-Rename Slot ${i} fehlgeschlagen: ${e.message}`);
+				this.log.warn(`History rename slot ${i} failed: ${e.message}`);
 			}
 		}
 		for (let i = wanted.length; i < HISTORY_SIZE; i++) {
@@ -2504,7 +2468,7 @@ class BlinkAdapter extends utils.Adapter {
 				await this.setStateAsync(`${base}.${i}.source`, '', true);
 			}
 		}
-		this.log.debug(`History aktualisiert für ${cam.name}: ${wanted.length} Slots (${source})`);
+		this.log.debug(`History updated for ${cam.name}: ${wanted.length} slots (${source})`);
 	}
 
 	async updateDetectionStates(devId, summary) {
@@ -2566,7 +2530,7 @@ class BlinkAdapter extends utils.Adapter {
 				}
 				sent.push('telegram');
 			} catch (e) {
-				this.log.warn(`Telegram-Benachrichtigung fehlgeschlagen: ${e?.message || e}`);
+				this.log.warn(`Telegram notification failed: ${e?.message || e}`);
 			}
 		}
 
@@ -2580,7 +2544,7 @@ class BlinkAdapter extends utils.Adapter {
 				});
 				sent.push('pushover');
 			} catch (e) {
-				this.log.warn(`Pushover-Benachrichtigung fehlgeschlagen: ${e?.message || e}`);
+				this.log.warn(`Pushover notification failed: ${e?.message || e}`);
 			}
 		}
 
@@ -2594,7 +2558,7 @@ class BlinkAdapter extends utils.Adapter {
 				await this.sendToAsync(channelCfg.email.instance, 'send', mail);
 				sent.push('email');
 			} catch (e) {
-				this.log.warn(`E-Mail-Benachrichtigung fehlgeschlagen: ${e?.message || e}`);
+				this.log.warn(`Email notification failed: ${e?.message || e}`);
 			}
 		}
 
@@ -2622,7 +2586,7 @@ class BlinkAdapter extends utils.Adapter {
 	}
 
 	/**
-	 * Löst eine Bewegungsbenachrichtigung für eine Kamera aus, sofern aktiviert
+	 * Löst eine Motion notification für eine Kamera aus, sofern aktiviert
 	 * und der Cooldown nicht greift.
 	 *
 	 * @param {string} devId - Bereinigte Geräte-ID.
@@ -2639,18 +2603,18 @@ class BlinkAdapter extends utils.Adapter {
 		const cooldownMs = motionCfg.cooldownMinutes * 60 * 1000;
 		const last = this.lastMotionNotifyByDevId.get(devId) || 0;
 		if (last && Date.now() - last < cooldownMs) {
-			this.log.debug(`Bewegungsbenachrichtigung (${cam.name || devId}) im Cooldown – übersprungen.`);
+			this.log.debug(`Motion notification (${cam.name || devId}) is in cooldown; skipped.`);
 			return;
 		}
 
-		const when = videoTs ? new Date(videoTs).toLocaleString('de-DE') : new Date().toLocaleString('de-DE');
-		const title = 'Blink Bewegung erkannt';
-		const message = `Kamera: ${cam.name || devId}\nZeit: ${when}`;
+		const when = videoTs ? new Date(videoTs).toLocaleString('en-US') : new Date().toLocaleString('en-US');
+		const title = 'Blink motion detected';
+		const message = `Camera: ${cam.name || devId}\nTime: ${when}`;
 
 		const sent = await this.sendNotification(motionCfg, title, message);
 		if (sent.length) {
 			this.lastMotionNotifyByDevId.set(devId, Date.now());
-			this.log.debug(`Bewegungsbenachrichtigung (${cam.name || devId}) gesendet über: ${sent.join(', ')}`);
+			this.log.debug(`Motion notification (${cam.name || devId}) sent via: ${sent.join(', ')}`);
 		}
 	}
 
@@ -2703,16 +2667,16 @@ class BlinkAdapter extends utils.Adapter {
 			return;
 		}
 
-		const msg = `Blink Batterie niedrig\n\nKamera: ${cam.name || devId}\nSpannung: ${volt.toFixed(2)} V\nGrenzwert: ${thresh.toFixed(2)} V`;
+		const msg = `Blink battery low\n\nCamera: ${cam.name || devId}\nVoltage: ${volt.toFixed(2)} V\nThreshold: ${thresh.toFixed(2)} V`;
 		await this.setStateAsync(`${base}.battery.lastMessage`, msg, true);
 
-		const sent = await this.sendNotification(this.cfg.notify?.battery, 'Blink Batterie niedrig', msg);
+		const sent = await this.sendNotification(this.cfg.notify?.battery, 'Blink battery low', msg);
 		if (sent.length) {
 			await this.setStateAsync(`${base}.battery.warningSent`, true, true);
 			await this.setStateAsync(`${base}.battery.lastWarning`, new Date().toISOString(), true);
-			this.log.debug(`Batteriewarnung (${cam.name || devId}) gesendet über: ${sent.join(', ')}`);
+			this.log.debug(`Battery warning (${cam.name || devId}) sent via: ${sent.join(', ')}`);
 		} else {
-			this.log.debug(`Batteriewarnung (${cam.name || devId}): kein Kanal aktiv/erfolgreich.`);
+			this.log.debug(`Battery warning (${cam.name || devId}): no channel active/successful.`);
 		}
 	}
 
@@ -2745,52 +2709,11 @@ class BlinkAdapter extends utils.Adapter {
 	}
 
 	async ensureState(id, name, type, role, writable) {
-		const desiredCommon = {
-			name,
-			type,
-			role,
-			read: true,
-			write: !!writable,
-		};
-
-		const existing = await this.getObjectAsync(id);
-		if (!existing) {
-			await this.setObjectNotExistsAsync(id, {
-				type: 'state',
-				common: desiredCommon,
-				native: {},
-			});
-			return;
-		}
-
-		const currentCommon = existing.common || {};
-		const needsRepair =
-			existing.type !== 'state' ||
-			currentCommon.type !== desiredCommon.type ||
-			currentCommon.role !== desiredCommon.role ||
-			currentCommon.read !== desiredCommon.read ||
-			currentCommon.write !== desiredCommon.write;
-
-		if (!needsRepair) {
-			return;
-		}
-
-		await this.setObjectAsync(id, {
-			...existing,
+		await this.setObjectNotExistsAsync(id, {
 			type: 'state',
-			common: {
-				...currentCommon,
-				...desiredCommon,
-			},
-			native: existing.native || {},
+			common: { name, type, role, read: true, write: !!writable },
+			native: {},
 		});
-
-		this.log.debug(
-			`State-Objekt repariert: ${id} ` +
-				`role=${currentCommon.role || ''}→${desiredCommon.role}, ` +
-				`type=${currentCommon.type || ''}→${desiredCommon.type}, ` +
-				`write=${currentCommon.write}→${desiredCommon.write}`,
-		);
 	}
 
 	async initStateIfUnset(id, defaultValue) {
@@ -2830,18 +2753,18 @@ class BlinkAdapter extends utils.Adapter {
 	onUnload(cb) {
 		try {
 			if (this.pollTimer) {
-				this.clearInterval(this.pollTimer);
+				clearInterval(this.pollTimer);
 			}
 			if (this.liveTimer) {
-				this.clearInterval(this.liveTimer);
+				clearInterval(this.liveTimer);
 			}
 			if (this.mjpegStatusTimer) {
-				this.clearInterval(this.mjpegStatusTimer);
+				clearInterval(this.mjpegStatusTimer);
 				this.mjpegStatusTimer = null;
 			}
 
 			for (const timer of this.liveStopTimers.values()) {
-				this.clearTimeout(timer);
+				clearTimeout(timer);
 			}
 			this.liveStopTimers.clear();
 

@@ -11,7 +11,7 @@
       "items": {
         "email": {
           "type": "text",
-          "label": "Blink Benutzername / E-Mail",
+          "label": "Blink username / email",
           "sm": 12,
           "xs": 12,
           "lg": 4,
@@ -20,7 +20,7 @@
         },
         "password": {
           "type": "password",
-          "label": "Passwort",
+          "label": "Password",
           "newLine": true,
           "sm": 12,
           "xs": 12,
@@ -30,7 +30,7 @@
         },
         "pin": {
           "type": "password",
-          "label": "PIN / 2FA-Code (optional)",
+          "label": "PIN / 2FA code (optional)",
           "sm": 12,
           "xs": 12,
           "lg": 4,
@@ -62,7 +62,7 @@
         },
         "snapshotDir": {
           "type": "text",
-          "label": "Snapshot-Verzeichnis",
+          "label": "Snapshot directory",
           "default": "/opt/iobroker/iobroker-data/blinkpy",
           "sm": 12,
           "xs": 12,
@@ -125,7 +125,7 @@
         },
         "maxSnapshotAgeHours": {
           "type": "number",
-          "label": "Max. Alter Snapshot-Dateien (Stunden)",
+          "label": "Max. Alter Snapshot-Dateien (Hours)",
           "min": 1,
           "max": 168,
           "default": 24,
@@ -143,7 +143,7 @@
       "items": {
         "notify_batt_header": {
           "type": "header",
-          "text": "Batteriewarnung",
+          "text": "Batterywarnung",
           "size": 4,
           "newLine": true,
           "xs": 12,
@@ -154,151 +154,45 @@
         },
         "batteryWarningEnabled": {
           "type": "checkbox",
-          "label": "Batteriewarnung aktivieren",
+          "label": "Batterywarnung aktivieren",
           "default": false,
           "newLine": true,
-          "xs": 12,
           "sm": 12,
-          "md": 6,
+          "xs": 12,
           "lg": 4,
-          "xl": 4
+          "xl": 4,
+          "md": 6
         },
         "batteryWarningThresholdVolt": {
           "type": "number",
-          "label": "Grenzwert Batteriespannung (V)",
+          "label": "Threshold Batteryspannung (V)",
           "default": 1.1,
+          "newLine": true,
           "min": 0,
           "max": 5,
           "step": 0.01,
-          "xs": 12,
           "sm": 12,
-          "md": 6,
+          "xs": 12,
           "lg": 4,
-          "xl": 4
+          "xl": 4,
+          "md": 6
         },
         "batteryWarningCooldownHours": {
           "type": "number",
-          "label": "Warn-Cooldown pro Kamera (Stunden)",
+          "label": "Warn-Cooldown pro Kamera (Hours)",
           "default": 24,
+          "newLine": true,
           "min": 1,
           "max": 720,
-          "xs": 12,
           "sm": 12,
-          "md": 6,
+          "xs": 12,
           "lg": 4,
-          "xl": 4
+          "xl": 4,
+          "md": 6
         },
-        "notify_batt_info": {
+        "notify_header": {
           "type": "header",
-          "text": "Kanäle für die Batteriewarnung:",
-          "size": 5,
-          "newLine": true,
-          "xs": 12,
-          "sm": 12,
-          "md": 12,
-          "lg": 12,
-          "xl": 12
-        },
-        "battery_telegram_enabled": {
-          "type": "checkbox",
-          "label": "Telegram aktivieren",
-          "default": false,
-          "newLine": true,
-          "hidden": "!data.batteryWarningEnabled",
-          "xs": 12,
-          "sm": 12,
-          "md": 12,
-          "lg": 12,
-          "xl": 12
-        },
-        "battery_telegram_instance": {
-          "type": "instance",
-          "adapter": "telegram",
-          "label": "Telegram Instanz",
-          "default": "telegram.0",
-          "hidden": "!data.batteryWarningEnabled || !data.battery_telegram_enabled",
-          "newLine": true,
-          "xs": 12,
-          "sm": 6,
-          "md": 4,
-          "lg": 4,
-          "xl": 4
-        },
-        "battery_telegram_users": {
-          "type": "text",
-          "label": "Empfänger (User, kommagetrennt – leer = alle)",
-          "default": "",
-          "hidden": "!data.batteryWarningEnabled || !data.battery_telegram_enabled",
-          "xs": 12,
-          "sm": 6,
-          "md": 6,
-          "lg": 6,
-          "xl": 6
-        },
-        "battery_pushover_enabled": {
-          "type": "checkbox",
-          "label": "Pushover aktivieren",
-          "default": false,
-          "newLine": true,
-          "hidden": "!data.batteryWarningEnabled",
-          "xs": 12,
-          "sm": 12,
-          "md": 12,
-          "lg": 12,
-          "xl": 12
-        },
-        "battery_pushover_instance": {
-          "type": "instance",
-          "adapter": "pushover",
-          "label": "Pushover Instanz",
-          "default": "pushover.0",
-          "hidden": "!data.batteryWarningEnabled || !data.battery_pushover_enabled",
-          "newLine": true,
-          "xs": 12,
-          "sm": 6,
-          "md": 4,
-          "lg": 4,
-          "xl": 4
-        },
-        "battery_email_enabled": {
-          "type": "checkbox",
-          "label": "E-Mail aktivieren",
-          "default": false,
-          "newLine": true,
-          "hidden": "!data.batteryWarningEnabled",
-          "xs": 12,
-          "sm": 12,
-          "md": 12,
-          "lg": 12,
-          "xl": 12
-        },
-        "battery_email_instance": {
-          "type": "instance",
-          "adapter": "email",
-          "label": "E-Mail Instanz",
-          "default": "email.0",
-          "hidden": "!data.batteryWarningEnabled || !data.battery_email_enabled",
-          "newLine": true,
-          "xs": 12,
-          "sm": 6,
-          "md": 4,
-          "lg": 4,
-          "xl": 4
-        },
-        "battery_email_to": {
-          "type": "text",
-          "label": "Empfänger E-Mail (leer = Standard aus email-Adapter)",
-          "default": "",
-          "hidden": "!data.batteryWarningEnabled || !data.battery_email_enabled",
-          "xs": 12,
-          "sm": 6,
-          "md": 6,
-          "lg": 6,
-          "xl": 6
-        },
-        "notify_motion_header": {
-          "type": "header",
-          "text": "Bewegungsbenachrichtigung",
+          "text": "Wenn status.battery_volt kleiner/gleich dem Threshold ist, wird pro Kamera höchstens einmal innerhalb des Cooldowns eine Pushover-Nachricht gesendet",
           "size": 4,
           "newLine": true,
           "xs": 12,
@@ -307,60 +201,23 @@
           "lg": 12,
           "xl": 12
         },
-        "motionNotifyEnabled": {
+        "notify_telegram_enabled": {
           "type": "checkbox",
-          "label": "Bewegungsbenachrichtigung aktivieren",
+          "label": "Enable Telegram notifications",
           "default": false,
           "newLine": true,
-          "xs": 12,
-          "sm": 12,
-          "md": 6,
-          "lg": 4,
-          "xl": 4
-        },
-        "motionNotifyCooldownMinutes": {
-          "type": "number",
-          "label": "Cooldown pro Kamera (Minuten)",
-          "default": 5,
-          "min": 1,
-          "max": 1440,
-          "hidden": "!data.motionNotifyEnabled",
-          "xs": 12,
-          "sm": 12,
-          "md": 6,
-          "lg": 4,
-          "xl": 4
-        },
-        "notify_motion_info": {
-          "type": "header",
-          "text": "Kanäle für die Bewegungsbenachrichtigung:",
-          "size": 5,
-          "newLine": true,
-          "hidden": "!data.motionNotifyEnabled",
           "xs": 12,
           "sm": 12,
           "md": 12,
           "lg": 12,
           "xl": 12
         },
-        "motion_telegram_enabled": {
-          "type": "checkbox",
-          "label": "Telegram aktivieren",
-          "default": false,
-          "newLine": true,
-          "hidden": "!data.motionNotifyEnabled",
-          "xs": 12,
-          "sm": 12,
-          "md": 12,
-          "lg": 12,
-          "xl": 12
-        },
-        "motion_telegram_instance": {
+        "notify_telegram_instance": {
           "type": "instance",
           "adapter": "telegram",
-          "label": "Telegram Instanz",
+          "label": "Telegram instance",
           "default": "telegram.0",
-          "hidden": "!data.motionNotifyEnabled || !data.motion_telegram_enabled",
+          "hidden": "!data.notify_telegram_enabled",
           "newLine": true,
           "xs": 12,
           "sm": 6,
@@ -368,77 +225,215 @@
           "lg": 4,
           "xl": 4
         },
-        "motion_telegram_users": {
+        "notify_telegram_users": {
           "type": "text",
-          "label": "Empfänger (User, kommagetrennt – leer = alle)",
+          "label": "Recipients (usernames, comma-separated – empty = all users)",
+          "help": "Example: John,Jane   (leave empty to send to all users)",
           "default": "",
-          "hidden": "!data.motionNotifyEnabled || !data.motion_telegram_enabled",
+          "hidden": "!data.notify_telegram_enabled",
           "xs": 12,
           "sm": 6,
           "md": 6,
           "lg": 6,
           "xl": 6
         },
-        "motion_pushover_enabled": {
+        "notify_pushover_enabled": {
           "type": "checkbox",
-          "label": "Pushover aktivieren",
+          "label": "Enable pushover notifications",
           "default": false,
           "newLine": true,
-          "hidden": "!data.motionNotifyEnabled",
           "xs": 12,
           "sm": 12,
           "md": 12,
           "lg": 12,
           "xl": 12
         },
-        "motion_pushover_instance": {
+        "notify_pushover_instance": {
           "type": "instance",
           "adapter": "pushover",
-          "label": "Pushover Instanz",
+          "label": "pushover instance",
           "default": "pushover.0",
-          "hidden": "!data.motionNotifyEnabled || !data.motion_pushover_enabled",
+          "hidden": "!data.notify_pushover_enabled",
           "newLine": true,
           "xs": 12,
           "sm": 6,
           "md": 4,
           "lg": 4,
           "xl": 4
-        },
-        "motion_email_enabled": {
-          "type": "checkbox",
-          "label": "E-Mail aktivieren",
-          "default": false,
+        }
+      }
+    },
+    "tab_streaming": {
+      "type": "panel",
+      "label": "Streaming",
+      "items": {
+        "stream_intro_header": {
+          "type": "header",
+          "text": "MJPEG-Live-Stream",
+          "size": 4,
           "newLine": true,
-          "hidden": "!data.motionNotifyEnabled",
           "xs": 12,
           "sm": 12,
           "md": 12,
           "lg": 12,
           "xl": 12
         },
-        "motion_email_instance": {
-          "type": "instance",
-          "adapter": "email",
-          "label": "E-Mail Instanz",
-          "default": "email.0",
-          "hidden": "!data.motionNotifyEnabled || !data.motion_email_enabled",
+        "stream_intro": {
+          "type": "staticText",
+          "text": "Der Adapter stellt einen lokalen HTTP-Server bereit, über den Live-Bilder als MJPEG-Stream pro Kamera abrufbar sind. Wired-Kameras (Mini, Floodlight, Doorbell) werden permanent gepollt; Battery-Kameras nur, wenn ein Stream-Client verbunden ist oder live_request gedrückt wurde.",
           "newLine": true,
           "xs": 12,
-          "sm": 6,
-          "md": 4,
-          "lg": 4,
-          "xl": 4
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
         },
-        "motion_email_to": {
-          "type": "text",
-          "label": "Empfänger E-Mail (leer = Standard aus email-Adapter)",
-          "default": "",
-          "hidden": "!data.motionNotifyEnabled || !data.motion_email_enabled",
+        "streamEnabled": {
+          "type": "checkbox",
+          "label": "MJPEG-Streaming aktivieren",
+          "default": false,
+          "newLine": true,
+          "sm": 12,
           "xs": 12,
-          "sm": 6,
-          "md": 6,
-          "lg": 6,
-          "xl": 6
+          "lg": 4,
+          "xl": 4,
+          "md": 6
+        },
+        "streamPort": {
+          "type": "number",
+          "label": "HTTP-Port",
+          "min": 1024,
+          "max": 65535,
+          "default": 8089,
+          "hidden": "!data.streamEnabled",
+          "newLine": true,
+          "sm": 12,
+          "xs": 12,
+          "lg": 4,
+          "xl": 4,
+          "md": 6
+        },
+        "streamToken": {
+          "type": "text",
+          "label": "Stream-Token",
+          "help": "Schützt die Stream-URLs. Bei leerem Feld wird beim Adapter-Start automatisch ein Token generiert und hier eingetragen.",
+          "default": "",
+          "copyToClipboard": true,
+          "hidden": "!data.streamEnabled",
+          "sm": 12,
+          "xs": 12,
+          "lg": 8,
+          "xl": 8,
+          "md": 12
+        },
+        "streamPublicHost": {
+          "type": "text",
+          "label": "Öffentlicher Host (optional)",
+          "help": "IP oder Hostname für die Stream-URL (z.B. iobroker.local oder 192.168.1.50). Leer lassen für automatische Erkennung.",
+          "default": "",
+          "hidden": "!data.streamEnabled",
+          "newLine": true,
+          "sm": 12,
+          "xs": 12,
+          "lg": 4,
+          "xl": 4,
+          "md": 6
+        },
+        "stream_perf_header": {
+          "type": "header",
+          "text": "Polling-Verhalten",
+          "size": 4,
+          "newLine": true,
+          "hidden": "!data.streamEnabled",
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
+        },
+        "streamWiredIntervalSec": {
+          "type": "number",
+          "label": "Wired-Kamera Mindest-Intervall (Sek.)",
+          "help": "Mindestpause zwischen zwei Snapshots derselben netzbetriebenen Kamera. In der Praxis kann es durch Cloud-Latenz länger dauern.",
+          "min": 5,
+          "max": 600,
+          "default": 8,
+          "hidden": "!data.streamEnabled",
+          "newLine": true,
+          "sm": 12,
+          "xs": 12,
+          "lg": 4,
+          "xl": 4,
+          "md": 6
+        },
+        "streamBatteryIntervalSec": {
+          "type": "number",
+          "label": "Battery-Kamera Mindest-Intervall (Sek.)",
+          "min": 8,
+          "max": 600,
+          "default": 10,
+          "hidden": "!data.streamEnabled",
+          "sm": 12,
+          "xs": 12,
+          "lg": 4,
+          "xl": 4,
+          "md": 6
+        },
+        "streamBatteryIdleTimeoutSec": {
+          "type": "number",
+          "label": "Battery-Kamera Nachlauf nach Disconnect (Sek.)",
+          "help": "Solange läuft das Polling nach dem letzten Stream-Disconnect oder live_request weiter, bevor es eingestellt wird.",
+          "min": 15,
+          "max": 600,
+          "default": 60,
+          "hidden": "!data.streamEnabled",
+          "sm": 12,
+          "xs": 12,
+          "lg": 4,
+          "xl": 4,
+          "md": 6
+        },
+        "streamBatteryMinLevel": {
+          "type": "select",
+          "label": "Min. Akkustand für Battery-Polling",
+          "help": "Battery-Cams unter dieser Stufe werden nicht gepollt (Akku-Schutz).",
+          "default": 2,
+          "options": [
+            { "value": 0, "label": "0 - immer pollen (kein Schutz)" },
+            { "value": 1, "label": "1 - auch bei niedrigem Akku" },
+            { "value": 2, "label": "2 - nur bei OK-Stand (empfohlen)" },
+            { "value": 3, "label": "3 - nur bei vollem Akku" }
+          ],
+          "hidden": "!data.streamEnabled",
+          "newLine": true,
+          "sm": 12,
+          "xs": 12,
+          "lg": 4,
+          "xl": 4,
+          "md": 6
+        },
+        "stream_hint_header": {
+          "type": "header",
+          "text": "Verwendung",
+          "size": 4,
+          "newLine": true,
+          "hidden": "!data.streamEnabled",
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
+        },
+        "stream_hint_text": {
+          "type": "staticText",
+          "text": "Pro Kamera findest du nach dem Speichern unter cameras.<id>.live.stream_url die fertige URL. Diese kannst du in VIS in einem HTML-Widget per <img src=\"...\"> einbinden.",
+          "hidden": "!data.streamEnabled",
+          "newLine": true,
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
         }
       }
     }

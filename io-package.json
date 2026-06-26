@@ -1,202 +1,201 @@
 {
-  "common": {
-    "name": "blink",
-    "version": "0.0.19",
-    "news": {
-      "0.0.19": {
-        "en": "fix: handle unsupported XT2 live view and avoid early HLS state",
-        "de": "Behebung: Behandlung der nicht unterstützten XT2-Live-Ansicht und Vermeidung eines frühen HLS-Zustands",
-        "ru": "Исправление: обработка неподдерживаемого режима просмотра в реальном времени на XT2 и предотвращение преждевременного появления состояния HLS.",
-        "pt": "Correção: lidar com a visualização ao vivo XT2 não suportada e evitar o estado HLS prematuro.",
-        "nl": "Oplossing: verwerk de niet-ondersteunde XT2 liveweergave en voorkom een vroege HLS-status.",
-        "fr": "Correction : gestion de l'affichage en direct XT2 non pris en charge et prévention de l'état HLS précoce",
-        "it": "Correzione: gestire la visualizzazione live XT2 non supportata ed evitare lo stato HLS anticipato",
-        "es": "Corrección: gestionar la vista en directo XT2 no compatible y evitar el estado HLS prematuramente",
-        "pl": "naprawiono: obsługa nieobsługiwanego podglądu na żywo XT2 i unikanie wczesnego stanu HLS",
-        "uk": "виправлення: обробка непідтримуваного перегляду в реальному часі XT2 та уникнення раннього стану HLS",
-        "zh-cn": "修复：处理不支持的 XT2 实时取景，避免过早进入 HLS 状态"
-      },
-      "0.0.18": {
-        "en": "fix: expose Blink account id for LiveView helper (blink.0.info.account_id)",
-        "de": "fix: Blink-Konto-ID für LiveView-Helfer freilegen (blink.0.info.account id)",
-        "ru": "исправить: раскрыть идентификатор учетной записи Blink для помощника LiveView (blink.0.info.account id)",
-        "pt": "correção: expor o id da conta Blink para o helper do LiveView (blink.0.info.account id)",
-        "nl": "fix: ontmasker Blink account id voor LiveView helper (blink.0.info.account id)",
-        "fr": "correction : exposer l'identifiant du compte Blink pour l'aide LiveView (blink.0.info.account id)",
-        "it": "fix: esporre account Blink id per helper LiveView (blink.0.info.account id)",
-        "es": "fijación: exponer la cuenta Blink id para el ayudante LiveView (blink.0.info.account id)",
-        "pl": "fix: defense Blink account id for LiveView helper (blink.0.info.account _ id)",
-        "uk": "javaScript licenses API Веб-сайт Go1.13.8",
-        "zh-cn": "fix: 曝光 LiveView 帮助器的 Blink 账户 id (blink.0.info.count id)"
-      },
-      "0.0.17": {
-        "en": "fix: avoid interactive Blink 2FA prompt in LiveView helper (LiveView not comming up)",
-        "de": "fix: Vermeiden Sie die interaktive Blink 2FA-Eingabeaufforderung im LiveView-Helfer (LiveView kommt nicht zusammen)",
-        "ru": "исправление: избегайте интерактивной подсказки Blink 2FA в LiveView (LiveView не работает)",
-        "pt": "correção: evite o prompt Blink 2FA interativo no helper LiveView (LiveView não chegando)",
-        "nl": "fix: vermijd interactieve Blink 2FA prompt in LiveView helper (LiveView not comming up)",
-        "fr": "correction : évitez l'invite Blink 2FA interactive dans LiveView helper (LiveView ne se téléphonant pas)",
-        "it": "correzione: evitare interattivo Blink 2FA prompt in LiveView helper (LiveView non in arrivo)",
-        "es": "fijación: evitar el impulso interactivo de Blink 2FA en LiveView helper (LiveView no se comunica)",
-        "pl": "fix: unikać interaktywnego Blink 2FA w LiveView helper (LiveView nie dojeżdża)",
-        "uk": "виправити: уникнути інтерактивних Blink 2FA підказка в програмі LiveView (LiveView не вдається)",
-        "zh-cn": "固定: 在 LiveView 帮助器中避免交互 Blink 2FA 提示( LiveView 不混合)"
-      },
-      "0.0.16": {
-        "en": "fix: chaged roles and hierachy",
-        "de": "fix: chaged rollen und hierarchie",
-        "ru": "исправление: выхолощенные роли и иерархия",
-        "pt": "correção: papéis changed e hierachy",
-        "nl": "fix: chaged rollen en hierachy",
-        "fr": "fix : rôles chagués et hiérachy",
-        "it": "correzione: ruoli casti e gerarchia",
-        "es": "fijación: roles encapsulados y jerarquía",
-        "pl": "fix: zawiązane role i hierarchia",
-        "uk": "фіксація: хатні ролі і херахія",
-        "zh-cn": "修饰: 调整的角色和高阶"
-      },
-      "0.0.15": {
-        "en": "LiveView: Camera model recognition (XT/XT2 without LiveView)\ncorrect entry point for cameras\nfix: several cameras showing the same video",
-        "de": "LiveView: Kameramodellerkennung (XT/XT2 ohne LiveView)\nkorrekter einstiegspunkt für kameras\nfix: mehrere kameras zeigen dasselbe video",
-        "ru": "Распознавание моделей камер (XT/XT2 без LiveView)\nправильная точка входа для камер\nремонт: несколько камер показывают одно и то же видео",
-        "pt": "LiveView: Reconhecimento de modelo de câmera (XT/XT2 sem LiveView)\nponto de entrada correto para câmeras\ncorreção: várias câmeras mostrando o mesmo vídeo",
-        "nl": "LiveView: Camera modelherkenning (XT/XT2 zonder LiveView)\ncorrect ingangspunt voor camera's\nfix: meerdere camera's met dezelfde video",
-        "fr": "LiveView: Reconnaissance du modèle de caméra (XT/XT2 sans LiveView)\npoint d'entrée correct pour les caméras\ncorrection : plusieurs caméras montrant la même vidéo",
-        "it": "LiveView: Riconoscimento del modello di fotocamera (XT/XT2 senza LiveView)\ncorretto punto di ingresso per le telecamere\ncorrezione: diverse telecamere che mostrano lo stesso video",
-        "es": "LiveView: Reconocimiento del modelo de cámara (XT/XT2 sin LiveView)\npunto de entrada correcto para las cámaras\nfijación: varias cámaras mostrando el mismo vídeo",
-        "pl": "LiveView: Rozpoznawanie modelu kamery (XT / XT2 bez LiveView)\nwłaściwy punkt wejścia dla kamer\nfix: kilka kamer pokazujących ten sam film",
-        "uk": "LiveView: розпізнавання моделі камери (XT/XT2 без LiveView)\nправильну точку входу для камер\nвиправити: кілька камер, що показують той самий відео",
-        "zh-cn": "LiveView:相机型号识别(XT/XT2没有LiveView)\n摄像头的正确入口\n固定: 显示相同视频的多个相机"
-      },
-      "0.0.14": {
-        "en": "fixed some sync module busy errors",
-        "de": "einige sync-modul geschäftsfehler behoben",
-        "ru": "исправлены некоторые ошибки загрузки модуля синхронизации",
-        "pt": "corrigir alguns erros de ocupado do módulo de sincronização",
-        "nl": "enkele synchronisatiemodule drukke fouten hersteld",
-        "fr": "correction d'erreurs occupées du module de synchronisation",
-        "it": "corretti alcuni errori del modulo di sincronizzazione",
-        "es": "solucionó algunos errores del módulo de sincronización ocupado",
-        "pl": "naprawiono błędy związane z modułem synchronizacji",
-        "uk": "виправлено деякі помилки модуля sync",
-        "zh-cn": "修正一些同步模块繁忙错误"
-      },
-      "0.0.13": {
-        "en": "If `video.history.*` states still contain clip IDs but the corresponding MP4 files are missing, the history is no longer considered current.\nMissing or zero-byte history files are redownloaded during the next sync\nReuse of old slots now occurs only if the old MP4 file actually exists and is larger than 0 bytes",
-        "de": "Wenn `video.history.* ` Zustände noch Clip-IDs enthalten, aber die entsprechenden MP4-Dateien fehlen, wird die Geschichte nicht mehr als aktuell betrachtet.\nFehlende oder Nullbyte-Geschichte-Dateien werden während des nächsten Syncs wiederheruntergeladen\nWiederverwendung von alten Slots erfolgt jetzt nur, wenn die alte MP4-Datei tatsächlich existiert und größer als 0 Bytes ist",
-        "ru": "Если состояния «video.history.*» по-прежнему содержат идентификаторы клипов, но соответствующие файлы MP4 отсутствуют, история больше не считается текущей.\nОтсутствующие или нулевые байтовые файлы истории перезагружаются во время следующей синхронизации\nПовторное использование старых слотов теперь происходит только в том случае, если старый файл MP4 действительно существует и больше 0 байт",
-        "pt": "Se `video.history.*` estados ainda contêm Clip IDs, mas os arquivos MP4 correspondentes estão faltando, o histórico não é mais considerado atual.\nArquivos de histórico em falta ou em zero-byte são baixados novamente durante a próxima sincronização\nReutilização de slots antigos agora só ocorre se o arquivo MP4 antigo realmente existir e for maior que 0 bytes",
-        "nl": "Als de staat nog steeds clip ID's bevat, maar de bijbehorende MP4-bestanden ontbreken, wordt de geschiedenis niet langer als actueel beschouwd.\nOntbrekende of nulbyte geschiedenisbestanden worden opnieuw gedownload tijdens de volgende synchronisatie\nHergebruik van oude slots treedt nu alleen op als het oude MP4-bestand daadwerkelijk bestaat en groter is dan 0 bytes",
-        "fr": "Si les états `video.history.*` contiennent toujours des identifiants de clips mais que les fichiers MP4 correspondants manquent, l'historique n'est plus considéré comme courant.\nLes fichiers d'historique manquants ou zéro-octet sont retéléchargés lors de la prochaine synchronisation\nLa réutilisation des anciennes fentes ne se produit maintenant que si l'ancien fichier MP4 existe réellement et est plus grand que 0 octets",
-        "it": "Se `video.history.* ` stati contengono ancora ID clip ma i file MP4 corrispondenti sono mancanti, la storia non è più considerata corrente.\nI file di storia mancanti o zero-byte vengono scaricati durante la prossima sincronizzazione\nIl riutilizzo di vecchie slot si verifica solo se il vecchio file MP4 esiste effettivamente ed è più grande di 0 byte",
-        "es": "Si `video.history.*` estados todavía contienen identificaciones de clip pero faltan los archivos MP4, la historia ya no se considera actual.\nLos archivos de historia perdidos o de cero bytes se recargan durante el próximo sincronizado\nReutilización de ranuras viejas ahora ocurre sólo si el archivo MP4 viejo en realidad existe y es más grande que 0 bytes",
-        "pl": "Jeśli 'video.history. *' stany nadal zawierają identyfikatory klipów, ale brakuje odpowiednich plików MP4, historia nie jest już uważana za bieżącą.\nBrakujące lub zerobajtowe pliki historii są ponownie pobierane podczas następnej synchronizacji\nPonowne użycie starych szczelin występuje teraz tylko wtedy, gdy stary plik MP4 rzeczywiście istnieje i jest większy niż 0 bajtów",
-        "uk": "Якщо `відео.history.*` стани все ще містять ідентифікатори кліпу, але відсутні відповідні файли MP4, історія більше не вважається поточною.\nЗмішані або нульові файли історії перевантажуються під час наступної синхронізації\nЗловживання старих слотів тепер відбувається тільки якщо старий файл MP4 насправді існує і більше 0 байтів",
-        "zh-cn": "如果‘video.history.*` *`  states  states  states  states *` *` *` *` *` *` *`  clip  clip  clip  clip  clip  clip  clip  clip  clip  clip  clip  clip  clip  clip  clip *`  clip.\n缺少或零字节历史文件会在下一次同步时重新下载\n现在只有在旧的 MP4 文件实际存在且大于 0 字节时才会重新使用旧的槽"
-      }
+    "common": {
+        "name": "blink",
+        "version": "0.0.19",
+        "news": {
+            "0.0.19": {
+                "en": "fix: handle unsupported XT2 live view and avoid early HLS state",
+                "de": "Behebung: Behandlung der nicht unterstützten XT2-Live-Ansicht und Vermeidung eines frühen HLS-Zustands",
+                "ru": "Исправление: обработка неподдерживаемого режима просмотра в реальном времени на XT2 и предотвращение преждевременного появления состояния HLS.",
+                "pt": "Correção: lidar com a visualização ao vivo XT2 não suportada e evitar o estado HLS prematuro.",
+                "nl": "Oplossing: verwerk de niet-ondersteunde XT2 liveweergave en voorkom een vroege HLS-status.",
+                "fr": "Correction : gestion de l'affichage en direct XT2 non pris en charge et prévention de l'état HLS précoce",
+                "it": "Correzione: gestire la visualizzazione live XT2 non supportata ed evitare lo stato HLS anticipato",
+                "es": "Corrección: gestionar la vista en directo XT2 no compatible y evitar el estado HLS prematuramente",
+                "pl": "naprawiono: obsługa nieobsługiwanego podglądu na żywo XT2 i unikanie wczesnego stanu HLS",
+                "uk": "виправлення: обробка непідтримуваного перегляду в реальному часі XT2 та уникнення раннього стану HLS",
+                "zh-cn": "修复：处理不支持的 XT2 实时取景，避免过早进入 HLS 状态"
+            },
+            "0.0.18": {
+                "en": "fix: expose Blink account id for LiveView helper (blink.0.info.account_id)",
+                "de": "fix: Blink-Konto-ID für LiveView-Helfer freilegen (blink.0.info.account id)",
+                "ru": "исправить: раскрыть идентификатор учетной записи Blink для помощника LiveView (blink.0.info.account id)",
+                "pt": "correção: expor o id da conta Blink para o helper do LiveView (blink.0.info.account id)",
+                "nl": "fix: ontmasker Blink account id voor LiveView helper (blink.0.info.account id)",
+                "fr": "correction : exposer l'identifiant du compte Blink pour l'aide LiveView (blink.0.info.account id)",
+                "it": "fix: esporre account Blink id per helper LiveView (blink.0.info.account id)",
+                "es": "fijación: exponer la cuenta Blink id para el ayudante LiveView (blink.0.info.account id)",
+                "pl": "fix: defense Blink account id for LiveView helper (blink.0.info.account _ id)",
+                "uk": "javaScript licenses API Веб-сайт Go1.13.8",
+                "zh-cn": "fix: 曝光 LiveView 帮助器的 Blink 账户 id (blink.0.info.count id)"
+            },
+            "0.0.17": {
+                "en": "fix: avoid interactive Blink 2FA prompt in LiveView helper (LiveView not comming up)",
+                "de": "fix: Vermeiden Sie die interaktive Blink 2FA-Eingabeaufforderung im LiveView-Helfer (LiveView kommt nicht zusammen)",
+                "ru": "исправление: избегайте интерактивной подсказки Blink 2FA в LiveView (LiveView не работает)",
+                "pt": "correção: evite o prompt Blink 2FA interativo no helper LiveView (LiveView não chegando)",
+                "nl": "fix: vermijd interactieve Blink 2FA prompt in LiveView helper (LiveView not comming up)",
+                "fr": "correction : évitez l'invite Blink 2FA interactive dans LiveView helper (LiveView ne se téléphonant pas)",
+                "it": "correzione: evitare interattivo Blink 2FA prompt in LiveView helper (LiveView non in arrivo)",
+                "es": "fijación: evitar el impulso interactivo de Blink 2FA en LiveView helper (LiveView no se comunica)",
+                "pl": "fix: unikać interaktywnego Blink 2FA w LiveView helper (LiveView nie dojeżdża)",
+                "uk": "виправити: уникнути інтерактивних Blink 2FA підказка в програмі LiveView (LiveView не вдається)",
+                "zh-cn": "固定: 在 LiveView 帮助器中避免交互 Blink 2FA 提示( LiveView 不混合)"
+            },
+            "0.0.16": {
+                "en": "fix: chaged roles and hierachy",
+                "de": "fix: chaged rollen und hierarchie",
+                "ru": "исправление: выхолощенные роли и иерархия",
+                "pt": "correção: papéis changed e hierachy",
+                "nl": "fix: chaged rollen en hierachy",
+                "fr": "fix : rôles chagués et hiérachy",
+                "it": "correzione: ruoli casti e gerarchia",
+                "es": "fijación: roles encapsulados y jerarquía",
+                "pl": "fix: zawiązane role i hierarchia",
+                "uk": "фіксація: хатні ролі і херахія",
+                "zh-cn": "修饰: 调整的角色和高阶"
+            },
+            "0.0.15": {
+                "en": "LiveView: Camera model recognition (XT/XT2 without LiveView)\ncorrect entry point for cameras\nfix: several cameras showing the same video",
+                "de": "LiveView: Kameramodellerkennung (XT/XT2 ohne LiveView)\nkorrekter einstiegspunkt für kameras\nfix: mehrere kameras zeigen dasselbe video",
+                "ru": "Распознавание моделей камер (XT/XT2 без LiveView)\nправильная точка входа для камер\nремонт: несколько камер показывают одно и то же видео",
+                "pt": "LiveView: Reconhecimento de modelo de câmera (XT/XT2 sem LiveView)\nponto de entrada correto para câmeras\ncorreção: várias câmeras mostrando o mesmo vídeo",
+                "nl": "LiveView: Camera modelherkenning (XT/XT2 zonder LiveView)\ncorrect ingangspunt voor camera's\nfix: meerdere camera's met dezelfde video",
+                "fr": "LiveView: Reconnaissance du modèle de caméra (XT/XT2 sans LiveView)\npoint d'entrée correct pour les caméras\ncorrection : plusieurs caméras montrant la même vidéo",
+                "it": "LiveView: Riconoscimento del modello di fotocamera (XT/XT2 senza LiveView)\ncorretto punto di ingresso per le telecamere\ncorrezione: diverse telecamere che mostrano lo stesso video",
+                "es": "LiveView: Reconocimiento del modelo de cámara (XT/XT2 sin LiveView)\npunto de entrada correcto para las cámaras\nfijación: varias cámaras mostrando el mismo vídeo",
+                "pl": "LiveView: Rozpoznawanie modelu kamery (XT / XT2 bez LiveView)\nwłaściwy punkt wejścia dla kamer\nfix: kilka kamer pokazujących ten sam film",
+                "uk": "LiveView: розпізнавання моделі камери (XT/XT2 без LiveView)\nправильну точку входу для камер\nвиправити: кілька камер, що показують той самий відео",
+                "zh-cn": "LiveView:相机型号识别(XT/XT2没有LiveView)\n摄像头的正确入口\n固定: 显示相同视频的多个相机"
+            },
+            "0.0.14": {
+                "en": "fixed some sync module busy errors",
+                "de": "einige sync-modul geschäftsfehler behoben",
+                "ru": "исправлены некоторые ошибки загрузки модуля синхронизации",
+                "pt": "corrigir alguns erros de ocupado do módulo de sincronização",
+                "nl": "enkele synchronisatiemodule drukke fouten hersteld",
+                "fr": "correction d'erreurs occupées du module de synchronisation",
+                "it": "corretti alcuni errori del modulo di sincronizzazione",
+                "es": "solucionó algunos errores del módulo de sincronización ocupado",
+                "pl": "naprawiono błędy związane z modułem synchronizacji",
+                "uk": "виправлено деякі помилки модуля sync",
+                "zh-cn": "修正一些同步模块繁忙错误"
+            },
+            "0.0.13": {
+                "en": "If `video.history.*` states still contain clip IDs but the corresponding MP4 files are missing, the history is no longer considered current.\nMissing or zero-byte history files are redownloaded during the next sync\nReuse of old slots now occurs only if the old MP4 file actually exists and is larger than 0 bytes",
+                "de": "Wenn `video.history.* ` Zustände noch Clip-IDs enthalten, aber die entsprechenden MP4-Dateien fehlen, wird die Geschichte nicht mehr als aktuell betrachtet.\nFehlende oder Nullbyte-Geschichte-Dateien werden während des nächsten Syncs wiederheruntergeladen\nWiederverwendung von alten Slots erfolgt jetzt nur, wenn die alte MP4-Datei tatsächlich existiert und größer als 0 Bytes ist",
+                "ru": "Если состояния «video.history.*» по-прежнему содержат идентификаторы клипов, но соответствующие файлы MP4 отсутствуют, история больше не считается текущей.\nОтсутствующие или нулевые байтовые файлы истории перезагружаются во время следующей синхронизации\nПовторное использование старых слотов теперь происходит только в том случае, если старый файл MP4 действительно существует и больше 0 байт",
+                "pt": "Se `video.history.*` estados ainda contêm Clip IDs, mas os arquivos MP4 correspondentes estão faltando, o histórico não é mais considerado atual.\nArquivos de histórico em falta ou em zero-byte são baixados novamente durante a próxima sincronização\nReutilização de slots antigos agora só ocorre se o arquivo MP4 antigo realmente existir e for maior que 0 bytes",
+                "nl": "Als de staat nog steeds clip ID's bevat, maar de bijbehorende MP4-bestanden ontbreken, wordt de geschiedenis niet langer als actueel beschouwd.\nOntbrekende of nulbyte geschiedenisbestanden worden opnieuw gedownload tijdens de volgende synchronisatie\nHergebruik van oude slots treedt nu alleen op als het oude MP4-bestand daadwerkelijk bestaat en groter is dan 0 bytes",
+                "fr": "Si les états `video.history.*` contiennent toujours des identifiants de clips mais que les fichiers MP4 correspondants manquent, l'historique n'est plus considéré comme courant.\nLes fichiers d'historique manquants ou zéro-octet sont retéléchargés lors de la prochaine synchronisation\nLa réutilisation des anciennes fentes ne se produit maintenant que si l'ancien fichier MP4 existe réellement et est plus grand que 0 octets",
+                "it": "Se `video.history.* ` stati contengono ancora ID clip ma i file MP4 corrispondenti sono mancanti, la storia non è più considerata corrente.\nI file di storia mancanti o zero-byte vengono scaricati durante la prossima sincronizzazione\nIl riutilizzo di vecchie slot si verifica solo se il vecchio file MP4 esiste effettivamente ed è più grande di 0 byte",
+                "es": "Si `video.history.*` estados todavía contienen identificaciones de clip pero faltan los archivos MP4, la historia ya no se considera actual.\nLos archivos de historia perdidos o de cero bytes se recargan durante el próximo sincronizado\nReutilización de ranuras viejas ahora ocurre sólo si el archivo MP4 viejo en realidad existe y es más grande que 0 bytes",
+                "pl": "Jeśli 'video.history. *' stany nadal zawierają identyfikatory klipów, ale brakuje odpowiednich plików MP4, historia nie jest już uważana za bieżącą.\nBrakujące lub zerobajtowe pliki historii są ponownie pobierane podczas następnej synchronizacji\nPonowne użycie starych szczelin występuje teraz tylko wtedy, gdy stary plik MP4 rzeczywiście istnieje i jest większy niż 0 bajtów",
+                "uk": "Якщо `відео.history.*` стани все ще містять ідентифікатори кліпу, але відсутні відповідні файли MP4, історія більше не вважається поточною.\nЗмішані або нульові файли історії перевантажуються під час наступної синхронізації\nЗловживання старих слотів тепер відбувається тільки якщо старий файл MP4 насправді існує і більше 0 байтів",
+                "zh-cn": "如果‘video.history.*` *`  states  states  states  states *` *` *` *` *` *` *`  clip  clip  clip  clip  clip  clip  clip  clip  clip  clip  clip  clip  clip  clip  clip *`  clip.\n缺少或零字节历史文件会在下一次同步时重新下载\n现在只有在旧的 MP4 文件实际存在且大于 0 字节时才会重新使用旧的槽"
+            }
+        },
+        "titleLang": {
+            "en": "blink system",
+            "de": "Blinksystem",
+            "ru": "система мигания",
+            "pt": "sistema de piscar",
+            "nl": "knippersysteem",
+            "fr": "système de clignotement",
+            "it": "sistema di lampeggiamento",
+            "es": "sistema de parpadeo",
+            "pl": "system migania",
+            "uk": "система миготіння",
+            "zh-cn": "眨眼系统"
+        },
+        "desc": {
+            "en": "adapter for amazon blink system and ioBroker",
+            "de": "Adapter für Amazon Blink System und ioBroker",
+            "ru": "адаптер für die Amazon Blink-System und ioBroker",
+            "pt": "adaptador para sistema Amazon Blink e ioBroker",
+            "nl": "adapter voor Amazon blink-systeem und ioBroker",
+            "fr": "adaptateur pour système clignotant amazon et ioBroker",
+            "it": "adattatore per sistema Amazon Blink e ioBroker",
+            "es": "Adaptador para sistema Amazon Blink e ioBroker.",
+            "pl": "adapter do systemu Amazon Blink i ioBroker",
+            "uk": "адаптер для системи amazon blink і ioBroker",
+            "zh-cn": "适用于亚马逊 Blink 系统和 ioBroker 的适配器"
+        },
+        "authors": [
+            "Pischleuder1 <pischleuder@gmx.de>"
+        ],
+        "keywords": [
+            "security",
+            "blink",
+            "amazon"
+        ],
+        "licenseInformation": {
+            "type": "free",
+            "license": "MIT"
+        },
+        "platform": "Javascript/Node.js",
+        "icon": "blink.png",
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/Pischleuder1/ioBroker.blink/main/admin/blink.png",
+        "readme": "https://github.com/Pischleuder1/ioBroker.blink/blob/main/README.md",
+        "loglevel": "info",
+        "tier": 3,
+        "mode": "daemon",
+        "type": "alarm",
+        "compact": true,
+        "connectionType": "cloud",
+        "dataSource": "poll",
+        "adminUI": {
+            "config": "json"
+        },
+        "dependencies": [
+            {
+                "js-controller": ">=6.0.11"
+            }
+        ],
+        "globalDependencies": [
+            {
+                "admin": ">=7.6.20"
+            }
+        ]
     },
-    "titleLang": {
-      "en": "blink system",
-      "de": "Blinksystem",
-      "ru": "система мигания",
-      "pt": "sistema de piscar",
-      "nl": "knippersysteem",
-      "fr": "système de clignotement",
-      "it": "sistema di lampeggiamento",
-      "es": "sistema de parpadeo",
-      "pl": "system migania",
-      "uk": "система миготіння",
-      "zh-cn": "眨眼系统"
-    },
-    "desc": {
-      "en": "adapter for amazon blink system and ioBroker",
-      "de": "Adapter für Amazon Blink System und ioBroker",
-      "ru": "адаптер für die Amazon Blink-System und ioBroker",
-      "pt": "adaptador para sistema Amazon Blink e ioBroker",
-      "nl": "adapter voor Amazon blink-systeem und ioBroker",
-      "fr": "adaptateur pour système clignotant amazon et ioBroker",
-      "it": "adattatore per sistema Amazon Blink e ioBroker",
-      "es": "Adaptador para sistema Amazon Blink e ioBroker.",
-      "pl": "adapter do systemu Amazon Blink i ioBroker",
-      "uk": "адаптер для системи amazon blink і ioBroker",
-      "zh-cn": "适用于亚马逊 Blink 系统和 ioBroker 的适配器"
-    },
-    "authors": [
-      "Pischleuder1 <pischleuder@gmx.de>"
+    "encryptedNative": [
+        "password",
+        "pin"
     ],
-    "keywords": [
-      "security",
-      "blink",
-      "amazon"
+    "protectedNative": [
+        "password",
+        "pin"
     ],
-    "licenseInformation": {
-      "type": "free",
-      "license": "MIT"
+    "native": {
+        "email": "",
+        "password": "",
+        "pin": "",
+        "pollIntervalSec": 60,
+        "snapshotDir": "/opt/iobroker/iobroker-data/blink",
+        "debugLogEnabled": false,
+        "liveSnapshotEnabled": true,
+        "liveSnapshotIntervalSec": 30,
+        "storeBase64": true,
+        "cleanupOldSnapshots": true,
+        "maxSnapshotAgeHours": 24,
+        "batteryWarningEnabled": false,
+        "batteryWarningThresholdVolt": 1.1,
+        "batteryWarningCooldownHours": 24
     },
-    "platform": "Javascript/Node.js",
-    "icon": "blink.png",
-    "enabled": true,
-    "extIcon": "https://raw.githubusercontent.com/Pischleuder1/ioBroker.blink/main/admin/blink.png",
-    "readme": "https://github.com/Pischleuder1/ioBroker.blink/blob/main/README.md",
-    "loglevel": "info",
-    "tier": 3,
-    "mode": "daemon",
-    "type": "alarm",
-    "compact": true,
-    "connectionType": "cloud",
-    "dataSource": "poll",
-    "adminUI": {
-      "config": "json"
-    },
-    "dependencies": [
-      {
-        "js-controller": ">=6.0.11"
-      }
-    ],
-    "globalDependencies": [
-      {
-        "admin": ">=7.6.20"
-      }
+    "objects": [],
+    "instanceObjects": [
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "name": "Connected",
+                "type": "boolean",
+                "role": "indicator.connected",
+                "read": true,
+                "write": false
+            },
+            "native": {}
+        }
     ]
-  },
-  "encryptedNative": [
-    "password",
-    "pin"
-  ],
-  "protectedNative": [
-    "password",
-    "pin"
-  ],
-  "native": {
-    "email": "",
-    "password": "",
-    "pin": "",
-    "pollIntervalSec": 60,
-    "snapshotDir": "/opt/iobroker/iobroker-data/blink",
-    "debugLogEnabled": false,
-    "liveSnapshotEnabled": true,
-    "liveSnapshotIntervalSec": 30,
-    "storeBase64": true,
-    "cleanupOldSnapshots": true,
-    "maxSnapshotAgeHours": 24,
-    "batteryWarningEnabled": false,
-    "batteryWarningThresholdVolt": 1.1,
-    "batteryWarningPushoverInstance": "pushover.0",
-    "batteryWarningCooldownHours": 24
-  },
-  "objects": [],
-  "instanceObjects": [
-    {
-      "_id": "info.connection",
-      "type": "state",
-      "common": {
-        "name": "Connected",
-        "type": "boolean",
-        "role": "indicator.connected",
-        "read": true,
-        "write": false
-      },
-      "native": {}
-    }
-  ]
 }
