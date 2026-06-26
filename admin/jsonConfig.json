@@ -50,7 +50,7 @@
         },
         "pollIntervalSec": {
           "type": "number",
-          "label": "Status-Polling Intervall (Sek.)",
+          "label": "Status polling interval (sec.)",
           "min": 15,
           "max": 3600,
           "default": 60,
@@ -72,8 +72,8 @@
         },
         "debugLogEnabled": {
           "type": "checkbox",
-          "label": "Blink Debug-Log aktivieren",
-          "help": "Schreibt /tmp/blink_debug.log",
+          "label": "Enable Blink debug log",
+          "help": "Writes /tmp/blink_debug.log",
           "default": false,
           "sm": 12,
           "xs": 12,
@@ -83,7 +83,7 @@
         },
         "liveSnapshotEnabled": {
           "type": "checkbox",
-          "label": "Livebild per Snapshot aktivieren",
+          "label": "Enable live image via snapshots",
           "default": true,
           "sm": 12,
           "xs": 12,
@@ -93,7 +93,7 @@
         },
         "liveSnapshotIntervalSec": {
           "type": "number",
-          "label": "Livebild Intervall (Sek.)",
+          "label": "Live image interval (sec.)",
           "min": 5,
           "max": 3600,
           "default": 10,
@@ -105,7 +105,7 @@
         },
         "storeBase64": {
           "type": "checkbox",
-          "label": "Bild zusätzlich als Base64-Data-URL im State speichern",
+          "label": "Also store image as Base64 data URL in state",
           "default": true,
           "sm": 12,
           "xs": 12,
@@ -115,7 +115,7 @@
         },
         "cleanupOldSnapshots": {
           "type": "checkbox",
-          "label": "Alte Snapshot-Dateien automatisch löschen",
+          "label": "Automatically delete old snapshot files",
           "default": true,
           "sm": 12,
           "xs": 12,
