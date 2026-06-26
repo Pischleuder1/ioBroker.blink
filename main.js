@@ -128,11 +128,11 @@ class BlinkAdapter extends utils.Adapter {
 
 	stopLoginRelatedTimers() {
 		if (this.pollTimer) {
-			clearInterval(this.pollTimer);
+			this.clearInterval(this.pollTimer);
 			this.pollTimer = null;
 		}
 		if (this.liveTimer) {
-			clearInterval(this.liveTimer);
+			this.clearInterval(this.liveTimer);
 			this.liveTimer = null;
 		}
 	}
@@ -784,7 +784,7 @@ class BlinkAdapter extends utils.Adapter {
 			this.setState('info.connection', false, true);
 		}
 
-		this.pollTimer = setInterval(async () => {
+		this.pollTimer = this.setInterval(async () => {
 			try {
 				pin = this.cfg?.pin || '';
 				this.session = await this.getBlinkSessionSafe(email, password, pin);
@@ -1623,7 +1623,7 @@ class BlinkAdapter extends utils.Adapter {
 			await this.setStateAsync(`cameras.${devId}.live.stream_url`, this.mjpegServer.streamUrl(devId), true);
 		}
 
-		this.mjpegStatusTimer = setInterval(() => {
+		this.mjpegStatusTimer = this.setInterval(() => {
 			if (!this.mjpegServer) {
 				return;
 			}
@@ -2753,13 +2753,13 @@ class BlinkAdapter extends utils.Adapter {
 	onUnload(cb) {
 		try {
 			if (this.pollTimer) {
-				clearInterval(this.pollTimer);
+				this.clearInterval(this.pollTimer);
 			}
 			if (this.liveTimer) {
-				clearInterval(this.liveTimer);
+				this.clearInterval(this.liveTimer);
 			}
 			if (this.mjpegStatusTimer) {
-				clearInterval(this.mjpegStatusTimer);
+				this.clearInterval(this.mjpegStatusTimer);
 				this.mjpegStatusTimer = null;
 			}
 
