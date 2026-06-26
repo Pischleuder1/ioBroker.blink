@@ -802,7 +802,7 @@ class BlinkAdapter extends utils.Adapter {
 
 		if (liveSnapshotEnabled) {
 			const scheduleLiveSnapshots = () => {
-				this.liveTimer = setTimeout(async () => {
+				this.liveTimer = this.setTimeout(async () => {
 					try {
 						await this.updateLiveSnapshots();
 					} catch (e) {
@@ -1767,7 +1767,7 @@ class BlinkAdapter extends utils.Adapter {
 			if (proc.exitCode != null && proc.exitCode !== 0) {
 				throw new Error(`ffmpeg exited with code ${proc.exitCode}: ${stderr.slice(-500)}`);
 			}
-			await new Promise(resolve => setTimeout(resolve, 250));
+			await this.delay(250);
 		}
 		if (!fs.existsSync(playlist)) {
 			throw new Error(`HLS playlist was not created: ${stderr.slice(-500)}`);
@@ -1914,7 +1914,7 @@ class BlinkAdapter extends utils.Adapter {
 				backend,
 			});
 
-			const t = setTimeout(() => {
+			const t = this.setTimeout(() => {
 				this.stopRealLive(devId, 'timeout').catch(e =>
 					this.log.warn(`stopRealLive timeout ${devId}: ${e?.message || e}`),
 				);
