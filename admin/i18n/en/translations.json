@@ -1,0 +1,12 @@
+{
+    "Blink username / email": "Blink username / email",
+    "Password": "Password",
+    "PIN / 2FA code (optional)": "PIN / 2FA code (optional)",
+    "Snapshot directory": "Snapshot directory",
+    "Maximum snapshot file age (hours)": "Maximum snapshot file age (hours)",
+    "Warning cooldown per camera (hours)": "Warning cooldown per camera (hours)",
+    "Enable battery warning": "Enable battery warning",
+    "Battery voltage threshold (V)": "Battery voltage threshold (V)",
+    "Enable Telegram notifications": "Enable Telegram notifications",
+    "Telegram instance": "Telegram instance"
+}

@@ -125,7 +125,7 @@
         },
         "maxSnapshotAgeHours": {
           "type": "number",
-          "label": "Max. Alter Snapshot-Dateien (Hours)",
+          "label": "Maximum snapshot file age (hours)",
           "min": 1,
           "max": 168,
           "default": 24,
@@ -154,7 +154,7 @@
         },
         "batteryWarningEnabled": {
           "type": "checkbox",
-          "label": "Batterywarnung aktivieren",
+          "label": "Enable battery warning",
           "default": false,
           "newLine": true,
           "sm": 12,
@@ -165,7 +165,7 @@
         },
         "batteryWarningThresholdVolt": {
           "type": "number",
-          "label": "Threshold Batteryspannung (V)",
+          "label": "Battery voltage threshold (V)",
           "default": 1.1,
           "newLine": true,
           "min": 0,
@@ -179,7 +179,7 @@
         },
         "batteryWarningCooldownHours": {
           "type": "number",
-          "label": "Warn-Cooldown pro Kamera (Hours)",
+          "label": "Warning cooldown per camera (hours)",
           "default": 24,
           "newLine": true,
           "min": 1,
@@ -399,10 +399,22 @@
           "help": "Battery-Cams unter dieser Stufe werden nicht gepollt (Akku-Schutz).",
           "default": 2,
           "options": [
-            { "value": 0, "label": "0 - immer pollen (kein Schutz)" },
-            { "value": 1, "label": "1 - auch bei niedrigem Akku" },
-            { "value": 2, "label": "2 - nur bei OK-Stand (empfohlen)" },
-            { "value": 3, "label": "3 - nur bei vollem Akku" }
+            {
+              "value": 0,
+              "label": "0 - immer pollen (kein Schutz)"
+            },
+            {
+              "value": 1,
+              "label": "1 - auch bei niedrigem Akku"
+            },
+            {
+              "value": 2,
+              "label": "2 - nur bei OK-Stand (empfohlen)"
+            },
+            {
+              "value": 3,
+              "label": "3 - nur bei vollem Akku"
+            }
           ],
           "hidden": "!data.streamEnabled",
           "newLine": true,
