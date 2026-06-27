@@ -301,8 +301,7 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 0.0.20 (2026-06-27)
 * Fixed sensitive debug logging: PIN/2FA codes, passwords, tokens and authorization/cookie headers are now masked or omitted from debug logs.
 * Added request timeouts for Blink cloud API requests to avoid hanging poll or login operations.
 * Changed adapter logs, notifications, object names and Admin UI texts to English to comply with ioBroker repository requirements.
@@ -325,11 +324,6 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
 
 ### 0.0.16 (2026-06-13)
 * (Pischleuder) fix: chaged roles and hierachy
-
-### 0.0.15 (2026-06-13)
-* (Pischleuder1) LiveView: Camera model recognition (XT/XT2 without LiveView)
-* correct entry point for cameras
-* fix: several cameras showing the same video
 
 ## License
 

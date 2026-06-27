@@ -1,201 +1,201 @@
 {
-    "common": {
-        "name": "blink",
-        "version": "0.0.19",
-        "news": {
-            "0.0.19": {
-                "en": "fix: handle unsupported XT2 live view and avoid early HLS state",
-                "de": "Behebung: Behandlung der nicht unterstützten XT2-Live-Ansicht und Vermeidung eines frühen HLS-Zustands",
-                "ru": "Исправление: обработка неподдерживаемого режима просмотра в реальном времени на XT2 и предотвращение преждевременного появления состояния HLS.",
-                "pt": "Correção: lidar com a visualização ao vivo XT2 não suportada e evitar o estado HLS prematuro.",
-                "nl": "Oplossing: verwerk de niet-ondersteunde XT2 liveweergave en voorkom een vroege HLS-status.",
-                "fr": "Correction : gestion de l'affichage en direct XT2 non pris en charge et prévention de l'état HLS précoce",
-                "it": "Correzione: gestire la visualizzazione live XT2 non supportata ed evitare lo stato HLS anticipato",
-                "es": "Corrección: gestionar la vista en directo XT2 no compatible y evitar el estado HLS prematuramente",
-                "pl": "naprawiono: obsługa nieobsługiwanego podglądu na żywo XT2 i unikanie wczesnego stanu HLS",
-                "uk": "виправлення: обробка непідтримуваного перегляду в реальному часі XT2 та уникнення раннього стану HLS",
-                "zh-cn": "修复：处理不支持的 XT2 实时取景，避免过早进入 HLS 状态"
-            },
-            "0.0.18": {
-                "en": "fix: expose Blink account id for LiveView helper (blink.0.info.account_id)",
-                "de": "fix: Blink-Konto-ID für LiveView-Helfer freilegen (blink.0.info.account id)",
-                "ru": "исправить: раскрыть идентификатор учетной записи Blink для помощника LiveView (blink.0.info.account id)",
-                "pt": "correção: expor o id da conta Blink para o helper do LiveView (blink.0.info.account id)",
-                "nl": "fix: ontmasker Blink account id voor LiveView helper (blink.0.info.account id)",
-                "fr": "correction : exposer l'identifiant du compte Blink pour l'aide LiveView (blink.0.info.account id)",
-                "it": "fix: esporre account Blink id per helper LiveView (blink.0.info.account id)",
-                "es": "fijación: exponer la cuenta Blink id para el ayudante LiveView (blink.0.info.account id)",
-                "pl": "fix: defense Blink account id for LiveView helper (blink.0.info.account _ id)",
-                "uk": "javaScript licenses API Веб-сайт Go1.13.8",
-                "zh-cn": "fix: 曝光 LiveView 帮助器的 Blink 账户 id (blink.0.info.count id)"
-            },
-            "0.0.17": {
-                "en": "fix: avoid interactive Blink 2FA prompt in LiveView helper (LiveView not comming up)",
-                "de": "fix: Vermeiden Sie die interaktive Blink 2FA-Eingabeaufforderung im LiveView-Helfer (LiveView kommt nicht zusammen)",
-                "ru": "исправление: избегайте интерактивной подсказки Blink 2FA в LiveView (LiveView не работает)",
-                "pt": "correção: evite o prompt Blink 2FA interativo no helper LiveView (LiveView não chegando)",
-                "nl": "fix: vermijd interactieve Blink 2FA prompt in LiveView helper (LiveView not comming up)",
-                "fr": "correction : évitez l'invite Blink 2FA interactive dans LiveView helper (LiveView ne se téléphonant pas)",
-                "it": "correzione: evitare interattivo Blink 2FA prompt in LiveView helper (LiveView non in arrivo)",
-                "es": "fijación: evitar el impulso interactivo de Blink 2FA en LiveView helper (LiveView no se comunica)",
-                "pl": "fix: unikać interaktywnego Blink 2FA w LiveView helper (LiveView nie dojeżdża)",
-                "uk": "виправити: уникнути інтерактивних Blink 2FA підказка в програмі LiveView (LiveView не вдається)",
-                "zh-cn": "固定: 在 LiveView 帮助器中避免交互 Blink 2FA 提示( LiveView 不混合)"
-            },
-            "0.0.16": {
-                "en": "fix: chaged roles and hierachy",
-                "de": "fix: chaged rollen und hierarchie",
-                "ru": "исправление: выхолощенные роли и иерархия",
-                "pt": "correção: papéis changed e hierachy",
-                "nl": "fix: chaged rollen en hierachy",
-                "fr": "fix : rôles chagués et hiérachy",
-                "it": "correzione: ruoli casti e gerarchia",
-                "es": "fijación: roles encapsulados y jerarquía",
-                "pl": "fix: zawiązane role i hierarchia",
-                "uk": "фіксація: хатні ролі і херахія",
-                "zh-cn": "修饰: 调整的角色和高阶"
-            },
-            "0.0.15": {
-                "en": "LiveView: Camera model recognition (XT/XT2 without LiveView)\ncorrect entry point for cameras\nfix: several cameras showing the same video",
-                "de": "LiveView: Kameramodellerkennung (XT/XT2 ohne LiveView)\nkorrekter einstiegspunkt für kameras\nfix: mehrere kameras zeigen dasselbe video",
-                "ru": "Распознавание моделей камер (XT/XT2 без LiveView)\nправильная точка входа для камер\nремонт: несколько камер показывают одно и то же видео",
-                "pt": "LiveView: Reconhecimento de modelo de câmera (XT/XT2 sem LiveView)\nponto de entrada correto para câmeras\ncorreção: várias câmeras mostrando o mesmo vídeo",
-                "nl": "LiveView: Camera modelherkenning (XT/XT2 zonder LiveView)\ncorrect ingangspunt voor camera's\nfix: meerdere camera's met dezelfde video",
-                "fr": "LiveView: Reconnaissance du modèle de caméra (XT/XT2 sans LiveView)\npoint d'entrée correct pour les caméras\ncorrection : plusieurs caméras montrant la même vidéo",
-                "it": "LiveView: Riconoscimento del modello di fotocamera (XT/XT2 senza LiveView)\ncorretto punto di ingresso per le telecamere\ncorrezione: diverse telecamere che mostrano lo stesso video",
-                "es": "LiveView: Reconocimiento del modelo de cámara (XT/XT2 sin LiveView)\npunto de entrada correcto para las cámaras\nfijación: varias cámaras mostrando el mismo vídeo",
-                "pl": "LiveView: Rozpoznawanie modelu kamery (XT / XT2 bez LiveView)\nwłaściwy punkt wejścia dla kamer\nfix: kilka kamer pokazujących ten sam film",
-                "uk": "LiveView: розпізнавання моделі камери (XT/XT2 без LiveView)\nправильну точку входу для камер\nвиправити: кілька камер, що показують той самий відео",
-                "zh-cn": "LiveView:相机型号识别(XT/XT2没有LiveView)\n摄像头的正确入口\n固定: 显示相同视频的多个相机"
-            },
-            "0.0.14": {
-                "en": "fixed some sync module busy errors",
-                "de": "einige sync-modul geschäftsfehler behoben",
-                "ru": "исправлены некоторые ошибки загрузки модуля синхронизации",
-                "pt": "corrigir alguns erros de ocupado do módulo de sincronização",
-                "nl": "enkele synchronisatiemodule drukke fouten hersteld",
-                "fr": "correction d'erreurs occupées du module de synchronisation",
-                "it": "corretti alcuni errori del modulo di sincronizzazione",
-                "es": "solucionó algunos errores del módulo de sincronización ocupado",
-                "pl": "naprawiono błędy związane z modułem synchronizacji",
-                "uk": "виправлено деякі помилки модуля sync",
-                "zh-cn": "修正一些同步模块繁忙错误"
-            },
-            "0.0.13": {
-                "en": "If `video.history.*` states still contain clip IDs but the corresponding MP4 files are missing, the history is no longer considered current.\nMissing or zero-byte history files are redownloaded during the next sync\nReuse of old slots now occurs only if the old MP4 file actually exists and is larger than 0 bytes",
-                "de": "Wenn `video.history.* ` Zustände noch Clip-IDs enthalten, aber die entsprechenden MP4-Dateien fehlen, wird die Geschichte nicht mehr als aktuell betrachtet.\nFehlende oder Nullbyte-Geschichte-Dateien werden während des nächsten Syncs wiederheruntergeladen\nWiederverwendung von alten Slots erfolgt jetzt nur, wenn die alte MP4-Datei tatsächlich existiert und größer als 0 Bytes ist",
-                "ru": "Если состояния «video.history.*» по-прежнему содержат идентификаторы клипов, но соответствующие файлы MP4 отсутствуют, история больше не считается текущей.\nОтсутствующие или нулевые байтовые файлы истории перезагружаются во время следующей синхронизации\nПовторное использование старых слотов теперь происходит только в том случае, если старый файл MP4 действительно существует и больше 0 байт",
-                "pt": "Se `video.history.*` estados ainda contêm Clip IDs, mas os arquivos MP4 correspondentes estão faltando, o histórico não é mais considerado atual.\nArquivos de histórico em falta ou em zero-byte são baixados novamente durante a próxima sincronização\nReutilização de slots antigos agora só ocorre se o arquivo MP4 antigo realmente existir e for maior que 0 bytes",
-                "nl": "Als de staat nog steeds clip ID's bevat, maar de bijbehorende MP4-bestanden ontbreken, wordt de geschiedenis niet langer als actueel beschouwd.\nOntbrekende of nulbyte geschiedenisbestanden worden opnieuw gedownload tijdens de volgende synchronisatie\nHergebruik van oude slots treedt nu alleen op als het oude MP4-bestand daadwerkelijk bestaat en groter is dan 0 bytes",
-                "fr": "Si les états `video.history.*` contiennent toujours des identifiants de clips mais que les fichiers MP4 correspondants manquent, l'historique n'est plus considéré comme courant.\nLes fichiers d'historique manquants ou zéro-octet sont retéléchargés lors de la prochaine synchronisation\nLa réutilisation des anciennes fentes ne se produit maintenant que si l'ancien fichier MP4 existe réellement et est plus grand que 0 octets",
-                "it": "Se `video.history.* ` stati contengono ancora ID clip ma i file MP4 corrispondenti sono mancanti, la storia non è più considerata corrente.\nI file di storia mancanti o zero-byte vengono scaricati durante la prossima sincronizzazione\nIl riutilizzo di vecchie slot si verifica solo se il vecchio file MP4 esiste effettivamente ed è più grande di 0 byte",
-                "es": "Si `video.history.*` estados todavía contienen identificaciones de clip pero faltan los archivos MP4, la historia ya no se considera actual.\nLos archivos de historia perdidos o de cero bytes se recargan durante el próximo sincronizado\nReutilización de ranuras viejas ahora ocurre sólo si el archivo MP4 viejo en realidad existe y es más grande que 0 bytes",
-                "pl": "Jeśli 'video.history. *' stany nadal zawierają identyfikatory klipów, ale brakuje odpowiednich plików MP4, historia nie jest już uważana za bieżącą.\nBrakujące lub zerobajtowe pliki historii są ponownie pobierane podczas następnej synchronizacji\nPonowne użycie starych szczelin występuje teraz tylko wtedy, gdy stary plik MP4 rzeczywiście istnieje i jest większy niż 0 bajtów",
-                "uk": "Якщо `відео.history.*` стани все ще містять ідентифікатори кліпу, але відсутні відповідні файли MP4, історія більше не вважається поточною.\nЗмішані або нульові файли історії перевантажуються під час наступної синхронізації\nЗловживання старих слотів тепер відбувається тільки якщо старий файл MP4 насправді існує і більше 0 байтів",
-                "zh-cn": "如果‘video.history.*` *`  states  states  states  states *` *` *` *` *` *` *`  clip  clip  clip  clip  clip  clip  clip  clip  clip  clip  clip  clip  clip  clip  clip *`  clip.\n缺少或零字节历史文件会在下一次同步时重新下载\n现在只有在旧的 MP4 文件实际存在且大于 0 字节时才会重新使用旧的槽"
-            }
-        },
-        "titleLang": {
-            "en": "blink system",
-            "de": "Blinksystem",
-            "ru": "система мигания",
-            "pt": "sistema de piscar",
-            "nl": "knippersysteem",
-            "fr": "système de clignotement",
-            "it": "sistema di lampeggiamento",
-            "es": "sistema de parpadeo",
-            "pl": "system migania",
-            "uk": "система миготіння",
-            "zh-cn": "眨眼系统"
-        },
-        "desc": {
-            "en": "adapter for amazon blink system and ioBroker",
-            "de": "Adapter für Amazon Blink System und ioBroker",
-            "ru": "адаптер für die Amazon Blink-System und ioBroker",
-            "pt": "adaptador para sistema Amazon Blink e ioBroker",
-            "nl": "adapter voor Amazon blink-systeem und ioBroker",
-            "fr": "adaptateur pour système clignotant amazon et ioBroker",
-            "it": "adattatore per sistema Amazon Blink e ioBroker",
-            "es": "Adaptador para sistema Amazon Blink e ioBroker.",
-            "pl": "adapter do systemu Amazon Blink i ioBroker",
-            "uk": "адаптер для системи amazon blink і ioBroker",
-            "zh-cn": "适用于亚马逊 Blink 系统和 ioBroker 的适配器"
-        },
-        "authors": [
-            "Pischleuder1 <pischleuder@gmx.de>"
-        ],
-        "keywords": [
-            "security",
-            "blink",
-            "amazon"
-        ],
-        "licenseInformation": {
-            "type": "free",
-            "license": "MIT"
-        },
-        "platform": "Javascript/Node.js",
-        "icon": "blink.png",
-        "enabled": true,
-        "extIcon": "https://raw.githubusercontent.com/Pischleuder1/ioBroker.blink/main/admin/blink.png",
-        "readme": "https://github.com/Pischleuder1/ioBroker.blink/blob/main/README.md",
-        "loglevel": "info",
-        "tier": 3,
-        "mode": "daemon",
-        "type": "alarm",
-        "compact": false,
-        "connectionType": "cloud",
-        "dataSource": "poll",
-        "adminUI": {
-            "config": "json"
-        },
-        "dependencies": [
-            {
-                "js-controller": ">=6.0.11"
-            }
-        ],
-        "globalDependencies": [
-            {
-                "admin": ">=7.6.20"
-            }
-        ]
+  "common": {
+    "name": "blink",
+    "version": "0.0.20",
+    "news": {
+      "0.0.20": {
+        "en": "Fixed sensitive debug logging: PIN/2FA codes, passwords, tokens and authorization/cookie headers are now masked or omitted from debug logs.\nAdded request timeouts for Blink cloud API requests to avoid hanging poll or login operations.\nChanged adapter logs, notifications, object names and Admin UI texts to English to comply with ioBroker repository requirements.\nNormalized Admin UI translations and added missing i18n keys.\nFixed LiveView helper packaging so the required LiveView helper scripts are included in the adapter package.\nFixed LiveView start handling for unsupported XT2/LFR cameras. Unsupported cameras are detected before starting the HLS bridge.\nFixed LiveView status handling so the web grid only shows a running stream after the HLS playlist is actually available.\nAdded documentation for supported Blink devices and manufacturer links.\nAdded documentation for the optional LiveView web grid, including JavaScript adapter and ffmpeg requirements.\nRemoved unused helper code and cleaned up repository checker findings.",
+        "de": "Sensible Debug-Protokollierung behoben: PIN-/2FA-Codes, Passwörter, Token und Autorisierungs-/Cookie-Header werden jetzt in den Debug-Protokollen maskiert oder weggelassen.\nUm zu vermeiden, dass Abfrage- oder Anmeldevorgänge hängen bleiben, wurden Timeout-Zeiten für Blink Cloud API-Anfragen hinzugefügt.\nUm den Anforderungen des ioBroker-Repositorys zu entsprechen, wurden die Adapterprotokolle, Benachrichtigungen, Objektnamen und Texte der Admin-Benutzeroberfläche auf Englisch umgestellt.\nDie Übersetzungen der Admin-Benutzeroberfläche wurden normalisiert und fehlende i18n-Schlüssel hinzugefügt.\nDie Paketierung der LiveView-Hilfsskripte wurde korrigiert, sodass die benötigten LiveView-Hilfsskripte nun im Adapterpaket enthalten sind.\nDie Startbehandlung von LiveView für nicht unterstützte XT2/LFR-Kameras wurde korrigiert. Nicht unterstützte Kameras werden erkannt, bevor die HLS-Brücke gestartet wird.\nDie LiveView-Statusbehandlung wurde korrigiert, sodass das Web-Grid erst dann einen laufenden Stream anzeigt, wenn die HLS-Playlist tatsächlich verfügbar ist.\nDie Dokumentation für unterstützte Blink-Geräte und Herstellerlinks wurden hinzugefügt.\nDie Dokumentation für das optionale LiveView-Webgrid wurde um einen JavaScript-Adapter und die ffmpeg-Anforderungen ergänzt.\nNicht verwendeter Hilfscode wurde entfernt und die Ergebnisse der Repository-Prüfung wurden bereinigt.",
+        "ru": "Исправлена ошибка в логах отладки, касающаяся конфиденциальной информации: PIN-коды/коды двухфакторной аутентификации, пароли, токены и заголовки авторизации/cookie теперь маскируются или опускаются в логах отладки.\nДобавлены тайм-ауты для запросов к API облака Blink, чтобы избежать зависания операций опроса или входа в систему.\nВ соответствии с требованиями репозитория ioBroker, в журналах адаптера, уведомлениях, именах объектов и текстах административного интерфейса был изменен язык программирования.\nВнесены нормализованные переводы административного интерфейса и добавлены недостающие ключи интернационализации.\nИсправлена ошибка в упаковке вспомогательных скриптов LiveView, благодаря чему необходимые вспомогательные скрипты LiveView теперь включены в пакет адаптера.\nИсправлена обработка запуска режима LiveView для неподдерживаемых камер XT2/LFR. Неподдерживаемые камеры обнаруживаются до запуска моста HLS.\nИсправлена обработка статуса LiveView, теперь веб-сетка отображает запущенный поток только после того, как плейлист HLS станет доступен.\nДобавлена документация по поддерживаемым устройствам Blink и ссылки на производителей.\nДобавлена документация для дополнительной веб-сетки LiveView, включая требования к адаптеру JavaScript и ffmpeg.\nУдалён неиспользуемый вспомогательный код и исправлены ошибки проверки репозитория.",
+        "pt": "Correção no registro de depuração de informações sensíveis: códigos PIN/2FA, senhas, tokens e cabeçalhos de autorização/cookies agora são mascarados ou omitidos dos registros de depuração.\nAdicionamos tempos limite de requisição para as solicitações da API em nuvem do Blink para evitar travamentos em operações de polling ou login.\nOs registros do adaptador, notificações, nomes de objetos e textos da interface administrativa foram alterados para inglês para atender aos requisitos do repositório ioBroker.\nNormalizamos as traduções da interface administrativa e adicionamos as chaves i18n que estavam faltando.\nO empacotamento do auxiliar LiveView foi corrigido para que os scripts auxiliares do LiveView necessários sejam incluídos no pacote do adaptador.\nCorreção no tratamento do início do LiveView para câmeras XT2/LFR não suportadas. As câmeras não suportadas são detectadas antes do início da ponte HLS.\nCorrigido o comportamento do LiveView, de forma que a grade da web só mostre uma transmissão em execução depois que a lista de reprodução HLS estiver efetivamente disponível.\nAdicionada documentação para dispositivos Blink compatíveis e links para os fabricantes.\nAdicionada documentação para a grade web LiveView opcional, incluindo os requisitos do adaptador JavaScript e do ffmpeg.\nRemovi o código auxiliar não utilizado e limpei os resultados da verificação do repositório.",
+        "nl": "Gevoelige foutopsporingslogboeken zijn gecorrigeerd: PIN-/2FA-codes, wachtwoorden, tokens en autorisatie-/cookieheaders worden nu gemaskeerd of weggelaten uit de foutopsporingslogboeken.\nEr zijn time-outs toegevoegd voor Blink cloud API-verzoeken om te voorkomen dat polling- of loginprocessen vastlopen.\nDe logboeken, meldingen, objectnamen en teksten in de beheerdersinterface zijn aangepast naar het Engels om te voldoen aan de vereisten van de ioBroker-repository.\nDe vertalingen van de beheerdersinterface zijn gestandaardiseerd en de ontbrekende i18n-sleutels zijn toegevoegd.\nDe LiveView-helperpakketten zijn aangepast, zodat de benodigde LiveView-helperscripts in het adapterpakket zijn opgenomen.\nDe afhandeling van het opstarten van LiveView voor niet-ondersteunde XT2/LFR-camera's is verbeterd. Niet-ondersteunde camera's worden gedetecteerd voordat de HLS-brug wordt gestart.\nDe afhandeling van de LiveView-status is gecorrigeerd, zodat het webraster alleen een actieve stream weergeeft wanneer de HLS-afspeellijst daadwerkelijk beschikbaar is.\nDocumentatie voor ondersteunde Blink-apparaten en links naar fabrikanten zijn toegevoegd.\nEr is documentatie toegevoegd voor het optionele LiveView-webraster, inclusief de vereisten voor de JavaScript-adapter en ffmpeg.\nOngebruikte hulpcode is verwijderd en de bevindingen van de repositorychecker zijn opgeschoond.",
+        "fr": "Correction de la journalisation de débogage sensible : les codes PIN/2FA, les mots de passe, les jetons et les en-têtes d’autorisation/cookies sont désormais masqués ou omis des journaux de débogage.\nAjout de délais d'expiration pour les requêtes API cloud de Blink afin d'éviter le blocage des opérations d'interrogation ou de connexion.\nLes journaux de l'adaptateur, les notifications, les noms d'objets et les textes de l'interface utilisateur d'administration ont été traduits en anglais afin de se conformer aux exigences du référentiel ioBroker.\nTraductions normalisées de l'interface d'administration et ajout des clés i18n manquantes.\nCorrection du packaging de l'assistant LiveView afin que les scripts d'assistance LiveView requis soient inclus dans le package de l'adaptateur.\nCorrection de la gestion du démarrage LiveView pour les caméras XT2/LFR non prises en charge. Les caméras non prises en charge sont détectées avant le démarrage du pont HLS.\nCorrection de la gestion de l'état LiveView : la grille Web n'affiche un flux en cours de lecture qu'une fois la liste de lecture HLS effectivement disponible.\nAjout de la documentation relative aux appareils Blink compatibles et des liens vers les fabricants.\nAjout de la documentation pour la grille web LiveView optionnelle, y compris l'adaptateur JavaScript et les exigences ffmpeg.\nSuppression du code d'assistance inutilisé et nettoyage des résultats du vérificateur de dépôt.",
+        "it": "Risolto il problema relativo alla registrazione di debug dei dati sensibili: i codici PIN/2FA, le password, i token e le intestazioni di autorizzazione/cookie vengono ora mascherati o omessi dai log di debug.\nSono stati aggiunti dei timeout per le richieste API di Blink Cloud al fine di evitare blocchi nelle operazioni di polling o di accesso.\nSono stati modificati in inglese i log dell'adattatore, le notifiche, i nomi degli oggetti e i testi dell'interfaccia utente di amministrazione per conformarsi ai requisiti del repository ioBroker.\nTraduzioni dell'interfaccia utente di amministrazione normalizzate e aggiunte le chiavi i18n mancanti.\nRisolto il problema di packaging del componente helper LiveView, in modo che gli script helper LiveView necessari siano inclusi nel pacchetto dell'adattatore.\nGestione corretta dell'avvio di LiveView per le telecamere XT2/LFR non supportate. Le telecamere non supportate vengono rilevate prima dell'avvio del bridge HLS.\nGestione dello stato di LiveView corretta: la griglia web mostra un flusso in esecuzione solo dopo che la playlist HLS è effettivamente disponibile.\nÈ stata aggiunta la documentazione relativa ai dispositivi Blink supportati e i link dei produttori.\nÈ stata aggiunta la documentazione per la griglia web LiveView opzionale, inclusi i requisiti per l'adattatore JavaScript e ffmpeg.\nRimosso il codice di supporto inutilizzato e ripuliti i risultati del controllo del repository.",
+        "es": "Se ha corregido el registro de depuración sensible: los códigos PIN/2FA, las contraseñas, los tokens y los encabezados de autorización/cookies ahora se ocultan o se omiten de los registros de depuración.\nSe han añadido tiempos de espera para las solicitudes a la API de la nube de Blink para evitar que las operaciones de sondeo o inicio de sesión se queden bloqueadas.\nSe modificaron los registros del adaptador, las notificaciones, los nombres de los objetos y los textos de la interfaz de administración al inglés para cumplir con los requisitos del repositorio de ioBroker.\nSe normalizaron las traducciones de la interfaz de administración y se agregaron las claves i18n que faltaban.\nSe ha corregido el empaquetado de la herramienta auxiliar de LiveView para que los scripts auxiliares de LiveView necesarios se incluyan en el paquete del adaptador.\nSe ha corregido el manejo del inicio de LiveView para cámaras XT2/LFR no compatibles. Las cámaras no compatibles se detectan antes de iniciar el puente HLS.\nSe ha corregido el manejo del estado de LiveView para que la cuadrícula web solo muestre una transmisión en curso una vez que la lista de reproducción HLS esté realmente disponible.\nSe ha añadido documentación sobre los dispositivos Blink compatibles y enlaces a los fabricantes.\nSe ha añadido documentación para la cuadrícula web LiveView opcional, incluidos los requisitos del adaptador JavaScript y ffmpeg.\nSe eliminó el código auxiliar no utilizado y se limpiaron los resultados de la comprobación del repositorio.",
+        "pl": "Naprawiono wrażliwe rejestrowanie debugowania: kody PIN/2FA, hasła, tokeny i nagłówki autoryzacji/plików cookie są teraz maskowane lub pomijane w rejestrach debugowania.\nDodano limity czasu żądań dla interfejsu API chmury Blink, aby uniknąć zawieszania się operacji sondowania lub logowania.\nZmieniono logi adaptera, powiadomienia, nazwy obiektów i teksty interfejsu administratora na angielski, aby spełnić wymagania repozytorium ioBroker.\nZnormalizowano tłumaczenia interfejsu administratora i dodano brakujące klucze i18n.\nNaprawiono pakowanie pomocniczego programu LiveView, dzięki czemu wymagane skrypty pomocnicze programu LiveView są zawarte w pakiecie adaptera.\nNaprawiono obsługę startu LiveView dla nieobsługiwanych kamer XT2/LFR. Nieobsługiwane kamery są wykrywane przed uruchomieniem mostu HLS.\nNaprawiono obsługę statusu LiveView, tak aby siatka internetowa pokazywała działający strumień dopiero po udostępnieniu listy odtwarzania HLS.\nDodano dokumentację dotyczącą obsługiwanych urządzeń Blink i linki do producentów.\nDodano dokumentację dla opcjonalnej siatki internetowej LiveView, obejmującą m.in. wymagania dotyczące adaptera JavaScript i ffmpeg.\nUsunięto nieużywany kod pomocniczy i uporządkowano wyniki sprawdzania repozytorium.",
+        "uk": "Виправлено чутливе ведення журналу налагодження: PIN-коди/2FA, паролі, токени та заголовки авторизації/cookie тепер маскуються або пропускаються з журналів налагодження.\nДодано час очікування запитів для API Blink cloud, щоб уникнути зависання операцій опитування або входу.\nЗмінено журнали адаптера, сповіщення, назви об'єктів та тексти інтерфейсу адміністратора на англійську мову відповідно до вимог репозиторію ioBroker.\nНормалізовано переклади інтерфейсу адміністратора та додано відсутні ключі i18n.\nВиправлено пакування допоміжних програм LiveView, тепер необхідні допоміжні скрипти LiveView включені до пакета адаптера.\nВиправлено обробку запуску LiveView для непідтримуваних камер XT2/LFR. Непідтримувані камери виявляються перед запуском мосту HLS.\nВиправлено обробку статусу LiveView, тепер веб-сітка відображає поточний стрім лише після того, як список відтворення HLS фактично доступний.\nДодано документацію щодо підтримуваних пристроїв Blink та посилання на виробників.\nДодано документацію для додаткової веб-сітки LiveView, включаючи адаптер JavaScript та вимоги до ffmpeg.\nВидалено невикористаний допоміжний код та очищено результати перевірки репозиторію.",
+        "zh-cn": "修复了敏感的调试日志记录：PIN/2FA 代码、密码、令牌和授权/cookie 标头现在已从调试日志中屏蔽或省略。\n为 Blink 云 API 请求添加了请求超时，以避免轮询或登录操作挂起。\n为了符合 ioBroker 存储库的要求，将适配器日志、通知、对象名称和管理 UI 文本更改为英文。\n规范化了管理界面翻译，并添加了缺失的 i18n 键。\n修复了 LiveView 辅助程序打包问题，将所需的 LiveView 辅助脚本包含在适配器包中。\n修复了不支持的 XT2/LFR 摄像机的实时预览启动处理问题。在启动 HLS 桥接程序之前，会检测到不支持的摄像机。\n修复了 LiveView 状态处理，使 Web 网格仅在 HLS 播放列表实际可用后才显示正在运行的流。\n添加了支持的 Blink 设备文档和制造商链接。\n添加了可选的 LiveView 网络网格的文档，包括 JavaScript 适配器和 ffmpeg 要求。\n移除了未使用的辅助代码，并清理了存储库检查器发现的问题。"
+      },
+      "0.0.19": {
+        "en": "fix: handle unsupported XT2 live view and avoid early HLS state",
+        "de": "Behebung: Behandlung der nicht unterstützten XT2-Live-Ansicht und Vermeidung eines frühen HLS-Zustands",
+        "ru": "Исправление: обработка неподдерживаемого режима просмотра в реальном времени на XT2 и предотвращение преждевременного появления состояния HLS.",
+        "pt": "Correção: lidar com a visualização ao vivo XT2 não suportada e evitar o estado HLS prematuro.",
+        "nl": "Oplossing: verwerk de niet-ondersteunde XT2 liveweergave en voorkom een vroege HLS-status.",
+        "fr": "Correction : gestion de l'affichage en direct XT2 non pris en charge et prévention de l'état HLS précoce",
+        "it": "Correzione: gestire la visualizzazione live XT2 non supportata ed evitare lo stato HLS anticipato",
+        "es": "Corrección: gestionar la vista en directo XT2 no compatible y evitar el estado HLS prematuramente",
+        "pl": "naprawiono: obsługa nieobsługiwanego podglądu na żywo XT2 i unikanie wczesnego stanu HLS",
+        "uk": "виправлення: обробка непідтримуваного перегляду в реальному часі XT2 та уникнення раннього стану HLS",
+        "zh-cn": "修复：处理不支持的 XT2 实时取景，避免过早进入 HLS 状态"
+      },
+      "0.0.18": {
+        "en": "fix: expose Blink account id for LiveView helper (blink.0.info.account_id)",
+        "de": "fix: Blink-Konto-ID für LiveView-Helfer freilegen (blink.0.info.account id)",
+        "ru": "исправить: раскрыть идентификатор учетной записи Blink для помощника LiveView (blink.0.info.account id)",
+        "pt": "correção: expor o id da conta Blink para o helper do LiveView (blink.0.info.account id)",
+        "nl": "fix: ontmasker Blink account id voor LiveView helper (blink.0.info.account id)",
+        "fr": "correction : exposer l'identifiant du compte Blink pour l'aide LiveView (blink.0.info.account id)",
+        "it": "fix: esporre account Blink id per helper LiveView (blink.0.info.account id)",
+        "es": "fijación: exponer la cuenta Blink id para el ayudante LiveView (blink.0.info.account id)",
+        "pl": "fix: defense Blink account id for LiveView helper (blink.0.info.account _ id)",
+        "uk": "javaScript licenses API Веб-сайт Go1.13.8",
+        "zh-cn": "fix: 曝光 LiveView 帮助器的 Blink 账户 id (blink.0.info.count id)"
+      },
+      "0.0.17": {
+        "en": "fix: avoid interactive Blink 2FA prompt in LiveView helper (LiveView not comming up)",
+        "de": "fix: Vermeiden Sie die interaktive Blink 2FA-Eingabeaufforderung im LiveView-Helfer (LiveView kommt nicht zusammen)",
+        "ru": "исправление: избегайте интерактивной подсказки Blink 2FA в LiveView (LiveView не работает)",
+        "pt": "correção: evite o prompt Blink 2FA interativo no helper LiveView (LiveView não chegando)",
+        "nl": "fix: vermijd interactieve Blink 2FA prompt in LiveView helper (LiveView not comming up)",
+        "fr": "correction : évitez l'invite Blink 2FA interactive dans LiveView helper (LiveView ne se téléphonant pas)",
+        "it": "correzione: evitare interattivo Blink 2FA prompt in LiveView helper (LiveView non in arrivo)",
+        "es": "fijación: evitar el impulso interactivo de Blink 2FA en LiveView helper (LiveView no se comunica)",
+        "pl": "fix: unikać interaktywnego Blink 2FA w LiveView helper (LiveView nie dojeżdża)",
+        "uk": "виправити: уникнути інтерактивних Blink 2FA підказка в програмі LiveView (LiveView не вдається)",
+        "zh-cn": "固定: 在 LiveView 帮助器中避免交互 Blink 2FA 提示( LiveView 不混合)"
+      },
+      "0.0.16": {
+        "en": "fix: chaged roles and hierachy",
+        "de": "fix: chaged rollen und hierarchie",
+        "ru": "исправление: выхолощенные роли и иерархия",
+        "pt": "correção: papéis changed e hierachy",
+        "nl": "fix: chaged rollen en hierachy",
+        "fr": "fix : rôles chagués et hiérachy",
+        "it": "correzione: ruoli casti e gerarchia",
+        "es": "fijación: roles encapsulados y jerarquía",
+        "pl": "fix: zawiązane role i hierarchia",
+        "uk": "фіксація: хатні ролі і херахія",
+        "zh-cn": "修饰: 调整的角色和高阶"
+      },
+      "0.0.15": {
+        "en": "LiveView: Camera model recognition (XT/XT2 without LiveView)\ncorrect entry point for cameras\nfix: several cameras showing the same video",
+        "de": "LiveView: Kameramodellerkennung (XT/XT2 ohne LiveView)\nkorrekter einstiegspunkt für kameras\nfix: mehrere kameras zeigen dasselbe video",
+        "ru": "Распознавание моделей камер (XT/XT2 без LiveView)\nправильная точка входа для камер\nремонт: несколько камер показывают одно и то же видео",
+        "pt": "LiveView: Reconhecimento de modelo de câmera (XT/XT2 sem LiveView)\nponto de entrada correto para câmeras\ncorreção: várias câmeras mostrando o mesmo vídeo",
+        "nl": "LiveView: Camera modelherkenning (XT/XT2 zonder LiveView)\ncorrect ingangspunt voor camera's\nfix: meerdere camera's met dezelfde video",
+        "fr": "LiveView: Reconnaissance du modèle de caméra (XT/XT2 sans LiveView)\npoint d'entrée correct pour les caméras\ncorrection : plusieurs caméras montrant la même vidéo",
+        "it": "LiveView: Riconoscimento del modello di fotocamera (XT/XT2 senza LiveView)\ncorretto punto di ingresso per le telecamere\ncorrezione: diverse telecamere che mostrano lo stesso video",
+        "es": "LiveView: Reconocimiento del modelo de cámara (XT/XT2 sin LiveView)\npunto de entrada correcto para las cámaras\nfijación: varias cámaras mostrando el mismo vídeo",
+        "pl": "LiveView: Rozpoznawanie modelu kamery (XT / XT2 bez LiveView)\nwłaściwy punkt wejścia dla kamer\nfix: kilka kamer pokazujących ten sam film",
+        "uk": "LiveView: розпізнавання моделі камери (XT/XT2 без LiveView)\nправильну точку входу для камер\nвиправити: кілька камер, що показують той самий відео",
+        "zh-cn": "LiveView:相机型号识别(XT/XT2没有LiveView)\n摄像头的正确入口\n固定: 显示相同视频的多个相机"
+      },
+      "0.0.14": {
+        "en": "fixed some sync module busy errors",
+        "de": "einige sync-modul geschäftsfehler behoben",
+        "ru": "исправлены некоторые ошибки загрузки модуля синхронизации",
+        "pt": "corrigir alguns erros de ocupado do módulo de sincronização",
+        "nl": "enkele synchronisatiemodule drukke fouten hersteld",
+        "fr": "correction d'erreurs occupées du module de synchronisation",
+        "it": "corretti alcuni errori del modulo di sincronizzazione",
+        "es": "solucionó algunos errores del módulo de sincronización ocupado",
+        "pl": "naprawiono błędy związane z modułem synchronizacji",
+        "uk": "виправлено деякі помилки модуля sync",
+        "zh-cn": "修正一些同步模块繁忙错误"
+      }
     },
-    "encryptedNative": [
-        "password",
-        "pin"
-    ],
-    "protectedNative": [
-        "password",
-        "pin"
-    ],
-    "native": {
-        "email": "",
-        "password": "",
-        "pin": "",
-        "pollIntervalSec": 60,
-        "snapshotDir": "/opt/iobroker/iobroker-data/blink",
-        "debugLogEnabled": false,
-        "liveSnapshotEnabled": true,
-        "liveSnapshotIntervalSec": 30,
-        "storeBase64": true,
-        "cleanupOldSnapshots": true,
-        "maxSnapshotAgeHours": 24,
-        "batteryWarningEnabled": false,
-        "batteryWarningThresholdVolt": 1.1,
-        "batteryWarningCooldownHours": 24
+    "titleLang": {
+      "en": "blink system",
+      "de": "Blinksystem",
+      "ru": "система мигания",
+      "pt": "sistema de piscar",
+      "nl": "knippersysteem",
+      "fr": "système de clignotement",
+      "it": "sistema di lampeggiamento",
+      "es": "sistema de parpadeo",
+      "pl": "system migania",
+      "uk": "система миготіння",
+      "zh-cn": "眨眼系统"
     },
-    "objects": [],
-    "instanceObjects": [
-        {
-            "_id": "info.connection",
-            "type": "state",
-            "common": {
-                "name": "Connected",
-                "type": "boolean",
-                "role": "indicator.connected",
-                "read": true,
-                "write": false
-            },
-            "native": {}
-        }
+    "desc": {
+      "en": "adapter for amazon blink system and ioBroker",
+      "de": "Adapter für Amazon Blink System und ioBroker",
+      "ru": "адаптер für die Amazon Blink-System und ioBroker",
+      "pt": "adaptador para sistema Amazon Blink e ioBroker",
+      "nl": "adapter voor Amazon blink-systeem und ioBroker",
+      "fr": "adaptateur pour système clignotant amazon et ioBroker",
+      "it": "adattatore per sistema Amazon Blink e ioBroker",
+      "es": "Adaptador para sistema Amazon Blink e ioBroker.",
+      "pl": "adapter do systemu Amazon Blink i ioBroker",
+      "uk": "адаптер для системи amazon blink і ioBroker",
+      "zh-cn": "适用于亚马逊 Blink 系统和 ioBroker 的适配器"
+    },
+    "authors": [
+      "Pischleuder1 <pischleuder@gmx.de>"
+    ],
+    "keywords": [
+      "security",
+      "blink",
+      "amazon"
+    ],
+    "licenseInformation": {
+      "type": "free",
+      "license": "MIT"
+    },
+    "platform": "Javascript/Node.js",
+    "icon": "blink.png",
+    "enabled": true,
+    "extIcon": "https://raw.githubusercontent.com/Pischleuder1/ioBroker.blink/main/admin/blink.png",
+    "readme": "https://github.com/Pischleuder1/ioBroker.blink/blob/main/README.md",
+    "loglevel": "info",
+    "tier": 3,
+    "mode": "daemon",
+    "type": "alarm",
+    "compact": false,
+    "connectionType": "cloud",
+    "dataSource": "poll",
+    "adminUI": {
+      "config": "json"
+    },
+    "dependencies": [
+      {
+        "js-controller": ">=6.0.11"
+      }
+    ],
+    "globalDependencies": [
+      {
+        "admin": ">=7.6.20"
+      }
     ]
+  },
+  "encryptedNative": [
+    "password",
+    "pin"
+  ],
+  "protectedNative": [
+    "password",
+    "pin"
+  ],
+  "native": {
+    "email": "",
+    "password": "",
+    "pin": "",
+    "pollIntervalSec": 60,
+    "snapshotDir": "/opt/iobroker/iobroker-data/blink",
+    "debugLogEnabled": false,
+    "liveSnapshotEnabled": true,
+    "liveSnapshotIntervalSec": 30,
+    "storeBase64": true,
+    "cleanupOldSnapshots": true,
+    "maxSnapshotAgeHours": 24,
+    "batteryWarningEnabled": false,
+    "batteryWarningThresholdVolt": 1.1,
+    "batteryWarningCooldownHours": 24
+  },
+  "objects": [],
+  "instanceObjects": [
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "name": "Connected",
+        "type": "boolean",
+        "role": "indicator.connected",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    }
+  ]
 }
