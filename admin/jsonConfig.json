@@ -143,7 +143,7 @@
       "items": {
         "notify_batt_header": {
           "type": "header",
-          "text": "Batterywarnung",
+          "text": "Battery warning",
           "size": 4,
           "newLine": true,
           "xs": 12,
@@ -192,7 +192,7 @@
         },
         "notify_header": {
           "type": "header",
-          "text": "Wenn status.battery_volt kleiner/gleich dem Threshold ist, wird pro Kamera höchstens einmal innerhalb des Cooldowns eine Pushover-Nachricht gesendet",
+          "text": "If status.battery_volt is less than or equal to the threshold, at most one Pushover notification per camera is sent within the cooldown period.",
           "size": 4,
           "newLine": true,
           "xs": 12,
@@ -269,7 +269,7 @@
       "items": {
         "stream_intro_header": {
           "type": "header",
-          "text": "MJPEG-Live-Stream",
+          "text": "MJPEG live stream",
           "size": 4,
           "newLine": true,
           "xs": 12,
@@ -280,7 +280,7 @@
         },
         "stream_intro": {
           "type": "staticText",
-          "text": "Der Adapter stellt einen lokalen HTTP-Server bereit, über den Live-Bilder als MJPEG-Stream pro Kamera abrufbar sind. Wired-Kameras (Mini, Floodlight, Doorbell) werden permanent gepollt; Battery-Kameras nur, wenn ein Stream-Client verbunden ist oder live_request gedrückt wurde.",
+          "text": "The adapter provides a local HTTP server that exposes live images as an MJPEG stream per camera. Wired cameras such as Mini, Floodlight and Doorbell are polled continuously. Battery-powered cameras are only polled while a stream client is connected or when live_request was triggered.",
           "newLine": true,
           "xs": 12,
           "sm": 12,
@@ -316,7 +316,7 @@
         "streamToken": {
           "type": "text",
           "label": "Stream-Token",
-          "help": "Schützt die Stream-URLs. Bei leerem Feld wird beim Adapter-Start automatisch ein Token generiert und hier eingetragen.",
+          "help": "Protects the stream URLs. If this field is empty, a token is generated automatically when the adapter starts and is stored here.",
           "default": "",
           "copyToClipboard": true,
           "hidden": "!data.streamEnabled",
@@ -328,8 +328,8 @@
         },
         "streamPublicHost": {
           "type": "text",
-          "label": "Öffentlicher Host (optional)",
-          "help": "IP oder Hostname für die Stream-URL (z.B. iobroker.local oder 192.168.1.50). Leer lassen für automatische Erkennung.",
+          "label": "Public host (optional)",
+          "help": "IP address or hostname for the stream URL, for example iobroker.local or 192.168.1.50. Leave empty for automatic detection.",
           "default": "",
           "hidden": "!data.streamEnabled",
           "newLine": true,
@@ -353,8 +353,8 @@
         },
         "streamWiredIntervalSec": {
           "type": "number",
-          "label": "Wired-Kamera Mindest-Intervall (Sek.)",
-          "help": "Mindestpause zwischen zwei Snapshots derselben netzbetriebenen Kamera. In der Praxis kann es durch Cloud-Latenz länger dauern.",
+          "label": "Wired camera minimum interval (sec.)",
+          "help": "Minimum pause between two snapshots of the same wired camera. In practice, cloud latency can make the interval longer.",
           "min": 5,
           "max": 600,
           "default": 8,
@@ -368,7 +368,7 @@
         },
         "streamBatteryIntervalSec": {
           "type": "number",
-          "label": "Battery-Kamera Mindest-Intervall (Sek.)",
+          "label": "Battery camera minimum interval (sec.)",
           "min": 8,
           "max": 600,
           "default": 10,
@@ -381,8 +381,8 @@
         },
         "streamBatteryIdleTimeoutSec": {
           "type": "number",
-          "label": "Battery-Kamera Nachlauf nach Disconnect (Sek.)",
-          "help": "Solange läuft das Polling nach dem letzten Stream-Disconnect oder live_request weiter, bevor es eingestellt wird.",
+          "label": "Battery camera run-on after disconnect (sec.)",
+          "help": "Polling continues for this duration after the last stream disconnect or live_request before it is stopped.",
           "min": 15,
           "max": 600,
           "default": 60,
@@ -395,8 +395,8 @@
         },
         "streamBatteryMinLevel": {
           "type": "select",
-          "label": "Min. Akkustand für Battery-Polling",
-          "help": "Battery-Cams unter dieser Stufe werden nicht gepollt (Akku-Schutz).",
+          "label": "Minimum battery level for battery polling",
+          "help": "Battery-powered cameras below this level are not polled to protect the battery.",
           "default": 2,
           "options": [
             {
@@ -426,7 +426,7 @@
         },
         "stream_hint_header": {
           "type": "header",
-          "text": "Verwendung",
+          "text": "Usage",
           "size": 4,
           "newLine": true,
           "hidden": "!data.streamEnabled",
