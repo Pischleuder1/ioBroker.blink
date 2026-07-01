@@ -3,6 +3,9 @@
 Older changelog entries that have been moved out of `README.md` will appear below.
 This file is managed by [@alcalzone/release-script](https://github.com/AlCalzone/release-script)
 when newer entries are added to the README.
+## 0.0.17 (2026-06-14)
+* (Pischleuder) fix: avoid interactive Blink 2FA prompt in LiveView helper (LiveView not comming up)
+
 ## 0.0.16 (2026-06-13)
 * (Pischleuder) fix: chaged roles and hierachy
 

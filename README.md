@@ -301,8 +301,7 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 0.0.22 (2026-07-01)
 * Fixed LiveView helper script version to use a numeric version string.
 * Aligned the admin default for the live snapshot interval with the adapter default.
 
@@ -335,9 +334,6 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
 
 ### 0.0.18 (2026-06-15)
 * (Pischleuder1) fix: expose Blink account id for LiveView helper (blink.0.info.account_id)
-
-### 0.0.17 (2026-06-14)
-* (Pischleuder) fix: avoid interactive Blink 2FA prompt in LiveView helper (LiveView not comming up)
 
 ## License
 

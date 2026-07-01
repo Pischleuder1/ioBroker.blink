@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "blink",
-    "version": "0.0.21",
+    "version": "0.0.22",
     "news": {
+      "0.0.22": {
+        "en": "Fixed LiveView helper script version to use a numeric version string.\nAligned the admin default for the live snapshot interval with the adapter default.",
+        "de": "Die Versionsnummer des LiveView-Hilfsskripts wurde korrigiert und verwendet nun eine numerische Versionszeichenfolge.\nDer Administratorstandard für das Live-Snapshot-Intervall wurde an den Adapterstandard angepasst.",
+        "ru": "Исправлена ошибка в версии вспомогательного скрипта LiveView: теперь используется числовая строка версии.\nПриведены значения по умолчанию для интервала создания снимков в реальном времени, заданные администратором, в соответствие со значениями по умолчанию для адаптера.",
+        "pt": "Corrigida a versão do script auxiliar do LiveView para usar uma string de versão numérica.\nAlinhei o valor padrão do administrador para o intervalo de captura de instantâneos em tempo real com o valor padrão do adaptador.",
+        "nl": "De LiveView-helperscriptversie is aangepast om een numerieke versieaanduiding te gebruiken.\nDe standaardinstelling voor het beheerdersaccount voor het interval van de live snapshot is afgestemd op de standaardinstelling van de adapter.",
+        "fr": "Correction de la version du script d'assistance LiveView pour utiliser une chaîne de version numérique.\nAlignement de la valeur par défaut de l'administrateur pour l'intervalle de capture instantanée en direct avec la valeur par défaut de l'adaptateur.",
+        "it": "Ho corretto la versione dello script helper di LiveView per utilizzare una stringa di versione numerica.\nAllineato il valore predefinito dell'amministratore per l'intervallo di snapshot in tempo reale con il valore predefinito dell'adattatore.",
+        "es": "Se corrigió la versión del script auxiliar de LiveView para que utilice una cadena de versión numérica.\nSe alineó el valor predeterminado del administrador para el intervalo de instantáneas en tiempo real con el valor predeterminado del adaptador.",
+        "pl": "Poprawiono wersję skryptu pomocniczego LiveView, aby używała numerycznego ciągu wersji.\nWyrównano domyślną wartość administratora dla interwału migawek na żywo z wartością domyślną adaptera.",
+        "uk": "Виправлено версію допоміжного скрипта LiveView для використання числового рядка версії.\nВирівняно значення за замовчуванням адміністратора для інтервалу створення знімків у реальному часі зі значенням за замовчуванням адаптера.",
+        "zh-cn": "修复了 LiveView 辅助脚本版本控制问题，使其使用数字版本字符串。\n将实时快照间隔的管理员默认值与适配器默认值保持一致。"
+      },
       "0.0.21": {
         "en": "Fixed account ID discovery so `info.account_id` and camera `info.account_id` are populated again.\nFixed Live Snapshot timer cleanup by clearing the recursive timeout correctly.\nFixed missing notification settings in the admin UI for battery and motion alerts.\nNormalized new admin UI translations for Streaming and Notifications tabs.\nRemoved unused admin translation keys after the Notifications tab restructuring.\nTranslated remaining MJPEG server logs and comments to English.\nTranslated remaining LiveView helper messages to English.\nTranslated remaining LiveView web grid strings and comments to English.\nRemoved a hardcoded fallback account ID from the LiveView web grid helper.",
         "de": "Die Konto-ID-Erkennung wurde korrigiert, sodass `info.account_id` und die Kamera-`info.account_id` wieder korrekt befüllt werden.\nDas Problem mit der Bereinigung des Live-Snapshot-Timers wurde behoben, indem das rekursive Timeout korrekt gelöscht wurde.\nFehlende Benachrichtigungseinstellungen für Akku- und Bewegungswarnungen in der Admin-Benutzeroberfläche wurden behoben.\nNormalisierte neue Übersetzungen der Admin-Benutzeroberfläche für die Registerkarten „Streaming“ und „Benachrichtigungen“.\nNach der Umstrukturierung des Benachrichtigungs-Tabs wurden nicht verwendete Administrator-Übersetzungsschlüssel entfernt.\nDie restlichen MJPEG-Serverprotokolle und Kommentare wurden ins Englische übersetzt.\nDie restlichen LiveView-Hilfemeldungen wurden ins Englische übersetzt.\nDie restlichen LiveView-Webgrid-Zeichenketten und Kommentare wurden ins Englische übersetzt.\nDie fest codierte Fallback-Konto-ID wurde aus dem LiveView-Webgrid-Helper entfernt.",
@@ -80,19 +93,6 @@
         "pl": "fix: zawiązane role i hierarchia",
         "uk": "фіксація: хатні ролі і херахія",
         "zh-cn": "修饰: 调整的角色和高阶"
-      },
-      "0.0.15": {
-        "en": "LiveView: Camera model recognition (XT/XT2 without LiveView)\ncorrect entry point for cameras\nfix: several cameras showing the same video",
-        "de": "LiveView: Kameramodellerkennung (XT/XT2 ohne LiveView)\nkorrekter einstiegspunkt für kameras\nfix: mehrere kameras zeigen dasselbe video",
-        "ru": "Распознавание моделей камер (XT/XT2 без LiveView)\nправильная точка входа для камер\nремонт: несколько камер показывают одно и то же видео",
-        "pt": "LiveView: Reconhecimento de modelo de câmera (XT/XT2 sem LiveView)\nponto de entrada correto para câmeras\ncorreção: várias câmeras mostrando o mesmo vídeo",
-        "nl": "LiveView: Camera modelherkenning (XT/XT2 zonder LiveView)\ncorrect ingangspunt voor camera's\nfix: meerdere camera's met dezelfde video",
-        "fr": "LiveView: Reconnaissance du modèle de caméra (XT/XT2 sans LiveView)\npoint d'entrée correct pour les caméras\ncorrection : plusieurs caméras montrant la même vidéo",
-        "it": "LiveView: Riconoscimento del modello di fotocamera (XT/XT2 senza LiveView)\ncorretto punto di ingresso per le telecamere\ncorrezione: diverse telecamere che mostrano lo stesso video",
-        "es": "LiveView: Reconocimiento del modelo de cámara (XT/XT2 sin LiveView)\npunto de entrada correcto para las cámaras\nfijación: varias cámaras mostrando el mismo vídeo",
-        "pl": "LiveView: Rozpoznawanie modelu kamery (XT / XT2 bez LiveView)\nwłaściwy punkt wejścia dla kamer\nfix: kilka kamer pokazujących ten sam film",
-        "uk": "LiveView: розпізнавання моделі камери (XT/XT2 без LiveView)\nправильну точку входу для камер\nвиправити: кілька камер, що показують той самий відео",
-        "zh-cn": "LiveView:相机型号识别(XT/XT2没有LiveView)\n摄像头的正确入口\n固定: 显示相同视频的多个相机"
       }
     },
     "titleLang": {
