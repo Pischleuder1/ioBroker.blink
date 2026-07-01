@@ -301,6 +301,11 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+* Fixed LiveView helper script version to use a numeric version string.
+* Aligned the admin default for the live snapshot interval with the adapter default.
+
 ### 0.0.21 (2026-07-01)
 
 * Fixed account ID discovery so `info.account_id` and camera `info.account_id` are populated again.

@@ -96,7 +96,7 @@
           "label": "Live image interval (sec.)",
           "min": 5,
           "max": 3600,
-          "default": 10,
+          "default": 30,
           "sm": 12,
           "xs": 12,
           "lg": 4,
