@@ -301,8 +301,7 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 0.0.21 (2026-07-01)
 
 * Fixed account ID discovery so `info.account_id` and camera `info.account_id` are populated again.
 * Fixed Live Snapshot timer cleanup by clearing the recursive timeout correctly.
@@ -334,9 +333,6 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
 
 ### 0.0.17 (2026-06-14)
 * (Pischleuder) fix: avoid interactive Blink 2FA prompt in LiveView helper (LiveView not comming up)
-
-### 0.0.16 (2026-06-13)
-* (Pischleuder) fix: chaged roles and hierachy
 
 ## License
 

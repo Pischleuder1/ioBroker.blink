@@ -3,6 +3,9 @@
 Older changelog entries that have been moved out of `README.md` will appear below.
 This file is managed by [@alcalzone/release-script](https://github.com/AlCalzone/release-script)
 when newer entries are added to the README.
+## 0.0.16 (2026-06-13)
+* (Pischleuder) fix: chaged roles and hierachy
+
 ## 0.0.15 (2026-06-13)
 * (Pischleuder1) LiveView: Camera model recognition (XT/XT2 without LiveView)
 * correct entry point for cameras
