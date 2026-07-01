@@ -141,11 +141,10 @@
       "type": "panel",
       "label": "Notifications",
       "items": {
-        "notify_batt_header": {
+        "battery_header": {
           "type": "header",
           "text": "Battery warning",
           "size": 4,
-          "newLine": true,
           "xs": 12,
           "sm": 12,
           "md": 12,
@@ -155,44 +154,129 @@
         "batteryWarningEnabled": {
           "type": "checkbox",
           "label": "Enable battery warning",
-          "default": false,
-          "newLine": true,
-          "sm": 12,
           "xs": 12,
+          "sm": 12,
+          "md": 6,
           "lg": 4,
-          "xl": 4,
-          "md": 6
+          "xl": 4
         },
-        "batteryWarningThresholdVolt": {
+        "batteryVoltThreshold": {
           "type": "number",
           "label": "Battery voltage threshold (V)",
-          "default": 1.1,
-          "newLine": true,
           "min": 0,
-          "max": 5,
-          "step": 0.01,
-          "sm": 12,
+          "max": 10,
+          "step": 0.1,
+          "default": 2.5,
           "xs": 12,
+          "sm": 12,
+          "md": 6,
           "lg": 4,
-          "xl": 4,
-          "md": 6
+          "xl": 4
         },
-        "batteryWarningCooldownHours": {
+        "batteryWarnCooldownHours": {
           "type": "number",
-          "label": "Warning cooldown per camera (hours)",
-          "default": 24,
-          "newLine": true,
+          "label": "Battery warning cooldown per camera (hours)",
           "min": 1,
           "max": 720,
-          "sm": 12,
+          "default": 24,
           "xs": 12,
+          "sm": 12,
+          "md": 6,
           "lg": 4,
-          "xl": 4,
-          "md": 6
+          "xl": 4
         },
-        "notify_header": {
+        "battery_channels_header": {
+          "type": "staticText",
+          "text": "Battery warning channels",
+          "newLine": true,
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
+        },
+        "battery_telegram_enabled": {
+          "type": "checkbox",
+          "label": "Enable Telegram for battery warnings",
+          "xs": 12,
+          "sm": 12,
+          "md": 6,
+          "lg": 4,
+          "xl": 4
+        },
+        "battery_telegram_instance": {
+          "type": "text",
+          "label": "Telegram instance",
+          "default": "telegram.0",
+          "xs": 12,
+          "sm": 12,
+          "md": 6,
+          "lg": 4,
+          "xl": 4
+        },
+        "battery_telegram_users": {
+          "type": "text",
+          "label": "Telegram recipients",
+          "help": "Comma-separated Telegram users. Leave empty to use all configured recipients.",
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 4,
+          "xl": 4
+        },
+        "battery_pushover_enabled": {
+          "type": "checkbox",
+          "label": "Enable Pushover for battery warnings",
+          "newLine": true,
+          "xs": 12,
+          "sm": 12,
+          "md": 6,
+          "lg": 4,
+          "xl": 4
+        },
+        "battery_pushover_instance": {
+          "type": "text",
+          "label": "Pushover instance",
+          "default": "pushover.0",
+          "xs": 12,
+          "sm": 12,
+          "md": 6,
+          "lg": 4,
+          "xl": 4
+        },
+        "battery_email_enabled": {
+          "type": "checkbox",
+          "label": "Enable email for battery warnings",
+          "newLine": true,
+          "xs": 12,
+          "sm": 12,
+          "md": 6,
+          "lg": 4,
+          "xl": 4
+        },
+        "battery_email_instance": {
+          "type": "text",
+          "label": "Email instance",
+          "default": "email.0",
+          "xs": 12,
+          "sm": 12,
+          "md": 6,
+          "lg": 4,
+          "xl": 4
+        },
+        "battery_email_to": {
+          "type": "text",
+          "label": "Email recipient for battery warnings",
+          "help": "Leave empty to use the default recipient configured in the email adapter.",
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 4,
+          "xl": 4
+        },
+        "motion_header": {
           "type": "header",
-          "text": "If status.battery_volt is less than or equal to the threshold, at most one Pushover notification per camera is sent within the cooldown period.",
+          "text": "Motion notification",
           "size": 4,
           "newLine": true,
           "xs": 12,
@@ -201,46 +285,30 @@
           "lg": 12,
           "xl": 12
         },
-        "notify_telegram_enabled": {
+        "motionNotifyEnabled": {
           "type": "checkbox",
-          "label": "Enable Telegram notifications",
-          "default": false,
-          "newLine": true,
+          "label": "Enable motion notification",
           "xs": 12,
           "sm": 12,
-          "md": 12,
-          "lg": 12,
-          "xl": 12
-        },
-        "notify_telegram_instance": {
-          "type": "instance",
-          "adapter": "telegram",
-          "label": "Telegram instance",
-          "default": "telegram.0",
-          "hidden": "!data.notify_telegram_enabled",
-          "newLine": true,
-          "xs": 12,
-          "sm": 6,
-          "md": 4,
+          "md": 6,
           "lg": 4,
           "xl": 4
         },
-        "notify_telegram_users": {
-          "type": "text",
-          "label": "Recipients (usernames, comma-separated – empty = all users)",
-          "help": "Example: John,Jane   (leave empty to send to all users)",
-          "default": "",
-          "hidden": "!data.notify_telegram_enabled",
+        "motionNotifyCooldownMinutes": {
+          "type": "number",
+          "label": "Motion notification cooldown per camera (minutes)",
+          "min": 1,
+          "max": 1440,
+          "default": 15,
           "xs": 12,
-          "sm": 6,
+          "sm": 12,
           "md": 6,
-          "lg": 6,
-          "xl": 6
+          "lg": 4,
+          "xl": 4
         },
-        "notify_pushover_enabled": {
-          "type": "checkbox",
-          "label": "Enable pushover notifications",
-          "default": false,
+        "motion_channels_header": {
+          "type": "staticText",
+          "text": "Motion notification channels",
           "newLine": true,
           "xs": 12,
           "sm": 12,
@@ -248,16 +316,82 @@
           "lg": 12,
           "xl": 12
         },
-        "notify_pushover_instance": {
-          "type": "instance",
-          "adapter": "pushover",
-          "label": "pushover instance",
-          "default": "pushover.0",
-          "hidden": "!data.notify_pushover_enabled",
+        "motion_telegram_enabled": {
+          "type": "checkbox",
+          "label": "Enable Telegram for motion notifications",
+          "xs": 12,
+          "sm": 12,
+          "md": 6,
+          "lg": 4,
+          "xl": 4
+        },
+        "motion_telegram_instance": {
+          "type": "text",
+          "label": "Telegram instance",
+          "default": "telegram.0",
+          "xs": 12,
+          "sm": 12,
+          "md": 6,
+          "lg": 4,
+          "xl": 4
+        },
+        "motion_telegram_users": {
+          "type": "text",
+          "label": "Telegram recipients",
+          "help": "Comma-separated Telegram users. Leave empty to use all configured recipients.",
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 4,
+          "xl": 4
+        },
+        "motion_pushover_enabled": {
+          "type": "checkbox",
+          "label": "Enable Pushover for motion notifications",
           "newLine": true,
           "xs": 12,
-          "sm": 6,
-          "md": 4,
+          "sm": 12,
+          "md": 6,
+          "lg": 4,
+          "xl": 4
+        },
+        "motion_pushover_instance": {
+          "type": "text",
+          "label": "Pushover instance",
+          "default": "pushover.0",
+          "xs": 12,
+          "sm": 12,
+          "md": 6,
+          "lg": 4,
+          "xl": 4
+        },
+        "motion_email_enabled": {
+          "type": "checkbox",
+          "label": "Enable email for motion notifications",
+          "newLine": true,
+          "xs": 12,
+          "sm": 12,
+          "md": 6,
+          "lg": 4,
+          "xl": 4
+        },
+        "motion_email_instance": {
+          "type": "text",
+          "label": "Email instance",
+          "default": "email.0",
+          "xs": 12,
+          "sm": 12,
+          "md": 6,
+          "lg": 4,
+          "xl": 4
+        },
+        "motion_email_to": {
+          "type": "text",
+          "label": "Email recipient for motion notifications",
+          "help": "Leave empty to use the default recipient configured in the email adapter.",
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
           "lg": 4,
           "xl": 4
         }
