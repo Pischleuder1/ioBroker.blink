@@ -301,6 +301,19 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+
+* Fixed account ID discovery so `info.account_id` and camera `info.account_id` are populated again.
+* Fixed Live Snapshot timer cleanup by clearing the recursive timeout correctly.
+* Fixed missing notification settings in the admin UI for battery and motion alerts.
+* Normalized new admin UI translations for Streaming and Notifications tabs.
+* Removed unused admin translation keys after the Notifications tab restructuring.
+* Translated remaining MJPEG server logs and comments to English.
+* Translated remaining LiveView helper messages to English.
+* Translated remaining LiveView web grid strings and comments to English.
+* Removed a hardcoded fallback account ID from the LiveView web grid helper.
+
 ### 0.0.20 (2026-06-27)
 * Fixed sensitive debug logging: PIN/2FA codes, passwords, tokens and authorization/cookie headers are now masked or omitted from debug logs.
 * Added request timeouts for Blink cloud API requests to avoid hanging poll or login operations.
