@@ -132,7 +132,7 @@ class BlinkAdapter extends utils.Adapter {
 			this.pollTimer = null;
 		}
 		if (this.liveTimer) {
-			this.clearInterval(this.liveTimer);
+			this.clearTimeout(this.liveTimer);
 			this.liveTimer = null;
 		}
 	}
@@ -2756,7 +2756,7 @@ class BlinkAdapter extends utils.Adapter {
 				this.clearInterval(this.pollTimer);
 			}
 			if (this.liveTimer) {
-				this.clearInterval(this.liveTimer);
+				this.clearTimeout(this.liveTimer);
 			}
 			if (this.mjpegStatusTimer) {
 				this.clearInterval(this.mjpegStatusTimer);
