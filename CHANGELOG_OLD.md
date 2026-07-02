@@ -3,6 +3,18 @@
 Older changelog entries that have been moved out of `README.md` will appear below.
 This file is managed by [@alcalzone/release-script](https://github.com/AlCalzone/release-script)
 when newer entries are added to the README.
+## 0.0.20 (2026-06-27)
+* Fixed sensitive debug logging: PIN/2FA codes, passwords, tokens and authorization/cookie headers are now masked or omitted from debug logs.
+* Added request timeouts for Blink cloud API requests to avoid hanging poll or login operations.
+* Changed adapter logs, notifications, object names and Admin UI texts to English to comply with ioBroker repository requirements.
+* Normalized Admin UI translations and added missing i18n keys.
+* Fixed LiveView helper packaging so the required LiveView helper scripts are included in the adapter package.
+* Fixed LiveView start handling for unsupported XT2/LFR cameras. Unsupported cameras are detected before starting the HLS bridge.
+* Fixed LiveView status handling so the web grid only shows a running stream after the HLS playlist is actually available.
+* Added documentation for supported Blink devices and manufacturer links.
+* Added documentation for the optional LiveView web grid, including JavaScript adapter and ffmpeg requirements.
+* Removed unused helper code and cleaned up repository checker findings.
+
 ## 0.0.19 (2026-06-24)
 * (Pischleuder1) fix: handle unsupported XT2 live view and avoid early HLS state
 

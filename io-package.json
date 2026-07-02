@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "blink",
-    "version": "0.0.24",
+    "version": "0.0.25",
     "news": {
+      "0.0.25": {
+        "en": "fix: remove personal LiveView camera override.\nTranslated remaining blink-api documentation comments to English.",
+        "de": "Lösung: Persönliche LiveView-Kameraüberschreibung entfernen.\nDie restlichen Kommentare zur blink-api-Dokumentation wurden ins Englische übersetzt.",
+        "ru": "Исправление: удалена возможность переопределения персональной камеры LiveView.\nОставшиеся комментарии к документации blink-api переведены на английский язык.",
+        "pt": "Correção: remover a substituição da câmera LiveView pessoal.\nTraduzi os comentários restantes da documentação da blink-api para inglês.",
+        "nl": "Oplossing: verwijder de persoonlijke LiveView-camera-override.\nDe resterende commentaren in de blink-api-documentatie zijn naar het Engels vertaald.",
+        "fr": "Correction : suppression de la priorité de la caméra LiveView personnelle.\nTraduction en anglais des commentaires restants de la documentation de blink-api.",
+        "it": "Correzione: rimuovere l'override personale della fotocamera LiveView.\nSono stati tradotti in inglese i restanti commenti della documentazione di blink-api.",
+        "es": "Solución: eliminar la anulación de la cámara LiveView personal.\nSe han traducido al inglés los comentarios restantes de la documentación de blink-api.",
+        "pl": "naprawiono: usunięto nadpisanie osobistej kamery LiveView.\nPrzetłumaczono pozostałe komentarze dokumentacji blink-api na język angielski.",
+        "uk": "виправлення: видалити перевизначення особистої камери LiveView.\nПерекладено решту коментарів до документації blink-api англійською мовою.",
+        "zh-cn": "解决方法：移除个人实时取景摄像头覆盖设置。\n将剩余的 blink-api 文档注释翻译成英文。"
+      },
       "0.0.24": {
         "en": "Translated remaining runtime-visible helper error and debug messages to English.",
         "de": "Die verbleibenden zur Laufzeit sichtbaren Hilfsfehler- und Debugmeldungen wurden ins Englische übersetzt.",
@@ -80,19 +93,6 @@
         "pl": "naprawiono: obsługa nieobsługiwanego podglądu na żywo XT2 i unikanie wczesnego stanu HLS",
         "uk": "виправлення: обробка непідтримуваного перегляду в реальному часі XT2 та уникнення раннього стану HLS",
         "zh-cn": "修复：处理不支持的 XT2 实时取景，避免过早进入 HLS 状态"
-      },
-      "0.0.18": {
-        "en": "fix: expose Blink account id for LiveView helper (blink.0.info.account_id)",
-        "de": "fix: Blink-Konto-ID für LiveView-Helfer freilegen (blink.0.info.account id)",
-        "ru": "исправить: раскрыть идентификатор учетной записи Blink для помощника LiveView (blink.0.info.account id)",
-        "pt": "correção: expor o id da conta Blink para o helper do LiveView (blink.0.info.account id)",
-        "nl": "fix: ontmasker Blink account id voor LiveView helper (blink.0.info.account id)",
-        "fr": "correction : exposer l'identifiant du compte Blink pour l'aide LiveView (blink.0.info.account id)",
-        "it": "fix: esporre account Blink id per helper LiveView (blink.0.info.account id)",
-        "es": "fijación: exponer la cuenta Blink id para el ayudante LiveView (blink.0.info.account id)",
-        "pl": "fix: defense Blink account id for LiveView helper (blink.0.info.account _ id)",
-        "uk": "javaScript licenses API Веб-сайт Go1.13.8",
-        "zh-cn": "fix: 曝光 LiveView 帮助器的 Blink 账户 id (blink.0.info.count id)"
       }
     },
     "titleLang": {
