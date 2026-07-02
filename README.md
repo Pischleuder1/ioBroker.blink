@@ -301,7 +301,7 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.0.24 (2026-07-02)
 * Translated remaining runtime-visible helper error and debug messages to English.
 
 ### 0.0.23 (2026-07-02)
@@ -334,9 +334,6 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
 * Added documentation for supported Blink devices and manufacturer links.
 * Added documentation for the optional LiveView web grid, including JavaScript adapter and ffmpeg requirements.
 * Removed unused helper code and cleaned up repository checker findings.
-
-### 0.0.19 (2026-06-24)
-* (Pischleuder1) fix: handle unsupported XT2 live view and avoid early HLS state
 
 ## License
 

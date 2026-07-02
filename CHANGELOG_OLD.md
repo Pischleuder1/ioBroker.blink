@@ -3,6 +3,9 @@
 Older changelog entries that have been moved out of `README.md` will appear below.
 This file is managed by [@alcalzone/release-script](https://github.com/AlCalzone/release-script)
 when newer entries are added to the README.
+## 0.0.19 (2026-06-24)
+* (Pischleuder1) fix: handle unsupported XT2 live view and avoid early HLS state
+
 ## 0.0.18 (2026-06-15)
 * (Pischleuder1) fix: expose Blink account id for LiveView helper (blink.0.info.account_id)
 

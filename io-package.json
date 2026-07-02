@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "blink",
-    "version": "0.0.23",
+    "version": "0.0.24",
     "news": {
+      "0.0.24": {
+        "en": "Translated remaining runtime-visible helper error and debug messages to English.",
+        "de": "Die verbleibenden zur Laufzeit sichtbaren Hilfsfehler- und Debugmeldungen wurden ins Englische übersetzt.",
+        "ru": "Оставшиеся видимые во время выполнения вспомогательные сообщения об ошибках и отладочные сообщения переведены на английский язык.",
+        "pt": "Mensagens de erro e depuração auxiliares restantes, visíveis em tempo de execução, foram traduzidas para o inglês.",
+        "nl": "De resterende, tijdens de uitvoering zichtbare fout- en debugberichten van de helper zijn naar het Engels vertaald.",
+        "fr": "Traduction en anglais des messages d'erreur et de débogage restants visibles lors de l'exécution.",
+        "it": "Sono stati tradotti in inglese i restanti messaggi di errore e di debug visibili in fase di esecuzione.",
+        "es": "Se tradujeron al inglés los mensajes de error y depuración restantes que eran visibles en tiempo de ejecución.",
+        "pl": "Przetłumaczono pozostałe widoczne w czasie wykonywania komunikaty pomocnicze dotyczące błędów i debugowania na język angielski.",
+        "uk": "Перекладено англійською мовою решту видимих під час виконання повідомлень про помилки та налагодження допоміжної програми.",
+        "zh-cn": "将剩余的运行时可见的帮助程序错误和调试信息翻译成英文。"
+      },
       "0.0.23": {
         "en": "Translated long admin i18n entries to avoid untranslated fallback warnings.",
         "de": "Lange i18n-Einträge im Adminbereich wurden übersetzt, um Warnungen wegen nicht übersetzter Fallback-Optionen zu vermeiden.",
@@ -80,19 +93,6 @@
         "pl": "fix: defense Blink account id for LiveView helper (blink.0.info.account _ id)",
         "uk": "javaScript licenses API Веб-сайт Go1.13.8",
         "zh-cn": "fix: 曝光 LiveView 帮助器的 Blink 账户 id (blink.0.info.count id)"
-      },
-      "0.0.17": {
-        "en": "fix: avoid interactive Blink 2FA prompt in LiveView helper (LiveView not comming up)",
-        "de": "fix: Vermeiden Sie die interaktive Blink 2FA-Eingabeaufforderung im LiveView-Helfer (LiveView kommt nicht zusammen)",
-        "ru": "исправление: избегайте интерактивной подсказки Blink 2FA в LiveView (LiveView не работает)",
-        "pt": "correção: evite o prompt Blink 2FA interativo no helper LiveView (LiveView não chegando)",
-        "nl": "fix: vermijd interactieve Blink 2FA prompt in LiveView helper (LiveView not comming up)",
-        "fr": "correction : évitez l'invite Blink 2FA interactive dans LiveView helper (LiveView ne se téléphonant pas)",
-        "it": "correzione: evitare interattivo Blink 2FA prompt in LiveView helper (LiveView non in arrivo)",
-        "es": "fijación: evitar el impulso interactivo de Blink 2FA en LiveView helper (LiveView no se comunica)",
-        "pl": "fix: unikać interaktywnego Blink 2FA w LiveView helper (LiveView nie dojeżdża)",
-        "uk": "виправити: уникнути інтерактивних Blink 2FA підказка в програмі LiveView (LiveView не вдається)",
-        "zh-cn": "固定: 在 LiveView 帮助器中避免交互 Blink 2FA 提示( LiveView 不混合)"
       }
     },
     "titleLang": {
