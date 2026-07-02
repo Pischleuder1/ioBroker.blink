@@ -535,19 +535,19 @@
           "options": [
             {
               "value": 0,
-              "label": "0 - immer pollen (kein Schutz)"
+              "label": "0 - always poll (no protection)"
             },
             {
               "value": 1,
-              "label": "1 - auch bei niedrigem Akku"
+              "label": "1 - also poll with low battery"
             },
             {
               "value": 2,
-              "label": "2 - nur bei OK-Stand (empfohlen)"
+              "label": "2 - only poll when battery level is OK (recommended)"
             },
             {
               "value": 3,
-              "label": "3 - nur bei vollem Akku"
+              "label": "3 - only poll when battery is full"
             }
           ],
           "hidden": "!data.streamEnabled",
@@ -572,7 +572,7 @@
         },
         "stream_hint_text": {
           "type": "staticText",
-          "text": "Pro Kamera findest du nach dem Speichern unter cameras.<id>.live.stream_url die fertige URL. Diese kannst du in VIS in einem HTML-Widget per <img src=\"...\"> einbinden.",
+          "text": "After saving, the final URL is available for each camera under cameras.<id>.live.stream_url. You can use it in VIS in an HTML widget via <img src=\"...\">.",
           "hidden": "!data.streamEnabled",
           "newLine": true,
           "xs": 12,
