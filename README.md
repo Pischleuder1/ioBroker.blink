@@ -301,6 +301,9 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* Translated remaining runtime-visible helper error and debug messages to English.
+
 ### 0.0.23 (2026-07-02)
 * Translated long admin i18n entries to avoid untranslated fallback warnings.
 
