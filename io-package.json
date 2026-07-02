@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "blink",
-    "version": "0.0.22",
+    "version": "0.0.23",
     "news": {
+      "0.0.23": {
+        "en": "Translated long admin i18n entries to avoid untranslated fallback warnings.",
+        "de": "Lange i18n-Einträge im Adminbereich wurden übersetzt, um Warnungen wegen nicht übersetzter Fallback-Optionen zu vermeiden.",
+        "ru": "Переведены длинные записи интернационализации для административной панели, чтобы избежать предупреждений о непереведенных резервных вариантах.",
+        "pt": "Traduzimos entradas longas de internacionalização (i18n) do painel administrativo para evitar avisos de fallback para traduções incorretas.",
+        "nl": "Lange i18n-vermeldingen voor beheerders zijn vertaald om waarschuwingen over niet-vertaalde gegevens te voorkomen.",
+        "fr": "Traduction des entrées i18n d'administration longues afin d'éviter les avertissements de repli non traduits.",
+        "it": "Sono state tradotte le voci lunghe di amministrazione i18n per evitare avvisi di fallback non tradotti.",
+        "es": "Se tradujeron las entradas largas de administración i18n para evitar advertencias de versiones alternativas sin traducir.",
+        "pl": "Przetłumaczono długie wpisy administracyjne i18n, aby uniknąć nieprzetłumaczonych ostrzeżeń awaryjnych.",
+        "uk": "Перекладено довгі записи адміністратора i18n, щоб уникнути неперекладених резервних попереджень.",
+        "zh-cn": "已翻译长篇管理员 i18n 条目，以避免出现未翻译的回退警告。"
+      },
       "0.0.22": {
         "en": "Fixed LiveView helper script version to use a numeric version string.\nAligned the admin default for the live snapshot interval with the adapter default.",
         "de": "Die Versionsnummer des LiveView-Hilfsskripts wurde korrigiert und verwendet nun eine numerische Versionszeichenfolge.\nDer Administratorstandard für das Live-Snapshot-Intervall wurde an den Adapterstandard angepasst.",
@@ -80,19 +93,6 @@
         "pl": "fix: unikać interaktywnego Blink 2FA w LiveView helper (LiveView nie dojeżdża)",
         "uk": "виправити: уникнути інтерактивних Blink 2FA підказка в програмі LiveView (LiveView не вдається)",
         "zh-cn": "固定: 在 LiveView 帮助器中避免交互 Blink 2FA 提示( LiveView 不混合)"
-      },
-      "0.0.16": {
-        "en": "fix: chaged roles and hierachy",
-        "de": "fix: chaged rollen und hierarchie",
-        "ru": "исправление: выхолощенные роли и иерархия",
-        "pt": "correção: papéis changed e hierachy",
-        "nl": "fix: chaged rollen en hierachy",
-        "fr": "fix : rôles chagués et hiérachy",
-        "it": "correzione: ruoli casti e gerarchia",
-        "es": "fijación: roles encapsulados y jerarquía",
-        "pl": "fix: zawiązane role i hierarchia",
-        "uk": "фіксація: хатні ролі і херахія",
-        "zh-cn": "修饰: 调整的角色和高阶"
       }
     },
     "titleLang": {

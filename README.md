@@ -301,8 +301,7 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 0.0.23 (2026-07-02)
 * Translated long admin i18n entries to avoid untranslated fallback warnings.
 
 ### 0.0.22 (2026-07-01)
@@ -335,9 +334,6 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
 
 ### 0.0.19 (2026-06-24)
 * (Pischleuder1) fix: handle unsupported XT2 live view and avoid early HLS state
-
-### 0.0.18 (2026-06-15)
-* (Pischleuder1) fix: expose Blink account id for LiveView helper (blink.0.info.account_id)
 
 ## License
 
