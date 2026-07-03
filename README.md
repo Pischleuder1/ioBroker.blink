@@ -303,6 +303,7 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
 -->
 ### **WORK IN PROGRESS**
 * Avoided direct process.exit() calls in the IMMI/HLS helper.
+* Replaced custom LiveView sleep helper with Node.js timer promises.
 
 ### 0.0.25 (2026-07-02)
 * fix: remove personal LiveView camera override.
