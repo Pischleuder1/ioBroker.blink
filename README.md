@@ -301,7 +301,7 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.0.26 (2026-07-03)
 * Avoided direct process.exit() calls in the IMMI/HLS helper.
 * Replaced custom LiveView sleep helper with Node.js timer promises.
 
@@ -318,18 +318,6 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
 ### 0.0.22 (2026-07-01)
 * Fixed LiveView helper script version to use a numeric version string.
 * Aligned the admin default for the live snapshot interval with the adapter default.
-
-### 0.0.21 (2026-07-01)
-
-* Fixed account ID discovery so `info.account_id` and camera `info.account_id` are populated again.
-* Fixed Live Snapshot timer cleanup by clearing the recursive timeout correctly.
-* Fixed missing notification settings in the admin UI for battery and motion alerts.
-* Normalized new admin UI translations for Streaming and Notifications tabs.
-* Removed unused admin translation keys after the Notifications tab restructuring.
-* Translated remaining MJPEG server logs and comments to English.
-* Translated remaining LiveView helper messages to English.
-* Translated remaining LiveView web grid strings and comments to English.
-* Removed a hardcoded fallback account ID from the LiveView web grid helper.
 
 ## License
 
