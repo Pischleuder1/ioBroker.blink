@@ -301,6 +301,9 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* Replaced remaining blink-api sleep helper with Node.js timer promises.
+
 ### 0.0.27 (2026-07-03)
 * Replaced remaining blink-api sleep helper with Node.js timer promises.
 
