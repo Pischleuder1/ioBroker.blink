@@ -301,7 +301,7 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.0.27 (2026-07-03)
 * Replaced remaining blink-api sleep helper with Node.js timer promises.
 
 ### 0.0.26 (2026-07-03)
@@ -317,10 +317,6 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
 
 ### 0.0.23 (2026-07-02)
 * Translated long admin i18n entries to avoid untranslated fallback warnings.
-
-### 0.0.22 (2026-07-01)
-* Fixed LiveView helper script version to use a numeric version string.
-* Aligned the admin default for the live snapshot interval with the adapter default.
 
 ## License
 

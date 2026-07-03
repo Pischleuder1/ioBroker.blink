@@ -3,6 +3,10 @@
 Older changelog entries that have been moved out of `README.md` will appear below.
 This file is managed by [@alcalzone/release-script](https://github.com/AlCalzone/release-script)
 when newer entries are added to the README.
+## 0.0.22 (2026-07-01)
+* Fixed LiveView helper script version to use a numeric version string.
+* Aligned the admin default for the live snapshot interval with the adapter default.
+
 ## 0.0.21 (2026-07-01)
 
 * Fixed account ID discovery so `info.account_id` and camera `info.account_id` are populated again.
