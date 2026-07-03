@@ -3,6 +3,9 @@
 Older changelog entries that have been moved out of `README.md` will appear below.
 This file is managed by [@alcalzone/release-script](https://github.com/AlCalzone/release-script)
 when newer entries are added to the README.
+## 0.0.23 (2026-07-02)
+* Translated long admin i18n entries to avoid untranslated fallback warnings.
+
 ## 0.0.22 (2026-07-01)
 * Fixed LiveView helper script version to use a numeric version string.
 * Aligned the admin default for the live snapshot interval with the adapter default.

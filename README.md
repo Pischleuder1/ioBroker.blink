@@ -301,7 +301,7 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.0.28 (2026-07-03)
 * Replaced remaining blink-api sleep helper with Node.js timer promises.
 
 ### 0.0.27 (2026-07-03)
@@ -317,9 +317,6 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
 
 ### 0.0.24 (2026-07-02)
 * Translated remaining runtime-visible helper error and debug messages to English.
-
-### 0.0.23 (2026-07-02)
-* Translated long admin i18n entries to avoid untranslated fallback warnings.
 
 ## License
 
