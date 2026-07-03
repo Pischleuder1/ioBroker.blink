@@ -301,6 +301,9 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* Avoided direct process.exit() calls in the IMMI/HLS helper.
+
 ### 0.0.25 (2026-07-02)
 * fix: remove personal LiveView camera override.
 * Translated remaining blink-api documentation comments to English.
