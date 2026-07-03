@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "blink",
-    "version": "0.0.28",
+    "version": "0.0.29",
     "news": {
+      "0.0.29": {
+        "en": "Updated ioBroker dependencies and aligned TypeScript configuration with Node.js 22.",
+        "de": "Die ioBroker-Abhängigkeiten wurden aktualisiert und die TypeScript-Konfiguration an Node.js 22 angepasst.",
+        "ru": "Обновлены зависимости ioBroker и приведена в соответствие конфигурация TypeScript с Node.js 22.",
+        "pt": "Dependências do ioBroker atualizadas e configuração do TypeScript alinhada com o Node.js 22.",
+        "nl": "De afhankelijkheden van ioBroker zijn bijgewerkt en de TypeScript-configuratie is afgestemd op Node.js 22.",
+        "fr": "Dépendances ioBroker mises à jour et configuration TypeScript alignée sur Node.js 22.",
+        "it": "Aggiornate le dipendenze di ioBroker e allineata la configurazione di TypeScript con Node.js 22.",
+        "es": "Se actualizaron las dependencias de ioBroker y se alineó la configuración de TypeScript con Node.js 22.",
+        "pl": "Zaktualizowano zależności ioBroker i dostosowano konfigurację TypeScript do Node.js 22.",
+        "uk": "Оновлено залежності ioBroker та узгоджено конфігурацію TypeScript з Node.js 22.",
+        "zh-cn": "更新了ioBroker依赖项，并将TypeScript配置与Node.js 22保持一致。"
+      },
       "0.0.28": {
         "en": "Replaced remaining blink-api sleep helper with Node.js timer promises.",
         "de": "Die verbleibenden blink-api sleep helper wurden durch Node.js timer promises ersetzt.",
@@ -80,19 +93,6 @@
         "pl": "Przetłumaczono długie wpisy administracyjne i18n, aby uniknąć nieprzetłumaczonych ostrzeżeń awaryjnych.",
         "uk": "Перекладено довгі записи адміністратора i18n, щоб уникнути неперекладених резервних попереджень.",
         "zh-cn": "已翻译长篇管理员 i18n 条目，以避免出现未翻译的回退警告。"
-      },
-      "0.0.22": {
-        "en": "Fixed LiveView helper script version to use a numeric version string.\nAligned the admin default for the live snapshot interval with the adapter default.",
-        "de": "Die Versionsnummer des LiveView-Hilfsskripts wurde korrigiert und verwendet nun eine numerische Versionszeichenfolge.\nDer Administratorstandard für das Live-Snapshot-Intervall wurde an den Adapterstandard angepasst.",
-        "ru": "Исправлена ошибка в версии вспомогательного скрипта LiveView: теперь используется числовая строка версии.\nПриведены значения по умолчанию для интервала создания снимков в реальном времени, заданные администратором, в соответствие со значениями по умолчанию для адаптера.",
-        "pt": "Corrigida a versão do script auxiliar do LiveView para usar uma string de versão numérica.\nAlinhei o valor padrão do administrador para o intervalo de captura de instantâneos em tempo real com o valor padrão do adaptador.",
-        "nl": "De LiveView-helperscriptversie is aangepast om een numerieke versieaanduiding te gebruiken.\nDe standaardinstelling voor het beheerdersaccount voor het interval van de live snapshot is afgestemd op de standaardinstelling van de adapter.",
-        "fr": "Correction de la version du script d'assistance LiveView pour utiliser une chaîne de version numérique.\nAlignement de la valeur par défaut de l'administrateur pour l'intervalle de capture instantanée en direct avec la valeur par défaut de l'adaptateur.",
-        "it": "Ho corretto la versione dello script helper di LiveView per utilizzare una stringa di versione numerica.\nAllineato il valore predefinito dell'amministratore per l'intervallo di snapshot in tempo reale con il valore predefinito dell'adattatore.",
-        "es": "Se corrigió la versión del script auxiliar de LiveView para que utilice una cadena de versión numérica.\nSe alineó el valor predeterminado del administrador para el intervalo de instantáneas en tiempo real con el valor predeterminado del adaptador.",
-        "pl": "Poprawiono wersję skryptu pomocniczego LiveView, aby używała numerycznego ciągu wersji.\nWyrównano domyślną wartość administratora dla interwału migawek na żywo z wartością domyślną adaptera.",
-        "uk": "Виправлено версію допоміжного скрипта LiveView для використання числового рядка версії.\nВирівняно значення за замовчуванням адміністратора для інтервалу створення знімків у реальному часі зі значенням за замовчуванням адаптера.",
-        "zh-cn": "修复了 LiveView 辅助脚本版本控制问题，使其使用数字版本字符串。\n将实时快照间隔的管理员默认值与适配器默认值保持一致。"
       }
     },
     "titleLang": {

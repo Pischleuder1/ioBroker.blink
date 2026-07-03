@@ -301,7 +301,7 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.0.29 (2026-07-03)
 * Updated ioBroker dependencies and aligned TypeScript configuration with Node.js 22.
 
 ### 0.0.28 (2026-07-03)
@@ -317,9 +317,6 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
 ### 0.0.25 (2026-07-02)
 * fix: remove personal LiveView camera override.
 * Translated remaining blink-api documentation comments to English.
-
-### 0.0.24 (2026-07-02)
-* Translated remaining runtime-visible helper error and debug messages to English.
 
 ## License
 
