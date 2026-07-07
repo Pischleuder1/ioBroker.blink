@@ -3,6 +3,10 @@
 Older changelog entries that have been moved out of `README.md` will appear below.
 This file is managed by [@alcalzone/release-script](https://github.com/AlCalzone/release-script)
 when newer entries are added to the README.
+## 0.0.26 (2026-07-03)
+* Avoided direct process.exit() calls in the IMMI/HLS helper.
+* Replaced custom LiveView sleep helper with Node.js timer promises.
+
 ## 0.0.25 (2026-07-02)
 * fix: remove personal LiveView camera override.
 * Translated remaining blink-api documentation comments to English.

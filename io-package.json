@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "blink",
-    "version": "0.0.30",
+    "version": "0.0.31",
     "news": {
+      "0.0.31": {
+        "en": "Improved German admin UI translations.",
+        "de": "Verbesserte deutsche Übersetzungen der Admin-Benutzeroberfläche.",
+        "ru": "Улучшен перевод административного интерфейса на немецкий язык.",
+        "pt": "Traduções da interface administrativa em alemão aprimoradas.",
+        "nl": "Verbeterde vertalingen van de Duitse beheerdersinterface.",
+        "fr": "Amélioration des traductions de l'interface d'administration allemande.",
+        "it": "Traduzioni migliorate dell'interfaccia utente di amministrazione in tedesco.",
+        "es": "Se han mejorado las traducciones de la interfaz de administración en alemán.",
+        "pl": "Ulepszone tłumaczenia interfejsu administratora w języku niemieckim.",
+        "uk": "Покращено переклади інтерфейсу адміністратора німецькою мовою.",
+        "zh-cn": "改进了德语管理员用户界面翻译。"
+      },
       "0.0.30": {
         "en": "updated TypeScript dependencies",
         "de": "aktualisierte TypeScript-Abhängigkeiten",
@@ -80,19 +93,6 @@
         "pl": "naprawiono: usunięto nadpisanie osobistej kamery LiveView.\nPrzetłumaczono pozostałe komentarze dokumentacji blink-api na język angielski.",
         "uk": "виправлення: видалити перевизначення особистої камери LiveView.\nПерекладено решту коментарів до документації blink-api англійською мовою.",
         "zh-cn": "解决方法：移除个人实时取景摄像头覆盖设置。\n将剩余的 blink-api 文档注释翻译成英文。"
-      },
-      "0.0.24": {
-        "en": "Translated remaining runtime-visible helper error and debug messages to English.",
-        "de": "Die verbleibenden zur Laufzeit sichtbaren Hilfsfehler- und Debugmeldungen wurden ins Englische übersetzt.",
-        "ru": "Оставшиеся видимые во время выполнения вспомогательные сообщения об ошибках и отладочные сообщения переведены на английский язык.",
-        "pt": "Mensagens de erro e depuração auxiliares restantes, visíveis em tempo de execução, foram traduzidas para o inglês.",
-        "nl": "De resterende, tijdens de uitvoering zichtbare fout- en debugberichten van de helper zijn naar het Engels vertaald.",
-        "fr": "Traduction en anglais des messages d'erreur et de débogage restants visibles lors de l'exécution.",
-        "it": "Sono stati tradotti in inglese i restanti messaggi di errore e di debug visibili in fase di esecuzione.",
-        "es": "Se tradujeron al inglés los mensajes de error y depuración restantes que eran visibles en tiempo de ejecución.",
-        "pl": "Przetłumaczono pozostałe widoczne w czasie wykonywania komunikaty pomocnicze dotyczące błędów i debugowania na język angielski.",
-        "uk": "Перекладено англійською мовою решту видимих під час виконання повідомлень про помилки та налагодження допоміжної програми.",
-        "zh-cn": "将剩余的运行时可见的帮助程序错误和调试信息翻译成英文。"
       }
     },
     "titleLang": {

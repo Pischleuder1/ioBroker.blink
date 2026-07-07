@@ -301,7 +301,7 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.0.31 (2026-07-07)
 * Improved German admin UI translations.
 
 ### 0.0.30 (2026-07-07)
@@ -315,10 +315,6 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
 
 ### 0.0.27 (2026-07-03)
 * Replaced remaining blink-api sleep helper with Node.js timer promises.
-
-### 0.0.26 (2026-07-03)
-* Avoided direct process.exit() calls in the IMMI/HLS helper.
-* Replaced custom LiveView sleep helper with Node.js timer promises.
 
 ## License
 
