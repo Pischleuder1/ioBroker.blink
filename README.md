@@ -301,6 +301,9 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* updated TypeScript dependencies
+
 ### 0.0.29 (2026-07-03)
 * Updated ioBroker dependencies and aligned TypeScript configuration with Node.js 22.
 
