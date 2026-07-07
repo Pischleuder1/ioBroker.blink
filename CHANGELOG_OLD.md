@@ -3,6 +3,10 @@
 Older changelog entries that have been moved out of `README.md` will appear below.
 This file is managed by [@alcalzone/release-script](https://github.com/AlCalzone/release-script)
 when newer entries are added to the README.
+## 0.0.25 (2026-07-02)
+* fix: remove personal LiveView camera override.
+* Translated remaining blink-api documentation comments to English.
+
 ## 0.0.24 (2026-07-02)
 * Translated remaining runtime-visible helper error and debug messages to English.
 

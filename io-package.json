@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "blink",
-    "version": "0.0.29",
+    "version": "0.0.30",
     "news": {
+      "0.0.30": {
+        "en": "updated TypeScript dependencies",
+        "de": "aktualisierte TypeScript-Abhängigkeiten",
+        "ru": "обновлены зависимости TypeScript",
+        "pt": "Dependências do TypeScript atualizadas",
+        "nl": "bijgewerkte TypeScript-afhankelijkheden",
+        "fr": "Dépendances TypeScript mises à jour",
+        "it": "dipendenze TypeScript aggiornate",
+        "es": "dependencias de TypeScript actualizadas",
+        "pl": "zaktualizowane zależności TypeScript",
+        "uk": "оновлені залежності TypeScript",
+        "zh-cn": "更新了 TypeScript 依赖项"
+      },
       "0.0.29": {
         "en": "Updated ioBroker dependencies and aligned TypeScript configuration with Node.js 22.",
         "de": "Die ioBroker-Abhängigkeiten wurden aktualisiert und die TypeScript-Konfiguration an Node.js 22 angepasst.",
@@ -80,19 +93,6 @@
         "pl": "Przetłumaczono pozostałe widoczne w czasie wykonywania komunikaty pomocnicze dotyczące błędów i debugowania na język angielski.",
         "uk": "Перекладено англійською мовою решту видимих під час виконання повідомлень про помилки та налагодження допоміжної програми.",
         "zh-cn": "将剩余的运行时可见的帮助程序错误和调试信息翻译成英文。"
-      },
-      "0.0.23": {
-        "en": "Translated long admin i18n entries to avoid untranslated fallback warnings.",
-        "de": "Lange i18n-Einträge im Adminbereich wurden übersetzt, um Warnungen wegen nicht übersetzter Fallback-Optionen zu vermeiden.",
-        "ru": "Переведены длинные записи интернационализации для административной панели, чтобы избежать предупреждений о непереведенных резервных вариантах.",
-        "pt": "Traduzimos entradas longas de internacionalização (i18n) do painel administrativo para evitar avisos de fallback para traduções incorretas.",
-        "nl": "Lange i18n-vermeldingen voor beheerders zijn vertaald om waarschuwingen over niet-vertaalde gegevens te voorkomen.",
-        "fr": "Traduction des entrées i18n d'administration longues afin d'éviter les avertissements de repli non traduits.",
-        "it": "Sono state tradotte le voci lunghe di amministrazione i18n per evitare avvisi di fallback non tradotti.",
-        "es": "Se tradujeron las entradas largas de administración i18n para evitar advertencias de versiones alternativas sin traducir.",
-        "pl": "Przetłumaczono długie wpisy administracyjne i18n, aby uniknąć nieprzetłumaczonych ostrzeżeń awaryjnych.",
-        "uk": "Перекладено довгі записи адміністратора i18n, щоб уникнути неперекладених резервних попереджень.",
-        "zh-cn": "已翻译长篇管理员 i18n 条目，以避免出现未翻译的回退警告。"
       }
     },
     "titleLang": {
