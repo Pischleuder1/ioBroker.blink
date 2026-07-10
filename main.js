@@ -782,6 +782,7 @@ class BlinkAdapter extends utils.Adapter {
 			this.session = await this.getBlinkSessionSafe(email, password, pin);
 			pin = this.cfg?.pin || '';
 			await this.pollOnce();
+			await this.archiveExistingVideoFiles();
 			if (cleanupOldSnapshots) {
 				this.cleanupSnapshots();
 			}
@@ -2181,6 +2182,105 @@ class BlinkAdapter extends utils.Adapter {
 		const d = value ? new Date(value) : new Date();
 		const valid = Number.isFinite(d.getTime()) ? d : new Date();
 		return valid.toISOString().replace(/[:.]/g, '-').replace(/Z$/, '');
+	}
+
+	async archiveExistingVideoFiles() {
+		if (!this.cfg?.archiveEnabled || this.archiveBackfillInProgress) {
+			return;
+		}
+
+		this.archiveBackfillInProgress = true;
+		let archived = 0;
+
+		try {
+			const available = await this.updateArchiveAvailabilityState();
+			if (!available) {
+				return;
+			}
+
+			for (const [devId] of this.camerasById || []) {
+				archived += await this.archiveExistingVideoFilesForCamera(devId);
+			}
+
+			if (archived > 0) {
+				this.log.info(`Archived ${archived} existing local video file(s).`);
+			}
+		} catch (e) {
+			this.log.warn(`Existing video archive backfill failed: ${e?.message || e}`);
+		} finally {
+			this.archiveBackfillInProgress = false;
+		}
+	}
+
+	async archiveExistingVideoFilesForCamera(devId) {
+		if (!this.cfg?.archiveEnabled) {
+			return 0;
+		}
+
+		const items = [
+			{
+				label: 'current',
+				fileState: `cameras.${devId}.video.file`,
+				timestampState: `cameras.${devId}.video.timestamp`,
+				idState: `cameras.${devId}.video.id`,
+				sourceState: null,
+			},
+		];
+
+		for (let i = 0; i < 10; i++) {
+			items.push({
+				label: `history_${i}`,
+				fileState: `cameras.${devId}.video.history.${i}.file`,
+				timestampState: `cameras.${devId}.video.history.${i}.timestamp`,
+				idState: `cameras.${devId}.video.history.${i}.id`,
+				sourceState: `cameras.${devId}.video.history.${i}.source`,
+			});
+		}
+
+		let archived = 0;
+
+		for (const item of items) {
+			try {
+				const fileState = await this.getStateAsync(item.fileState);
+				const sourceFile = String(fileState?.val || '');
+
+				if (!this.isUsableFile(sourceFile)) {
+					continue;
+				}
+
+				const timestampState = await this.getStateAsync(item.timestampState);
+				const idState = await this.getStateAsync(item.idState);
+				const sourceState = item.sourceState ? await this.getStateAsync(item.sourceState) : null;
+
+				let createdAt = String(timestampState?.val || '');
+				if (!createdAt) {
+					try {
+						createdAt = fs.statSync(sourceFile).mtime.toISOString();
+					} catch {
+						createdAt = new Date().toISOString();
+					}
+				}
+
+				const fallbackId = `${item.label}_${path.basename(sourceFile, path.extname(sourceFile))}`;
+				const videoId = String(idState?.val || fallbackId);
+				const source = String(sourceState?.val || item.label);
+
+				await this.archiveVideo(devId, {
+					file: sourceFile,
+					created_at: createdAt,
+					id: videoId,
+					video_id: videoId,
+					size: this.fileSize(sourceFile),
+					source,
+				});
+
+				archived++;
+			} catch (e) {
+				this.log.debug(`Archive backfill skipped ${item.label} for ${devId}: ${e?.message || e}`);
+			}
+		}
+
+		return archived;
 	}
 
 	async archiveVideo(devId, res) {
