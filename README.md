@@ -301,6 +301,10 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* Added optional video archive for downloaded MP4 clips on NAS.
+* Added archive support to the camera grid.
+
 ### 0.0.31 (2026-07-07)
 * Improved German admin UI translations.
 
