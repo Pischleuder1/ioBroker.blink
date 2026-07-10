@@ -301,7 +301,7 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.0.32 (2026-07-10)
 * Added optional video archive for downloaded MP4 clips on NAS.
 * Added archive support to the camera grid.
 * Backfilled existing local video files into the archive.
@@ -318,9 +318,6 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
 * Updated ioBroker dependencies and aligned TypeScript configuration with Node.js 22.
 
 ### 0.0.28 (2026-07-03)
-* Replaced remaining blink-api sleep helper with Node.js timer promises.
-
-### 0.0.27 (2026-07-03)
 * Replaced remaining blink-api sleep helper with Node.js timer promises.
 
 ## License
