@@ -306,6 +306,7 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
 * Added archive support to the camera grid.
 * Backfilled existing local video files into the archive.
 * Sorted and deduplicated archive clips in the camera grid.
+* Added date/time labels for archive clips in the camera grid.
 
 ### 0.0.31 (2026-07-07)
 * Improved German admin UI translations.
