@@ -181,7 +181,11 @@
     "maxSnapshotAgeHours": 24,
     "batteryWarningEnabled": false,
     "batteryWarningThresholdVolt": 1.1,
-    "batteryWarningCooldownHours": 24
+    "batteryWarningCooldownHours": 24,
+    "archiveEnabled": false,
+    "archiveDir": "/opt/iobroker/iobroker-data/blink-archive",
+    "archiveCreateCameraFolders": true,
+    "archiveMaxClipsPerCamera": 50
   },
   "objects": [],
   "instanceObjects": [

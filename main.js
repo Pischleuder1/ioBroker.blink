@@ -635,6 +635,10 @@ class BlinkAdapter extends utils.Adapter {
 		const storeBase64 = this.config.storeBase64 !== false;
 		const cleanupOldSnapshots = this.config.cleanupOldSnapshots !== false;
 		const maxSnapshotAgeHours = Math.max(1, Number(this.config.maxSnapshotAgeHours) || 24);
+		const archiveEnabled = this.config.archiveEnabled === true;
+		const archiveDir = (this.config.archiveDir || '/opt/iobroker/iobroker-data/blink-archive').trim();
+		const archiveCreateCameraFolders = this.config.archiveCreateCameraFolders !== false;
+		const archiveMaxClipsPerCamera = Math.max(1, Math.min(500, Number(this.config.archiveMaxClipsPerCamera) || 50));
 		const batteryWarningEnabled = this.config.batteryWarningEnabled === true;
 		const batteryWarningThresholdVolt = Number(this.config.batteryWarningThresholdVolt) || 1.1;
 		const batteryWarningCooldownHours = Math.max(1, Number(this.config.batteryWarningCooldownHours) || 24);
@@ -718,6 +722,10 @@ class BlinkAdapter extends utils.Adapter {
 			storeBase64,
 			cleanupOldSnapshots,
 			maxSnapshotAgeHours,
+			archiveEnabled,
+			archiveDir,
+			archiveCreateCameraFolders,
+			archiveMaxClipsPerCamera,
 			batteryWarningEnabled,
 			batteryWarningThresholdVolt,
 			batteryWarningCooldownHours,
@@ -746,6 +754,8 @@ class BlinkAdapter extends utils.Adapter {
 		} catch {
 			// Verzeichnis existiert bereits oder kann nicht angelegt werden – beim Schreiben fällt das ohnehin auf.
 		}
+
+		await this.updateArchiveAvailabilityState();
 
 		await this.setObjectNotExistsAsync('info.connection', {
 			type: 'state',
@@ -981,6 +991,20 @@ class BlinkAdapter extends utils.Adapter {
 			common: { name: 'Sync modules' },
 			native: {},
 		});
+
+		await this.setObjectNotExistsAsync('archive', {
+			type: 'channel',
+			common: { name: 'Video archive' },
+			native: {},
+		});
+
+		await this.ensureState('archive.enabled', 'Archive enabled', 'boolean', 'indicator', false);
+		await this.ensureState('archive.available', 'Archive available', 'boolean', 'indicator', false);
+		await this.ensureState('archive.directory', 'Archive directory', 'string', 'text', false);
+		await this.ensureState('archive.lastFile', 'Last archived source file', 'string', 'text', false);
+		await this.ensureState('archive.lastTarget', 'Last archive target file', 'string', 'text', false);
+		await this.ensureState('archive.lastSuccess', 'Last archive success', 'string', 'date', false);
+		await this.ensureState('archive.lastError', 'Last archive error', 'string', 'text', false);
 	}
 
 	async pollOnce() {
@@ -2103,6 +2127,130 @@ class BlinkAdapter extends utils.Adapter {
 		}
 	}
 
+	async updateArchiveAvailabilityState() {
+		const enabled = !!this.cfg?.archiveEnabled;
+		const dir = String(this.cfg?.archiveDir || '').trim();
+
+		await this.setStateAsync('archive.enabled', enabled, true);
+		await this.setStateAsync('archive.directory', dir, true);
+
+		if (!enabled) {
+			await this.setStateAsync('archive.available', false, true);
+			await this.setStateAsync('archive.lastError', '', true);
+			return false;
+		}
+
+		if (!dir) {
+			const msg = 'Archive directory is empty';
+			await this.setStateAsync('archive.available', false, true);
+			await this.setStateAsync('archive.lastError', msg, true);
+			return false;
+		}
+
+		try {
+			fs.mkdirSync(dir, { recursive: true });
+			fs.accessSync(dir, fs.constants.W_OK);
+
+			const testFile = path.join(dir, `.iobroker-blink-archive-test-${process.pid}`);
+			fs.writeFileSync(testFile, 'test');
+			fs.unlinkSync(testFile);
+
+			await this.setStateAsync('archive.available', true, true);
+			await this.setStateAsync('archive.lastError', '', true);
+			return true;
+		} catch (e) {
+			const msg = `Archive directory is not writable: ${e?.message || e}`;
+			await this.setStateAsync('archive.available', false, true);
+			await this.setStateAsync('archive.lastError', msg, true);
+			this.log.warn(msg);
+			return false;
+		}
+	}
+
+	safeArchiveSegment(value, fallback = 'unknown') {
+		const raw = String(value || '').trim();
+		const cleaned = raw
+			.replace(/[\\/:*?"<>|]+/g, '_')
+			.replace(/\s+/g, '_')
+			.replace(/_+/g, '_')
+			.replace(/^_+|_+$/g, '');
+		return cleaned || fallback;
+	}
+
+	archiveTimestamp(value) {
+		const d = value ? new Date(value) : new Date();
+		const valid = Number.isFinite(d.getTime()) ? d : new Date();
+		return valid.toISOString().replace(/[:.]/g, '-').replace(/Z$/, '');
+	}
+
+	async archiveVideo(devId, res) {
+		if (!this.cfg?.archiveEnabled) {
+			return;
+		}
+
+		try {
+			const sourceFile = String(res?.file || '');
+			if (!this.isUsableFile(sourceFile)) {
+				throw new Error('Source video file is missing or empty');
+			}
+
+			const archiveDir = String(this.cfg.archiveDir || '').trim();
+			if (!archiveDir) {
+				throw new Error('Archive directory is empty');
+			}
+
+			const available = await this.updateArchiveAvailabilityState();
+			if (!available) {
+				return;
+			}
+
+			const cam = this.camerasById.get(devId);
+			const cameraName = this.safeArchiveSegment(cam?.name || '', '');
+			const cameraDirName =
+				cameraName && cameraName !== devId
+					? `${this.safeArchiveSegment(devId)}_${cameraName}`
+					: this.safeArchiveSegment(devId);
+
+			const targetDir =
+				this.cfg.archiveCreateCameraFolders !== false ? path.join(archiveDir, cameraDirName) : archiveDir;
+
+			await fs.promises.mkdir(targetDir, { recursive: true });
+
+			const videoId = this.safeArchiveSegment(res?.id || res?.video_id || path.parse(sourceFile).name, 'clip');
+			const source = this.safeArchiveSegment(res?.source || 'clip', 'clip');
+			const ts = this.archiveTimestamp(res?.created_at);
+			const targetFile = path.join(targetDir, `${ts}_${this.safeArchiveSegment(devId)}_${source}_${videoId}.mp4`);
+
+			const resolvedRoot = path.resolve(archiveDir) + path.sep;
+			const resolvedTarget = path.resolve(targetFile);
+			if (!resolvedTarget.startsWith(resolvedRoot)) {
+				throw new Error('Archive target escaped archive directory');
+			}
+
+			if (path.resolve(sourceFile) !== resolvedTarget) {
+				await fs.promises.copyFile(sourceFile, targetFile);
+			}
+
+			const stat = await fs.promises.stat(targetFile);
+			if (!stat.isFile() || stat.size <= 0) {
+				throw new Error('Archived video file is empty');
+			}
+
+			await this.setStateAsync('archive.available', true, true);
+			await this.setStateAsync('archive.lastFile', sourceFile, true);
+			await this.setStateAsync('archive.lastTarget', targetFile, true);
+			await this.setStateAsync('archive.lastSuccess', new Date().toISOString(), true);
+			await this.setStateAsync('archive.lastError', '', true);
+
+			this.log.debug(`Video archived: ${targetFile}`);
+		} catch (e) {
+			const msg = `Video archive failed: ${e?.message || e}`;
+			await this.setStateAsync('archive.available', false, true);
+			await this.setStateAsync('archive.lastError', msg, true);
+			this.log.warn(msg);
+		}
+	}
+
 	async syncLatestCloudVideos(cameras) {
 		if (this.videoSyncInProgress || !this.session) {
 			return;
@@ -2496,6 +2644,7 @@ class BlinkAdapter extends utils.Adapter {
 		await this.setStateAsync(`cameras.${devId}.video.ready`, true, true);
 		await this.setStateAsync(`cameras.${devId}.video.lastError`, '', true);
 		await this.updateDetectionStates(devId, res);
+		await this.archiveVideo(devId, res);
 	}
 
 	/**
