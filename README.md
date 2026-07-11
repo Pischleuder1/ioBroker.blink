@@ -303,6 +303,7 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
 -->
 ### **WORK IN PROGRESS**
 * Fixed automatic camera grid helper updates for existing installations.
+* Added German translations to the camera grid.
 
 ### 0.0.32 (2026-07-10)
 * Added optional video archive for downloaded MP4 clips on NAS.
