@@ -3,6 +3,9 @@
 Older changelog entries that have been moved out of `README.md` will appear below.
 This file is managed by [@alcalzone/release-script](https://github.com/AlCalzone/release-script)
 when newer entries are added to the README.
+## 0.0.28 (2026-07-03)
+* Replaced remaining blink-api sleep helper with Node.js timer promises.
+
 ## 0.0.27 (2026-07-03)
 * Replaced remaining blink-api sleep helper with Node.js timer promises.
 

@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "blink",
-    "version": "0.0.32",
+    "version": "0.0.33",
     "news": {
+      "0.0.33": {
+        "en": "Fixed automatic camera grid helper updates for existing installations.\nAdded German translations to the camera grid.",
+        "de": "Automatische Aktualisierungen der Kamerarasterhilfe für bestehende Installationen behoben.\nDeutsche Übersetzungen wurden dem Kameraraster hinzugefügt.",
+        "ru": "Исправлены автоматические обновления вспомогательной сетки камер для существующих установок.\nДобавлен немецкий перевод в сетку камер.",
+        "pt": "Correção nas atualizações automáticas do auxiliar de grade de câmeras para instalações existentes.\nAdicionadas traduções em alemão à grade da câmera.",
+        "nl": "De automatische updates van de cameragrid-helper voor bestaande installaties zijn gecorrigeerd.\nDuitse vertalingen toegevoegd aan het cameraraster.",
+        "fr": "Correction des mises à jour automatiques de l'assistant de grille de caméra pour les installations existantes.\nAjout de traductions allemandes à la grille de la caméra.",
+        "it": "Risolto il problema relativo agli aggiornamenti automatici del sistema di supporto per la griglia delle telecamere nelle installazioni esistenti.\nSono state aggiunte le traduzioni in tedesco alla griglia della fotocamera.",
+        "es": "Se corrigieron las actualizaciones automáticas del asistente de cuadrícula de cámaras para las instalaciones existentes.\nSe han añadido traducciones al alemán a la cuadrícula de la cámara.",
+        "pl": "Naprawiono automatyczne aktualizacje siatki kamer dla istniejących instalacji.\nDodano niemieckie tłumaczenia do siatki kamery.",
+        "uk": "Виправлено автоматичне оновлення допоміжної сітки камери для існуючих інсталяцій.\nДодано німецькі переклади до сітки камери.",
+        "zh-cn": "修复了现有安装的自动相机网格辅助更新问题。\n为相机网格添加了德语翻译。"
+      },
       "0.0.32": {
         "en": "Added optional video archive for downloaded MP4 clips on NAS.\nAdded archive support to the camera grid.\nBackfilled existing local video files into the archive.\nSorted and deduplicated archive clips in the camera grid.\nAdded date/time labels for archive clips in the camera grid.",
         "de": "Optionales Videoarchiv für heruntergeladene MP4-Clips auf dem NAS hinzugefügt.\nDie Archivierungsfunktion wurde dem Kameraraster hinzugefügt.\nVorhandene lokale Videodateien wurden in das Archiv eingefügt.\nArchivclips im Kameraraster sortiert und von Duplikaten befreit.\nIm Kameraraster wurden Datums-/Zeitangaben für Archivclips hinzugefügt.",
@@ -80,19 +93,6 @@
         "pl": "Zastąpiono pozostałą funkcję pomocniczą blink-api sleep obietnicami timera Node.js.",
         "uk": "Замінено решту помічника sleep blink-api на обіцянки таймера Node.js.",
         "zh-cn": "将剩余的 blink-api 睡眠辅助函数替换为 Node.js 定时器 promise。"
-      },
-      "0.0.26": {
-        "en": "Avoided direct process.exit() calls in the IMMI/HLS helper.\nReplaced custom LiveView sleep helper with Node.js timer promises.",
-        "de": "Direkte process.exit()-Aufrufe im IMMI/HLS-Helper wurden vermieden.\nDer benutzerdefinierte LiveView-Sleep-Helper wurde durch Node.js-Timer-Promises ersetzt.",
-        "ru": "В вспомогательной функции IMMI/HLS удалось избежать прямых вызовов process.exit().\nЗаменил пользовательский вспомогательный класс для задержки в LiveView на промисы таймера Node.js.",
-        "pt": "Evitaram-se chamadas diretas a process.exit() no auxiliar IMMI/HLS.\nSubstituí a função auxiliar de suspensão personalizada do LiveView por promessas de temporizador do Node.js.",
-        "nl": "Directe aanroepen van process.exit() in de IMMI/HLS-helper zijn vermeden.\nDe aangepaste LiveView-sleephelper is vervangen door Node.js timer-promises.",
-        "fr": "Les appels directs à process.exit() ont été évités dans l'assistant IMMI/HLS.\nRemplacement de la fonction d'assistance personnalisée pour la mise en veille de LiveView par des promesses de minuterie Node.js.",
-        "it": "Sono state evitate le chiamate dirette a process.exit() nell'helper IMMI/HLS.\nHo sostituito l'helper di sospensione personalizzato di LiveView con le promise del timer di Node.js.",
-        "es": "Se evitaron las llamadas directas a process.exit() en la función auxiliar IMMI/HLS.\nSe reemplazó el asistente de suspensión personalizado de LiveView con promesas de temporizador de Node.js.",
-        "pl": "Pominięto bezpośrednie wywołania process.exit() w pomocniku IMMI/HLS.\nZastąpiono niestandardową funkcję pomocniczą LiveView sleep obietnicami timera Node.js.",
-        "uk": "Уникнуто прямих викликів process.exit() у допоміжній функції IMMI/HLS.\nЗамінено користувацький помічник сну LiveView на обіцянки таймера Node.js.",
-        "zh-cn": "避免在 IMMI/HLS 辅助程序中直接调用 process.exit()。\n将自定义的 LiveView 睡眠辅助函数替换为 Node.js 定时器 Promise。"
       }
     },
     "titleLang": {

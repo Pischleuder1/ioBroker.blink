@@ -301,7 +301,7 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.0.33 (2026-07-11)
 * Fixed automatic camera grid helper updates for existing installations.
 * Added German translations to the camera grid.
 
@@ -320,9 +320,6 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
 
 ### 0.0.29 (2026-07-03)
 * Updated ioBroker dependencies and aligned TypeScript configuration with Node.js 22.
-
-### 0.0.28 (2026-07-03)
-* Replaced remaining blink-api sleep helper with Node.js timer promises.
 
 ## License
 
