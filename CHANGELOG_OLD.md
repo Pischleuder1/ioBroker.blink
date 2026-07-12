@@ -3,6 +3,9 @@
 Older changelog entries that have been moved out of `README.md` will appear below.
 This file is managed by [@alcalzone/release-script](https://github.com/AlCalzone/release-script)
 when newer entries are added to the README.
+## 0.0.30 (2026-07-07)
+* updated TypeScript dependencies
+
 ## 0.0.29 (2026-07-03)
 * Updated ioBroker dependencies and aligned TypeScript configuration with Node.js 22.
 

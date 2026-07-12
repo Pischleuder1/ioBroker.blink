@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "blink",
-    "version": "0.0.34",
+    "version": "0.0.35",
     "news": {
+      "0.0.35": {
+        "en": "Fixed remaining admin checker warnings for archive translations.",
+        "de": "Die verbleibenden Warnungen des Administratorprüfers für Archivübersetzungen wurden behoben.",
+        "ru": "Исправлены оставшиеся предупреждения административной проверки для переводов архива.",
+        "pt": "Corrigidos os avisos restantes do verificador administrativo para traduções de arquivos.",
+        "nl": "De resterende waarschuwingen van de beheerderscontrole voor archiefvertalingen zijn verholpen.",
+        "fr": "Correction des derniers avertissements du vérificateur d'administration concernant les traductions d'archives.",
+        "it": "Risolti i restanti avvisi del controllo amministrativo per le traduzioni degli archivi.",
+        "es": "Se corrigieron las advertencias restantes del verificador de administrador para las traducciones de archivos.",
+        "pl": "Naprawiono pozostałe ostrzeżenia administratora dotyczące tłumaczeń archiwów.",
+        "uk": "Виправлено залишки попереджень перевірки адміністратора для архівних перекладів.",
+        "zh-cn": "修复了存档翻译中剩余的管理员检查警告。"
+      },
       "0.0.34": {
         "en": "Fixed admin JSON configuration layout warnings.\nUpdated archive admin translations.",
         "de": "Warnungen bezüglich des Layouts der Admin-JSON-Konfiguration wurden behoben.\nAktualisierte Übersetzungen der Archivadministratoren.",
@@ -80,19 +93,6 @@
         "pl": "Zaktualizowano zależności ioBroker i dostosowano konfigurację TypeScript do Node.js 22.",
         "uk": "Оновлено залежності ioBroker та узгоджено конфігурацію TypeScript з Node.js 22.",
         "zh-cn": "更新了ioBroker依赖项，并将TypeScript配置与Node.js 22保持一致。"
-      },
-      "0.0.28": {
-        "en": "Replaced remaining blink-api sleep helper with Node.js timer promises.",
-        "de": "Die verbleibenden blink-api sleep helper wurden durch Node.js timer promises ersetzt.",
-        "ru": "Заменил оставшийся вспомогательный класс для функции sleep из blink-api на промисы таймера Node.js.",
-        "pt": "Substituí a função auxiliar de espera (sleep) restante da blink-api por promessas de temporizador do Node.js.",
-        "nl": "De resterende sleep-helper van blink-api is vervangen door Node.js timer-promises.",
-        "fr": "Remplacement de la fonction d'assistance de mise en veille de blink-api restante par des promesses de minuterie Node.js.",
-        "it": "Sostituito il restante helper di sospensione di blink-api con le promise del timer di Node.js.",
-        "es": "Se reemplazó el asistente de suspensión restante de blink-api con promesas de temporizador de Node.js.",
-        "pl": "Zastąpiono pozostałą funkcję pomocniczą blink-api sleep obietnicami timera Node.js.",
-        "uk": "Замінено решту помічника sleep blink-api на обіцянки таймера Node.js.",
-        "zh-cn": "将剩余的 blink-api 睡眠辅助函数替换为 Node.js 定时器 promise。"
       }
     },
     "titleLang": {

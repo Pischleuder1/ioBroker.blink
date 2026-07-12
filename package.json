@@ -1,6 +1,6 @@
 {
   "name": "iobroker.blink",
-  "version": "0.0.34",
+  "version": "0.0.35",
   "description": "adapter for amazon blink system and ioBroker",
   "author": {
     "name": "Pischleuder1",

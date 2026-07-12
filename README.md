@@ -301,7 +301,7 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.0.35 (2026-07-12)
 * Fixed remaining admin checker warnings for archive translations.
 
 ### 0.0.34 (2026-07-12)
@@ -321,9 +321,6 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
 
 ### 0.0.31 (2026-07-07)
 * Improved German admin UI translations.
-
-### 0.0.30 (2026-07-07)
-* updated TypeScript dependencies
 
 ## License
 
