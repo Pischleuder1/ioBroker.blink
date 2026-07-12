@@ -322,6 +322,8 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
 ### 0.0.31 (2026-07-07)
 * Improved German admin UI translations.
 
+[Older changelogs can be found there](CHANGELOG_OLD.md)
+
 ## License
 
 MIT License
