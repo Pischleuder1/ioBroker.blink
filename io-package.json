@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "blink",
-    "version": "0.0.35",
+    "version": "0.0.36",
     "news": {
+      "0.0.36": {
+        "en": "Fixed remaining admin checker warnings for archive translations.\nNormalized admin UI translation keys for streaming settings.\nNormalized English runtime labels and debug messages.\nDocumented that the LiveView web grid helper requires Linux.",
+        "de": "Die verbleibenden Warnungen des Administratorprüfers für Archivübersetzungen wurden behoben.\nNormalisierte Übersetzungsschlüssel für die Benutzeroberfläche des Administrators für Streaming-Einstellungen.\nNormalisierte englische Laufzeitbezeichnungen und Debug-Meldungen.\nEs wurde dokumentiert, dass der LiveView-Webgrid-Helper Linux benötigt.",
+        "ru": "Исправлены оставшиеся предупреждения административной проверки для переводов архива.\nНормализованы ключи перевода административного интерфейса для настроек потоковой передачи.\nНормализованные метки времени выполнения на английском языке и отладочные сообщения.\nВ документации указано, что для работы вспомогательной программы LiveView web grid требуется Linux.",
+        "pt": "Corrigidos os avisos restantes do verificador administrativo para traduções de arquivos.\nChaves de tradução da interface administrativa normalizadas para configurações de streaming.\nRótulos de tempo de execução e mensagens de depuração em inglês normalizado.\nEstá documentado que o auxiliar de grade web LiveView requer Linux.",
+        "nl": "De resterende waarschuwingen van de beheerderscontrole voor archiefvertalingen zijn verholpen.\nGenormaliseerde vertaalsleutels voor de beheerdersinterface voor streaminginstellingen.\nGenormaliseerde Engelse runtime-labels en debugberichten.\nHet is gedocumenteerd dat de LiveView webgrid-helper Linux vereist.",
+        "fr": "Correction des derniers avertissements du vérificateur d'administration concernant les traductions d'archives.\nClés de traduction normalisées de l'interface d'administration pour les paramètres de streaming.\nÉtiquettes d'exécution et messages de débogage normalisés en anglais.\nIl est établi que l'utilitaire de grille Web LiveView nécessite Linux.",
+        "it": "Risolti i restanti avvisi del controllo amministrativo per le traduzioni degli archivi.\nTasti di traduzione normalizzati dell'interfaccia utente di amministrazione per le impostazioni di streaming.\nEtichette di runtime e messaggi di debug in inglese normalizzati.\nÈ documentato che l'helper per la griglia web LiveView richiede Linux.",
+        "es": "Se corrigieron las advertencias restantes del verificador de administrador para las traducciones de archivos.\nClaves de traducción de la interfaz de administración normalizadas para la configuración de transmisión.\nEtiquetas de tiempo de ejecución y mensajes de depuración en inglés normalizados.\nSe ha documentado que la herramienta de ayuda para la cuadrícula web LiveView requiere Linux.",
+        "pl": "Naprawiono pozostałe ostrzeżenia administratora dotyczące tłumaczeń archiwów.\nZnormalizowane klawisze tłumaczenia interfejsu administratora dla ustawień przesyłania strumieniowego.\nZnormalizowane etykiety czasu wykonania i komunikaty debugowania w języku angielskim.\nUdokumentowano, że pomocniczy moduł siatki internetowej LiveView wymaga systemu Linux.",
+        "uk": "Виправлено залишки попереджень перевірки адміністратора для архівних перекладів.\nНормалізовані ключі перекладу інтерфейсу адміністратора для налаштувань потокової передачі.\nНормалізовані англійські мітки середовища виконання та повідомлення налагодження.\nЗадокументовано, що для роботи допоміжного пристрою веб-сітки LiveView потрібен Linux.",
+        "zh-cn": "修复了存档翻译中剩余的管理员检查警告。\n流式设置中的管理界面标准化翻译键。\n规范化的英文运行时标签和调试信息。\n文档显示 LiveView Web 网格助手需要 Linux 系统。"
+      },
       "0.0.35": {
         "en": "Fixed remaining admin checker warnings for archive translations.",
         "de": "Die verbleibenden Warnungen des Administratorprüfers für Archivübersetzungen wurden behoben.",
@@ -80,19 +93,6 @@
         "pl": "zaktualizowane zależności TypeScript",
         "uk": "оновлені залежності TypeScript",
         "zh-cn": "更新了 TypeScript 依赖项"
-      },
-      "0.0.29": {
-        "en": "Updated ioBroker dependencies and aligned TypeScript configuration with Node.js 22.",
-        "de": "Die ioBroker-Abhängigkeiten wurden aktualisiert und die TypeScript-Konfiguration an Node.js 22 angepasst.",
-        "ru": "Обновлены зависимости ioBroker и приведена в соответствие конфигурация TypeScript с Node.js 22.",
-        "pt": "Dependências do ioBroker atualizadas e configuração do TypeScript alinhada com o Node.js 22.",
-        "nl": "De afhankelijkheden van ioBroker zijn bijgewerkt en de TypeScript-configuratie is afgestemd op Node.js 22.",
-        "fr": "Dépendances ioBroker mises à jour et configuration TypeScript alignée sur Node.js 22.",
-        "it": "Aggiornate le dipendenze di ioBroker e allineata la configurazione di TypeScript con Node.js 22.",
-        "es": "Se actualizaron las dependencias de ioBroker y se alineó la configuración de TypeScript con Node.js 22.",
-        "pl": "Zaktualizowano zależności ioBroker i dostosowano konfigurację TypeScript do Node.js 22.",
-        "uk": "Оновлено залежності ioBroker та узгоджено конфігурацію TypeScript з Node.js 22.",
-        "zh-cn": "更新了ioBroker依赖项，并将TypeScript配置与Node.js 22保持一致。"
       }
     },
     "titleLang": {

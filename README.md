@@ -328,7 +328,7 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.0.36 (2026-07-12)
 * Fixed remaining admin checker warnings for archive translations.
 * Normalized admin UI translation keys for streaming settings.
 * Normalized English runtime labels and debug messages.
@@ -351,9 +351,6 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
 * Backfilled existing local video files into the archive.
 * Sorted and deduplicated archive clips in the camera grid.
 * Added date/time labels for archive clips in the camera grid.
-
-### 0.0.31 (2026-07-07)
-* Improved German admin UI translations.
 
 ## License
 

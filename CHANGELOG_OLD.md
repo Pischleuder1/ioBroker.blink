@@ -3,6 +3,9 @@
 Older changelog entries that have been moved out of `README.md` will appear below.
 This file is managed by [@alcalzone/release-script](https://github.com/AlCalzone/release-script)
 when newer entries are added to the README.
+## 0.0.31 (2026-07-07)
+* Improved German admin UI translations.
+
 ## 0.0.30 (2026-07-07)
 * updated TypeScript dependencies
 
