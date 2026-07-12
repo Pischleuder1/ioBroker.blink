@@ -139,19 +139,34 @@
           "type": "checkbox",
           "label": "Enable video archive",
           "help": "Copy downloaded MP4 files to the archive directory.",
-          "default": false
+          "default": false,
+          "xs": 12,
+          "sm": 12,
+          "md": 6,
+          "lg": 4,
+          "xl": 4
         },
         "archiveDir": {
           "type": "text",
           "label": "Archive directory",
           "help": "Directory for archived MP4 files. Use a writable local path or mounted NAS path.",
-          "default": "/opt/iobroker/iobroker-data/blink-archive"
+          "default": "/opt/iobroker/iobroker-data/blink-archive",
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 8,
+          "xl": 8
         },
         "archiveCreateCameraFolders": {
           "type": "checkbox",
           "label": "Create camera subfolders",
           "help": "Create one archive subfolder per camera.",
-          "default": true
+          "default": true,
+          "xs": 12,
+          "sm": 12,
+          "md": 6,
+          "lg": 4,
+          "xl": 4
         },
         "archiveMaxClipsPerCamera": {
           "type": "number",
@@ -159,7 +174,12 @@
           "help": "Limits how many archived clips are shown per camera in the grid.",
           "default": 50,
           "min": 1,
-          "max": 500
+          "max": 500,
+          "xs": 12,
+          "sm": 12,
+          "md": 6,
+          "lg": 4,
+          "xl": 4
         }
       }
     },
