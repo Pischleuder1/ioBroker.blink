@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "blink",
-    "version": "0.0.33",
+    "version": "0.0.34",
     "news": {
+      "0.0.34": {
+        "en": "Fixed admin JSON configuration layout warnings.\nUpdated archive admin translations.",
+        "de": "Warnungen bezüglich des Layouts der Admin-JSON-Konfiguration wurden behoben.\nAktualisierte Übersetzungen der Archivadministratoren.",
+        "ru": "Исправлены предупреждения о структуре JSON-конфигурации административной панели.\nОбновлены переводы административной панели архива.",
+        "pt": "Correção de avisos sobre o layout de configuração JSON do administrador.\nTraduções atualizadas do administrador do arquivo.",
+        "nl": "Opgeloste waarschuwingen over de lay-out van de JSON-configuratie voor beheerders.\nBijgewerkte vertalingen voor archiefbeheerder.",
+        "fr": "Correction des avertissements relatifs à la mise en page de la configuration JSON de l'administrateur.\nTraductions de l'administrateur des archives mises à jour.",
+        "it": "Risolti gli avvisi relativi al layout di configurazione JSON dell'amministratore.\nTraduzioni aggiornate dell'amministratore dell'archivio.",
+        "es": "Se corrigieron las advertencias sobre el formato de configuración JSON del administrador.\nTraducciones de administración de archivos actualizadas.",
+        "pl": "Naprawiono ostrzeżenia dotyczące układu konfiguracji JSON administratora.\nZaktualizowano tłumaczenia administratora archiwum.",
+        "uk": "Виправлено попередження щодо макета конфігурації JSON адміністратора.\nОновлено архів перекладів адміністратора.",
+        "zh-cn": "修复了管理员JSON配置布局警告。\n已更新存档管理员翻译。"
+      },
       "0.0.33": {
         "en": "Fixed automatic camera grid helper updates for existing installations.\nAdded German translations to the camera grid.",
         "de": "Automatische Aktualisierungen der Kamerarasterhilfe für bestehende Installationen behoben.\nDeutsche Übersetzungen wurden dem Kameraraster hinzugefügt.",
@@ -69,19 +82,6 @@
         "zh-cn": "更新了ioBroker依赖项，并将TypeScript配置与Node.js 22保持一致。"
       },
       "0.0.28": {
-        "en": "Replaced remaining blink-api sleep helper with Node.js timer promises.",
-        "de": "Die verbleibenden blink-api sleep helper wurden durch Node.js timer promises ersetzt.",
-        "ru": "Заменил оставшийся вспомогательный класс для функции sleep из blink-api на промисы таймера Node.js.",
-        "pt": "Substituí a função auxiliar de espera (sleep) restante da blink-api por promessas de temporizador do Node.js.",
-        "nl": "De resterende sleep-helper van blink-api is vervangen door Node.js timer-promises.",
-        "fr": "Remplacement de la fonction d'assistance de mise en veille de blink-api restante par des promesses de minuterie Node.js.",
-        "it": "Sostituito il restante helper di sospensione di blink-api con le promise del timer di Node.js.",
-        "es": "Se reemplazó el asistente de suspensión restante de blink-api con promesas de temporizador de Node.js.",
-        "pl": "Zastąpiono pozostałą funkcję pomocniczą blink-api sleep obietnicami timera Node.js.",
-        "uk": "Замінено решту помічника sleep blink-api на обіцянки таймера Node.js.",
-        "zh-cn": "将剩余的 blink-api 睡眠辅助函数替换为 Node.js 定时器 promise。"
-      },
-      "0.0.27": {
         "en": "Replaced remaining blink-api sleep helper with Node.js timer promises.",
         "de": "Die verbleibenden blink-api sleep helper wurden durch Node.js timer promises ersetzt.",
         "ru": "Заменил оставшийся вспомогательный класс для функции sleep из blink-api на промисы таймера Node.js.",

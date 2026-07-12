@@ -301,7 +301,7 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.0.34 (2026-07-12)
 * Fixed admin JSON configuration layout warnings.
 * Updated archive admin translations.
 
@@ -321,9 +321,6 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
 
 ### 0.0.30 (2026-07-07)
 * updated TypeScript dependencies
-
-### 0.0.29 (2026-07-03)
-* Updated ioBroker dependencies and aligned TypeScript configuration with Node.js 22.
 
 ## License
 
