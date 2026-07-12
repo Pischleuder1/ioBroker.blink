@@ -217,6 +217,33 @@ Default path: `/opt/iobroker/iobroker-data/blink/`
 Filenames are **constant per slot**, contents change on rotation. For web embedding use a cache-buster in the query string (`?t={timestamp}`) so the browser actually reloads the new file.
 
 ---
+### Optional video archive
+
+The adapter can copy downloaded MP4 clips to a separate archive directory, for example a mounted NAS path. The archive is optional and disabled by default.
+
+Archive settings are configured in the adapter admin UI:
+
+* `Enable video archive`: enables copying downloaded MP4 clips to the archive directory.
+* `Archive directory`: absolute path for archived MP4 files, for example `/opt/iobroker/iobroker-data/blink-archive`.
+* `Create camera subfolders`: creates one archive subfolder per camera.
+* `Maximum archive clips per camera in grid`: limits how many archived clips are shown per camera in the web grid.
+
+When the archive is enabled, the adapter also backfills existing local MP4 files from the current video state and video history into the archive. The camera grid shows archived clips under the `Archive` navigation button, sorted by clip timestamp and deduplicated by clip ID.
+
+The following archive status states are created under `blink.0.archive`:
+
+| State | Type | Description |
+| --- | --- | --- |
+| `archive.enabled` | boolean | Shows whether the archive is enabled in the adapter configuration. |
+| `archive.available` | boolean | Shows whether the archive directory is currently writable. |
+| `archive.directory` | string | Shows the configured archive directory. |
+| `archive.lastFile` | string | Source MP4 file that was last processed for archiving. |
+| `archive.lastTarget` | string | Archive target path of the last successfully copied MP4 file. |
+| `archive.lastSuccess` | string | Timestamp of the last successful archive copy. |
+| `archive.lastError` | string | Last archive error message, if any. |
+
+The archive status states are read-only status indicators. Change archive settings in the adapter configuration instead of writing to these states.
+---
 
 ## Tips for VIS integration
 
@@ -286,7 +313,7 @@ Cameras using the current IMMI/MCLV LiveView flow can be converted to an HLS str
 ### Notes
 
 The LiveView web grid is a convenience feature. The core adapter functions such as login, device discovery, motion states, battery states, thumbnails and video downloads do not require the JavaScript helper script or `ffmpeg`.
-
+The LiveView web grid helper is supported on Linux-based ioBroker installations only. It uses Linux paths and process commands such as `/opt/iobroker`, `/tmp`, `/usr/bin/node`, `nohup`, and `pkill`. The core adapter functionality remains platform-independent, but LiveView web grid features require a Linux host.
 
 
 ## DISCLAIMER
@@ -301,6 +328,12 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* Fixed remaining admin checker warnings for archive translations.
+* Normalized admin UI translation keys for streaming settings.
+* Normalized English runtime labels and debug messages.
+* Documented that the LiveView web grid helper requires Linux.
+
 ### 0.0.35 (2026-07-12)
 * Fixed remaining admin checker warnings for archive translations.
 

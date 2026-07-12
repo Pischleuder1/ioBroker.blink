@@ -765,7 +765,7 @@ class BlinkAdapter extends utils.Adapter {
 
 		await this.setObjectNotExistsAsync('info.account_id', {
 			type: 'state',
-			common: { name: 'Blink Account-ID', type: 'string', role: 'text', read: true, write: false },
+			common: { name: 'Blink Account ID', type: 'string', role: 'text', read: true, write: false },
 			native: {},
 		});
 
@@ -1013,7 +1013,7 @@ class BlinkAdapter extends utils.Adapter {
 
 		const { cameras, syncModules, accountId } = await blinkApi.getDevices(this.session);
 
-		// Account-ID in einen State schreiben, damit externe Helfer (z. B. das
+		// Account ID in einen State schreiben, damit externe Helfer (z. B. das
 		// blink-video-url-server-Script) sie zuverlässig finden, auch wenn noch
 		// nie eine LiveView-Session lief.
 		if (accountId) {
@@ -1073,7 +1073,7 @@ class BlinkAdapter extends utils.Adapter {
 		await this.ensureState(`${base}.info.serial`, 'Serial', 'string', 'text', false);
 		await this.ensureState(`${base}.info.network_id`, 'Network ID', 'number', 'value', false);
 		await this.ensureState(`${base}.info.type`, 'Camera model (Blink type)', 'string', 'text', false);
-		await this.ensureState(`${base}.info.account_id`, 'Account-ID', 'string', 'text', false);
+		await this.ensureState(`${base}.info.account_id`, 'Account ID', 'string', 'text', false);
 
 		await this.ensureState(`${base}.status.battery`, 'Battery (V)', 'number', 'value.battery', false);
 		await this.ensureState(`${base}.status.battery_raw`, 'Raw battery', 'number', 'value', false);
@@ -1173,7 +1173,7 @@ class BlinkAdapter extends utils.Adapter {
 				'date',
 				false,
 			);
-			await this.ensureState(`${base}.video.history.${i}.id`, `History ${i} – Clip-ID`, 'string', 'text', false);
+			await this.ensureState(`${base}.video.history.${i}.id`, `History ${i} – Clip ID`, 'string', 'text', false);
 			await this.ensureState(
 				`${base}.video.history.${i}.source`,
 				`History ${i} – source (cloud|local_storage)`,
@@ -1286,7 +1286,7 @@ class BlinkAdapter extends utils.Adapter {
 		// apiType (owl/doorbell/camera) als State, damit externe Helfer (z. B. das
 		// blink-video-url-server-Script) den korrekten LiveView-Endpoint wählen.
 		await this.setStateAsync(`${base}.info.type`, apiType || 'camera', true);
-		// Account-ID pro Kamera spiegeln (das JS-Script sucht u. a. hier).
+		// Account ID pro Kamera spiegeln (das JS-Script sucht u. a. hier).
 		if (accountId) {
 			await this.setStateAsync(`${base}.info.account_id`, String(accountId), true);
 		}
@@ -2591,7 +2591,7 @@ class BlinkAdapter extends utils.Adapter {
 			return;
 		}
 
-		// 2) Bekannte Clip-IDs pro Slot einsammeln.
+		// 2) Bekannte Clip IDs pro Slot einsammeln.
 		const knownIds = [];
 		for (let i = 0; i < HISTORY_SIZE; i++) {
 			const st = await this.getStateAsync(`${base}.${i}.id`);
@@ -2610,7 +2610,7 @@ class BlinkAdapter extends utils.Adapter {
 			}
 		};
 
-		// 3) History gilt nur als aktuell, wenn Clip-IDs UND lokale MP4 fileen passen.
+		// 3) History gilt nur als aktuell, wenn Clip IDs UND lokale MP4 fileen passen.
 		const wantedIds = wanted.map(c => this.getClipId(c));
 		const sameIds = wantedIds.every((id, idx) => id === knownIds[idx]);
 		const sameFilesExist = wantedIds.every((_id, idx) => isValidHistoryFile(slotFile(idx)));

@@ -470,7 +470,7 @@
         },
         "streamEnabled": {
           "type": "checkbox",
-          "label": "MJPEG-Streaming aktivieren",
+          "label": "Enable MJPEG streaming",
           "default": false,
           "newLine": true,
           "sm": 12,
@@ -481,7 +481,7 @@
         },
         "streamPort": {
           "type": "number",
-          "label": "HTTP-Port",
+          "label": "HTTP port",
           "min": 1024,
           "max": 65535,
           "default": 8089,
@@ -495,7 +495,7 @@
         },
         "streamToken": {
           "type": "text",
-          "label": "Stream-Token",
+          "label": "Stream token",
           "help": "Protects the stream URLs. If this field is empty, a token is generated automatically when the adapter starts and is stored here.",
           "default": "",
           "copyToClipboard": true,
@@ -521,7 +521,7 @@
         },
         "stream_perf_header": {
           "type": "header",
-          "text": "Polling-Verhalten",
+          "text": "Polling behavior",
           "size": 4,
           "newLine": true,
           "hidden": "!data.streamEnabled",
@@ -618,7 +618,7 @@
         },
         "stream_hint_text": {
           "type": "staticText",
-          "text": "After saving, the final URL is available for each camera under cameras.<id>.live.stream_url. You can use it in VIS in an HTML widget via <img src=\"...\">.",
+          "text": "After saving, the final URL is available in each camera's live.stream_url state.",
           "hidden": "!data.streamEnabled",
           "newLine": true,
           "xs": 12,
