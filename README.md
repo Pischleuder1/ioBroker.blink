@@ -333,6 +333,7 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
 * Fixed object hierarchy by creating `cameras`, `sync`, `video.history` and video history slots as folders where they contain child objects.
 * Fixed remaining English object names for smart detection and live URL states.
 * Fixed device information roles for name, serial number and camera model states.
+* Added dBm unit metadata for Wi-Fi signal strength states.
 
 ### 0.0.36 (2026-07-12)
 * Fixed remaining admin checker warnings for archive translations.
