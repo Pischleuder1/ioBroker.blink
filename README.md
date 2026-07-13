@@ -328,7 +328,7 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.0.38 (2026-07-13)
 * Added units for temperature and battery voltage states.
 * Removed duplicate detail roles for Fahrenheit temperature and secondary live URL states.
 
@@ -351,10 +351,6 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
 ### 0.0.34 (2026-07-12)
 * Fixed admin JSON configuration layout warnings.
 * Updated archive admin translations.
-
-### 0.0.33 (2026-07-11)
-* Fixed automatic camera grid helper updates for existing installations.
-* Added German translations to the camera grid.
 
 ## License
 

@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "blink",
-    "version": "0.0.37",
+    "version": "0.0.38",
     "news": {
+      "0.0.38": {
+        "en": "Added units for temperature and battery voltage states.\nRemoved duplicate detail roles for Fahrenheit temperature and secondary live URL states.",
+        "de": "Einheiten für Temperatur und Batteriespannung hinzugefügt.\nDoppelte Detailrollen für Fahrenheit-Temperatur und sekundäre Live-URL-Zustände wurden entfernt.",
+        "ru": "Добавлены единицы измерения для температуры и напряжения батареи.\nУдалены повторяющиеся роли для данных о температуре по Фаренгейту и вторичных состояниях URL-адресов в реальном времени.",
+        "pt": "Adicionadas unidades para temperatura e voltagem da bateria.\nRemovemos funções de detalhes duplicadas para temperatura em Fahrenheit e estados de URLs secundárias em tempo real.",
+        "nl": "Er zijn eenheden toegevoegd voor de temperatuur en de batterijspanning.\nDubbele detailrollen voor de temperatuur in Fahrenheit en secundaire live-URL-statussen zijn verwijderd.",
+        "fr": "Ajout d'unités pour la température et la tension de la batterie.\nSuppression des rôles de détail en double pour la température en degrés Fahrenheit et les états d'URL en direct secondaires.",
+        "it": "Aggiunte unità di misura per la temperatura e la tensione della batteria.\nRimossi i ruoli di dettaglio duplicati per la temperatura in Fahrenheit e gli stati URL live secondari.",
+        "es": "Se han añadido unidades para la temperatura y el estado del voltaje de la batería.\nSe eliminaron los roles de detalle duplicados para la temperatura en grados Fahrenheit y los estados de URL en vivo secundarios.",
+        "pl": "Dodano jednostki dla temperatury i napięcia baterii.\nUsunięto zduplikowane role szczegółów dla temperatury w stopniach Fahrenheita i drugorzędnych stanów adresu URL na żywo.",
+        "uk": "Додано одиниці вимірювання температури та напруги акумулятора.\nВидалено дублікати ролей деталей для температури за Фаренгейтом та станів вторинних активних URL-адрес.",
+        "zh-cn": "增加了温度和电池电压状态的单位。\n删除了华氏温度和辅助实时 URL 状态的重复详细信息角色。"
+      },
       "0.0.37": {
         "en": "Fixed button command states to use `read: false` as required for `role: button`.\nFixed object hierarchy by creating `cameras`, `sync`, `video.history` and video history slots as folders where they contain child objects.\nFixed remaining English object names for smart detection and live URL states.\nFixed device information roles for name, serial number and camera model states.\nAdded dBm unit metadata for Wi-Fi signal strength states.",
         "de": "Die Befehlszustände der Schaltflächen wurden so korrigiert, dass sie `read: false` verwenden, wie es für `role: button` erforderlich ist.\nDie Objekthierarchie wurde korrigiert, indem `cameras`, `sync`, `video.history` und Videoverlaufsslots als Ordner erstellt wurden, in denen sie untergeordnete Objekte enthalten.\nDie verbleibenden englischen Objektnamen für die intelligente Erkennung und den Live-URL-Status wurden korrigiert.\nFeste Geräteinformationsrollen für Name, Seriennummer und Kameramodellstatus.\nMetadaten für die dBm-Einheit zur Anzeige der Wi-Fi-Signalstärke hinzugefügt.",
@@ -80,19 +93,6 @@
         "pl": "Dodano opcjonalne archiwum wideo dla pobranych klipów MP4 na serwer NAS.\nDodano obsługę archiwum do siatki kamer.\nUzupełniono istniejące lokalne pliki wideo w archiwum.\nPosortowane i zduplikowane klipy archiwalne w siatce kamer.\nDodano etykiety daty/czasu dla klipów archiwalnych w siatce kamer.",
         "uk": "Додано додатковий відеоархів для завантажених MP4-кліпів на NAS.\nДодано підтримку архіву до сітки камери.\nЗаповнив архів наявними локальними відеофайлами.\nВідсортовані та дедупліковані архівні кліпи в сітці камери.\nДодано позначки дати/часу для архівних кліпів у сітці камери.",
         "zh-cn": "为NAS上下载的MP4视频片段添加了可选的视频存档功能。\n为相机网格添加了存档支持。\n将现有的本地视频文件回填到存档中。\n已对摄像机网格中的存档片段进行排序和去重。\n在摄像机网格中为存档片段添加了日期/时间标签。"
-      },
-      "0.0.31": {
-        "en": "Improved German admin UI translations.",
-        "de": "Verbesserte deutsche Übersetzungen der Admin-Benutzeroberfläche.",
-        "ru": "Улучшен перевод административного интерфейса на немецкий язык.",
-        "pt": "Traduções da interface administrativa em alemão aprimoradas.",
-        "nl": "Verbeterde vertalingen van de Duitse beheerdersinterface.",
-        "fr": "Amélioration des traductions de l'interface d'administration allemande.",
-        "it": "Traduzioni migliorate dell'interfaccia utente di amministrazione in tedesco.",
-        "es": "Se han mejorado las traducciones de la interfaz de administración en alemán.",
-        "pl": "Ulepszone tłumaczenia interfejsu administratora w języku niemieckim.",
-        "uk": "Покращено переклади інтерфейсу адміністратора німецькою мовою.",
-        "zh-cn": "改进了德语管理员用户界面翻译。"
       }
     },
     "titleLang": {
