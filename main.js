@@ -1060,10 +1060,10 @@ class BlinkAdapter extends utils.Adapter {
 			await this.setObjectNotExistsAsync(`${base}.${ch}`, { type: 'channel', common: { name: ch }, native: {} });
 		}
 
-		await this.ensureState(`${base}.info.name`, 'Name', 'string', 'text', false);
-		await this.ensureState(`${base}.info.serial`, 'Serial', 'string', 'text', false);
+		await this.ensureState(`${base}.info.name`, 'Name', 'string', 'info.name', false);
+		await this.ensureState(`${base}.info.serial`, 'Serial', 'string', 'info.serial', false);
 		await this.ensureState(`${base}.info.network_id`, 'Network ID', 'number', 'value', false);
-		await this.ensureState(`${base}.info.type`, 'Camera model (Blink type)', 'string', 'text', false);
+		await this.ensureState(`${base}.info.type`, 'Camera model (Blink type)', 'string', 'info.model', false);
 		await this.ensureState(`${base}.info.account_id`, 'Account ID', 'string', 'text', false);
 
 		await this.ensureState(`${base}.status.battery`, 'Battery (V)', 'number', 'value.battery', false);
@@ -1079,7 +1079,9 @@ class BlinkAdapter extends utils.Adapter {
 			false,
 		);
 		await this.ensureState(`${base}.status.temperature_text`, 'Temperature note', 'string', 'text', false);
-		await this.ensureState(`${base}.status.wifi_strength`, 'Wi-Fi strength', 'number', 'value', false);
+		await this.ensureState(`${base}.status.wifi_strength`, 'Wi-Fi strength', 'number', 'value', false, {
+			unit: 'dBm',
+		});
 		await this.ensureState(
 			`${base}.status.motion_detect_enabled`,
 			'Motion detection',
@@ -1379,8 +1381,8 @@ class BlinkAdapter extends utils.Adapter {
 			await this.setObjectNotExistsAsync(`${base}.${ch}`, { type: 'channel', common: { name: ch }, native: {} });
 		}
 
-		await this.ensureState(`${base}.info.name`, 'Name', 'string', 'text', false);
-		await this.ensureState(`${base}.info.serial`, 'Serial', 'string', 'text', false);
+		await this.ensureState(`${base}.info.name`, 'Name', 'string', 'info.name', false);
+		await this.ensureState(`${base}.info.serial`, 'Serial', 'string', 'info.serial', false);
 		await this.ensureState(`${base}.status.armed`, 'Armed', 'boolean', 'indicator', false);
 		await this.ensureState(`${base}.status.last_update`, 'Last update', 'string', 'date', false);
 		await this.ensureState(`${base}.commands.armed`, 'Arm/disarm', 'boolean', 'switch.enable', true);
@@ -2966,39 +2968,36 @@ class BlinkAdapter extends utils.Adapter {
 		}
 	}
 
-	async ensureState(id, name, type, role, writable) {
+	async ensureState(id, name, type, role, writable, commonExtra = {}) {
 		const read = role !== 'button';
 		const write = !!writable;
+		const expectedCommon = { name, type, role, read, write, ...commonExtra };
 		const obj = await this.getObjectAsync(id);
 
 		if (!obj) {
 			await this.setObjectNotExistsAsync(id, {
 				type: 'state',
-				common: { name, type, role, read, write },
+				common: expectedCommon,
 				native: {},
 			});
 			return;
 		}
 
 		const common = obj.common || {};
-		if (
-			obj.type !== 'state' ||
-			JSON.stringify(common.name) !== JSON.stringify(name) ||
-			common.type !== type ||
-			common.role !== role ||
-			common.read !== read ||
-			common.write !== write
-		) {
+		const needsCommonUpdate = Object.entries(expectedCommon).some(([key, value]) => {
+			if (key === 'name') {
+				return JSON.stringify(common.name) !== JSON.stringify(value);
+			}
+			return common[key] !== value;
+		});
+
+		if (obj.type !== 'state' || needsCommonUpdate) {
 			await this.setObjectAsync(id, {
 				...obj,
 				type: 'state',
 				common: {
 					...common,
-					name,
-					type,
-					role,
-					read,
-					write,
+					...expectedCommon,
 				},
 				native: obj.native || {},
 			});

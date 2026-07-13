@@ -328,6 +328,12 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* Fixed button command states to use `read: false` as required for `role: button`.
+* Fixed object hierarchy by creating `cameras`, `sync`, `video.history` and video history slots as folders where they contain child objects.
+* Fixed remaining English object names for smart detection and live URL states.
+* Fixed device information roles for name, serial number and camera model states.
+
 ### 0.0.36 (2026-07-12)
 * Fixed remaining admin checker warnings for archive translations.
 * Normalized admin UI translation keys for streaming settings.
