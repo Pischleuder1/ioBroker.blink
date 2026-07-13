@@ -3,6 +3,13 @@
 Older changelog entries that have been moved out of `README.md` will appear below.
 This file is managed by [@alcalzone/release-script](https://github.com/AlCalzone/release-script)
 when newer entries are added to the README.
+## 0.0.32 (2026-07-10)
+* Added optional video archive for downloaded MP4 clips on NAS.
+* Added archive support to the camera grid.
+* Backfilled existing local video files into the archive.
+* Sorted and deduplicated archive clips in the camera grid.
+* Added date/time labels for archive clips in the camera grid.
+
 ## 0.0.31 (2026-07-07)
 * Improved German admin UI translations.
 

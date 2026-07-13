@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "blink",
-    "version": "0.0.36",
+    "version": "0.0.37",
     "news": {
+      "0.0.37": {
+        "en": "Fixed button command states to use `read: false` as required for `role: button`.\nFixed object hierarchy by creating `cameras`, `sync`, `video.history` and video history slots as folders where they contain child objects.\nFixed remaining English object names for smart detection and live URL states.\nFixed device information roles for name, serial number and camera model states.\nAdded dBm unit metadata for Wi-Fi signal strength states.",
+        "de": "Die Befehlszustände der Schaltflächen wurden so korrigiert, dass sie `read: false` verwenden, wie es für `role: button` erforderlich ist.\nDie Objekthierarchie wurde korrigiert, indem `cameras`, `sync`, `video.history` und Videoverlaufsslots als Ordner erstellt wurden, in denen sie untergeordnete Objekte enthalten.\nDie verbleibenden englischen Objektnamen für die intelligente Erkennung und den Live-URL-Status wurden korrigiert.\nFeste Geräteinformationsrollen für Name, Seriennummer und Kameramodellstatus.\nMetadaten für die dBm-Einheit zur Anzeige der Wi-Fi-Signalstärke hinzugefügt.",
+        "ru": "Исправлены состояния команд кнопок, теперь для параметра `role: button` требуется использовать `read: false`.\nИсправлена иерархия объектов путем создания папок для ячеек `cameras`, `sync`, `video.history` и истории видео, содержащих дочерние объекты.\nИсправлены оставшиеся английские названия объектов для интеллектуального распознавания и состояний URL-адресов в реальном времени.\nИсправлены роли информации об устройстве для состояния имени, серийного номера и модели камеры.\nДобавлены метаданные в единицах dBm для отображения состояния уровня сигнала Wi-Fi.",
+        "pt": "O comando do botão fixo define o uso de `read: false` conforme necessário para `role: button`.\nHierarquia de objetos corrigida através da criação de `cameras`, `sync`, `video.history` e slots de histórico de vídeo como pastas que contêm objetos filhos.\nCorrigidos os nomes de objetos em inglês restantes para detecção inteligente e estados de URL em tempo real.\nFunções de informação do dispositivo corrigidas para nome, número de série e estados do modelo da câmera.\nAdicionadas metadados em dBm para os níveis de intensidade do sinal Wi-Fi.",
+        "nl": "De vaste knopopdrachtstatus gebruikt nu `read: false` zoals vereist voor `role: button`.\nDe objecthiërarchie is gecorrigeerd door de slots `cameras`, `sync`, `video.history` en `video history` als mappen aan te maken, waarin ze subobjecten bevatten.\nDe resterende Engelse objectnamen zijn gecorrigeerd voor slimme detectie en live URL-status.\nVaste apparaatinformatierollen voor naam, serienummer en cameramodel.\ndBm-eenheidmetadata toegevoegd voor de status van de wifi-signaalsterkte.",
+        "fr": "L'état de la commande du bouton a été corrigé pour utiliser `read: false` comme requis pour `role: button`.\nHiérarchie des objets fixée en créant des emplacements `caméras`, `sync`, `video.history` et `historique vidéo` sous forme de dossiers contenant des objets enfants.\nCorrection des noms d'objets anglais restants pour la détection intelligente et les états d'URL en direct.\nRôles d'information fixe pour le nom, le numéro de série et le modèle de l'appareil photo.\nAjout de métadonnées en dBm pour les états de puissance du signal Wi-Fi.",
+        "it": "Ho corretto gli stati dei comandi del pulsante per utilizzare `read: false` come richiesto per `role: button`.\nGerarchia degli oggetti fissa creata tramite la creazione di `cameras`, `sync`, `video.history` e slot per la cronologia video come cartelle contenenti oggetti figlio.\nCorretti i nomi degli oggetti in inglese rimanenti per il rilevamento intelligente e gli stati URL in tempo reale.\nRuoli fissi per le informazioni sul dispositivo relative a nome, numero di serie e modello della fotocamera.\nAggiunti i metadati dell'unità dBm per gli stati di intensità del segnale Wi-Fi.",
+        "es": "Se corrigieron los estados de comando del botón para usar `read: false` según lo requerido para `role: button`.\nSe corrigió la jerarquía de objetos creando las ranuras `cameras`, `sync`, `video.history` y el historial de vídeo como carpetas donde contienen objetos secundarios.\nSe corrigieron los nombres de objetos en inglés restantes para la detección inteligente y los estados de URL en tiempo real.\nRoles de información de dispositivo fijos para los estados de nombre, número de serie y modelo de cámara.\nSe han añadido metadatos de unidades dBm para los estados de intensidad de la señal Wi-Fi.",
+        "pl": "Naprawiono stany poleceń przycisków, aby używać `read: false` zgodnie z wymaganiami `role: button`.\nNaprawiono hierarchię obiektów poprzez utworzenie slotów „cameras”, „sync”, „video.history” i historii wideo jako folderów, w których znajdują się obiekty podrzędne.\nNaprawiono pozostałe angielskie nazwy obiektów dla inteligentnego wykrywania i stanów URL na żywo.\nNaprawiono role informacji o urządzeniu, takie jak nazwa, numer seryjny i model aparatu.\nDodano metadane jednostki dBm dla stanów siły sygnału Wi-Fi.",
+        "uk": "Виправлено стан команди кнопки для використання `read: false`, як того вимагає `role: button`.\nВиправлено ієрархію об'єктів шляхом створення слотів `cameras`, `sync`, `video.history` та video history як папок, де вони містять дочірні об'єкти.\nВиправлено решту англійських назв об'єктів для інтелектуального виявлення та станів URL-адрес у реальному часі.\nВиправлено ролі інформації про пристрій для назви, серійного номера та стану моделі камери.\nДодано метадані одиниць вимірювання dBm для станів сили сигналу Wi-Fi.",
+        "zh-cn": "修复了按钮命令状态，使其使用 `role: button` 所需的 `read: false`。\n通过创建 `cameras`、`sync`、`video.history` 和视频历史记录槽作为文件夹，并在其中包含子对象，从而修复了对象层次结构。\n修复了智能检测和实时 URL 状态中剩余的英文对象名称。\n固定设备信息角色，包括名称、序列号和相机型号状态。\n为 Wi-Fi 信号强度状态添加了 dBm 单位元数据。"
+      },
       "0.0.36": {
         "en": "Fixed remaining admin checker warnings for archive translations.\nNormalized admin UI translation keys for streaming settings.\nNormalized English runtime labels and debug messages.\nDocumented that the LiveView web grid helper requires Linux.",
         "de": "Die verbleibenden Warnungen des Administratorprüfers für Archivübersetzungen wurden behoben.\nNormalisierte Übersetzungsschlüssel für die Benutzeroberfläche des Administrators für Streaming-Einstellungen.\nNormalisierte englische Laufzeitbezeichnungen und Debug-Meldungen.\nEs wurde dokumentiert, dass der LiveView-Webgrid-Helper Linux benötigt.",
@@ -80,19 +93,6 @@
         "pl": "Ulepszone tłumaczenia interfejsu administratora w języku niemieckim.",
         "uk": "Покращено переклади інтерфейсу адміністратора німецькою мовою.",
         "zh-cn": "改进了德语管理员用户界面翻译。"
-      },
-      "0.0.30": {
-        "en": "updated TypeScript dependencies",
-        "de": "aktualisierte TypeScript-Abhängigkeiten",
-        "ru": "обновлены зависимости TypeScript",
-        "pt": "Dependências do TypeScript atualizadas",
-        "nl": "bijgewerkte TypeScript-afhankelijkheden",
-        "fr": "Dépendances TypeScript mises à jour",
-        "it": "dipendenze TypeScript aggiornate",
-        "es": "dependencias de TypeScript actualizadas",
-        "pl": "zaktualizowane zależności TypeScript",
-        "uk": "оновлені залежності TypeScript",
-        "zh-cn": "更新了 TypeScript 依赖项"
       }
     },
     "titleLang": {

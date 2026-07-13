@@ -328,7 +328,7 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.0.37 (2026-07-13)
 * Fixed button command states to use `read: false` as required for `role: button`.
 * Fixed object hierarchy by creating `cameras`, `sync`, `video.history` and video history slots as folders where they contain child objects.
 * Fixed remaining English object names for smart detection and live URL states.
@@ -351,13 +351,6 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
 ### 0.0.33 (2026-07-11)
 * Fixed automatic camera grid helper updates for existing installations.
 * Added German translations to the camera grid.
-
-### 0.0.32 (2026-07-10)
-* Added optional video archive for downloaded MP4 clips on NAS.
-* Added archive support to the camera grid.
-* Backfilled existing local video files into the archive.
-* Sorted and deduplicated archive clips in the camera grid.
-* Added date/time labels for archive clips in the camera grid.
 
 ## License
 
