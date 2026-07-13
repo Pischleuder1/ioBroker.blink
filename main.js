@@ -981,17 +981,8 @@ class BlinkAdapter extends utils.Adapter {
 			native: {},
 		});
 
-		await this.setObjectNotExistsAsync('cameras', {
-			type: 'channel',
-			common: { name: 'Cameras' },
-			native: {},
-		});
-
-		await this.setObjectNotExistsAsync('sync', {
-			type: 'channel',
-			common: { name: 'Sync modules' },
-			native: {},
-		});
+		await this.ensureObjectType('cameras', 'folder', 'Cameras');
+		await this.ensureObjectType('sync', 'folder', 'Sync modules');
 
 		await this.setObjectNotExistsAsync('archive', {
 			type: 'channel',
@@ -1100,7 +1091,7 @@ class BlinkAdapter extends utils.Adapter {
 		await this.ensureState(`${base}.status.last_update`, 'Last update', 'string', 'date', false);
 		await this.ensureState(
 			`${base}.status.smart_detection`,
-			'Smart Detection aktiv',
+			'Smart detection active',
 			'boolean',
 			'indicator',
 			false,
@@ -1143,18 +1134,10 @@ class BlinkAdapter extends utils.Adapter {
 		await this.ensureState(`${base}.video.ready`, 'MP4 ready', 'boolean', 'indicator', false);
 		await this.ensureState(`${base}.video.lastError`, 'MP4 last error', 'string', 'text', false);
 
-		await this.setObjectNotExistsAsync(`${base}.video.history`, {
-			type: 'channel',
-			common: { name: 'History' },
-			native: {},
-		});
+		await this.ensureObjectType(`${base}.video.history`, 'folder', 'History');
 
 		for (let i = 0; i < 10; i++) {
-			await this.setObjectNotExistsAsync(`${base}.video.history.${i}`, {
-				type: 'channel',
-				common: { name: `History ${i}` },
-				native: {},
-			});
+			await this.ensureObjectType(`${base}.video.history.${i}`, 'folder', `History ${i}`);
 		}
 
 		// Galerie: 10 Slots pro Kamera (0 = neuester, 9 = ältester)
@@ -1206,7 +1189,7 @@ class BlinkAdapter extends utils.Adapter {
 		// Neues Gerüst für echten 30s-Livestream
 		await this.ensureState(`${base}.live.mode`, 'Live mode', 'string', 'text', false);
 		await this.ensureState(`${base}.live.active`, 'Real LiveView session active', 'boolean', 'indicator', false);
-		await this.ensureState(`${base}.live.url`, 'Live-URL', 'string', 'text.url', false);
+		await this.ensureState(`${base}.live.url`, 'Live URL', 'string', 'text.url', false);
 		await this.ensureState(`${base}.live.expires_at`, 'Live expires at', 'string', 'date', false);
 		await this.ensureState(`${base}.live.last_error`, 'Last live error', 'string', 'text', false);
 		await this.ensureState(`${base}.live.session_id`, 'Live session ID', 'string', 'text', false);
@@ -2957,12 +2940,69 @@ class BlinkAdapter extends utils.Adapter {
 		}
 	}
 
+	async ensureObjectType(id, objectType, name) {
+		const obj = await this.getObjectAsync(id);
+		if (!obj) {
+			await this.setObjectNotExistsAsync(id, {
+				type: objectType,
+				common: { name },
+				native: {},
+			});
+			return;
+		}
+
+		const currentName = JSON.stringify(obj.common?.name);
+		const expectedName = JSON.stringify(name);
+		if (obj.type !== objectType || currentName !== expectedName) {
+			await this.setObjectAsync(id, {
+				...obj,
+				type: objectType,
+				common: {
+					...(obj.common || {}),
+					name,
+				},
+				native: obj.native || {},
+			});
+		}
+	}
+
 	async ensureState(id, name, type, role, writable) {
-		await this.setObjectNotExistsAsync(id, {
-			type: 'state',
-			common: { name, type, role, read: true, write: !!writable },
-			native: {},
-		});
+		const read = role !== 'button';
+		const write = !!writable;
+		const obj = await this.getObjectAsync(id);
+
+		if (!obj) {
+			await this.setObjectNotExistsAsync(id, {
+				type: 'state',
+				common: { name, type, role, read, write },
+				native: {},
+			});
+			return;
+		}
+
+		const common = obj.common || {};
+		if (
+			obj.type !== 'state' ||
+			JSON.stringify(common.name) !== JSON.stringify(name) ||
+			common.type !== type ||
+			common.role !== role ||
+			common.read !== read ||
+			common.write !== write
+		) {
+			await this.setObjectAsync(id, {
+				...obj,
+				type: 'state',
+				common: {
+					...common,
+					name,
+					type,
+					role,
+					read,
+					write,
+				},
+				native: obj.native || {},
+			});
+		}
 	}
 
 	async initStateIfUnset(id, defaultValue) {
