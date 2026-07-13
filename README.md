@@ -328,6 +328,10 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* Added units for temperature and battery voltage states.
+* Removed duplicate detail roles for Fahrenheit temperature and secondary live URL states.
+
 ### 0.0.37 (2026-07-13)
 * Fixed button command states to use `read: false` as required for `role: button`.
 * Fixed object hierarchy by creating `cameras`, `sync`, `video.history` and video history slots as folders where they contain child objects.

@@ -1066,18 +1066,20 @@ class BlinkAdapter extends utils.Adapter {
 		await this.ensureState(`${base}.info.type`, 'Camera model (Blink type)', 'string', 'info.model', false);
 		await this.ensureState(`${base}.info.account_id`, 'Account ID', 'string', 'text', false);
 
-		await this.ensureState(`${base}.status.battery`, 'Battery (V)', 'number', 'value.battery', false);
+		await this.ensureState(`${base}.status.battery`, 'Battery (V)', 'number', 'value.battery', false, {
+			unit: 'V',
+		});
 		await this.ensureState(`${base}.status.battery_raw`, 'Raw battery', 'number', 'value', false);
-		await this.ensureState(`${base}.status.battery_volt`, 'Battery voltage (V)', 'number', 'value.voltage', false);
+		await this.ensureState(`${base}.status.battery_volt`, 'Battery voltage (V)', 'number', 'value.voltage', false, {
+			unit: 'V',
+		});
 		await this.ensureState(`${base}.status.battery_text`, 'Battery note', 'string', 'text', false);
-		await this.ensureState(`${base}.status.temperature`, 'Temperature (°C)', 'number', 'value.temperature', false);
-		await this.ensureState(
-			`${base}.status.temperature_f`,
-			'Temperature (°F)',
-			'number',
-			'value.temperature',
-			false,
-		);
+		await this.ensureState(`${base}.status.temperature`, 'Temperature (°C)', 'number', 'value.temperature', false, {
+			unit: '°C',
+		});
+		await this.ensureState(`${base}.status.temperature_f`, 'Temperature (°F)', 'number', 'value', false, {
+			unit: '°F',
+		});
 		await this.ensureState(`${base}.status.temperature_text`, 'Temperature note', 'string', 'text', false);
 		await this.ensureState(`${base}.status.wifi_strength`, 'Wi-Fi strength', 'number', 'value', false, {
 			unit: 'dBm',
@@ -1191,7 +1193,7 @@ class BlinkAdapter extends utils.Adapter {
 		// Neues Gerüst für echten 30s-Livestream
 		await this.ensureState(`${base}.live.mode`, 'Live mode', 'string', 'text', false);
 		await this.ensureState(`${base}.live.active`, 'Real LiveView session active', 'boolean', 'indicator', false);
-		await this.ensureState(`${base}.live.url`, 'Live URL', 'string', 'text.url', false);
+		await this.ensureState(`${base}.live.url`, 'Live URL', 'string', 'text', false);
 		await this.ensureState(`${base}.live.expires_at`, 'Live expires at', 'string', 'date', false);
 		await this.ensureState(`${base}.live.last_error`, 'Last live error', 'string', 'text', false);
 		await this.ensureState(`${base}.live.session_id`, 'Live session ID', 'string', 'text', false);
