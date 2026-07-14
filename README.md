@@ -46,6 +46,7 @@ Fill out your credentials:
 - Supports cloud stored videos and local stored videos on sd-card (SyncModule 2 and XR) via local server on port 8085 - JavaScript needed, see below !
 - The script requires ffmpeg installed and a lot resources if you have a lot cameras and is then only partially suitable for Raspberry Pis (min. 4GB — more is better)
 - initial release for live view with javascript for each camera - required javascript is installed automatically - except for the old XT2, because it uses a different video stream
+- Experimental native LiveView session (no JavaScript helper / ffmpeg required) via `commands.start_live` / `commands.stop_live`, see "Real LiveView session" below
 <img width="1388" height="414" alt="image" src="https://github.com/user-attachments/assets/f6446647-c3d5-4cc2-b7e7-1b2a3686424a" />
 
 
@@ -53,7 +54,7 @@ Fill out your credentials:
 ## Blink Adapter: Datapoints
 
 Overview of all datapoints provided by the customized ioBroker adapter `blink.0`.
-Status: after refactoring for cloud history + local-storage fallback.
+Status: after refactoring for cloud history + local-storage fallback, plus the experimental native LiveView session added in v0.0.37/0.0.38.
 
 ## Conventions
 
@@ -70,6 +71,7 @@ All MP4 and snapshot files are stored in the configured snapshot directory (defa
 | Datapoint | Type | Description |
 |---|---|---|
 | `blink.0.info.connection` | boolean | `true` if the adapter has a valid session to the Blink cloud. |
+| `blink.0.info.account_id` | string | Blink account ID, used internally so the optional LiveView helper script can find the right account. |
 
 ---
 
@@ -84,21 +86,23 @@ Each camera gets its own channel `blink.0.cameras.<CamID>` with the following su
 | `info.name` | string | Display name from the Blink app (e.g. "Driveway", "Patio"). |
 | `info.network_id` | number | Network ID the camera belongs to. |
 | `info.serial` | string | Camera serial number. |
+| `info.type` | string | Camera model / Blink API type (`camera`, `owl`, `mini`, `doorbell`). |
+| `info.account_id` | string | Blink account ID, mirrored per camera for the LiveView helper script. |
 
 ### `status` – Current sensor state
 
 | Datapoint | Type | Description |
 |---|---|---|
 | `status.armed` | boolean | Camera armed (follows the network mode). |
-| `status.battery` | string | Battery status as text from the Blink app (e.g. `ok`, `low`). |
+| `status.battery` | number | Battery voltage in Volts (unit `V`). `null` on models without a battery. |
 | `status.battery_raw` | number | Raw sensor value before conversion. |
-| `status.battery_text` | string | Human-readable status text. |
-| `status.battery_volt` | number | Battery voltage in volts. |
-| `status.temperature` | number | Temperature at the camera sensor in °C. |
-| `status.temperature_f` | number | Temperature in °F. |
-| `status.temperature_text` | string | Temperature as formatted text. |
-| `status.wifi_strength` | number | Wi-Fi signal strength (scale depends on model, higher = better). |
-| `status.motion_detect_enabled` | boolean | Motion detection on the camera enabled/disabled. |
+| `status.battery_text` | string | Human-readable note, e.g. `not available` on models without a battery. |
+| `status.battery_volt` | number | Battery voltage in Volts (unit `V`). |
+| `status.temperature` | number | Temperature at the camera sensor in °C (unit `°C`). |
+| `status.temperature_f` | number | Temperature in °F (unit `°F`). |
+| `status.temperature_text` | string | Temperature as formatted text, e.g. `not available` on models without a sensor. |
+| `status.wifi_strength` | number | Wi-Fi signal strength in dBm (unit `dBm`). |
+| `status.motion_detect_enabled` | boolean | Motion detection on the camera enabled/disabled (read-only reflection; use `commands.motion_detect` to change it). |
 | `status.last_update` | string | Timestamp of the last status refresh (ISO format). |
 
 #### Smart detection (only with active Blink subscription)
@@ -123,9 +127,9 @@ Used to avoid repeated notifications.
 | Datapoint | Type | Description |
 |---|---|---|
 | `battery.low` | boolean | Battery is critically low. |
-| `battery.warningSent` | boolean | A warning has already been issued (deduplication). |
-| `battery.lastMessage` | string | Timestamp of the last status message. |
-| `battery.lastWarning` | string | Timestamp of the last warning. |
+| `battery.warningSent` | boolean | A low-battery warning has already been issued for the current low-battery period (deduplication). |
+| `battery.lastMessage` | string | Text of the last low-battery warning message sent (e.g. via Pushover/Telegram). |
+| `battery.lastWarning` | string | Timestamp of the last low-battery warning (ISO). |
 
 ### `live` – Snapshot and live stream
 
@@ -135,8 +139,16 @@ Used to avoid repeated notifications.
 | `live.image_base64` | string | Snapshot as Base64 string (for direct embedding in VIS without file access). |
 | `live.mime_type` | string | MIME type of the snapshot (e.g. `image/jpeg`). |
 | `live.timestamp` | string | Snapshot timestamp (ISO). |
-| `live.stream_active` | boolean | Live stream currently active. |
-| `live.stream_url` | string | URL of the active live stream (TTL limited). |
+| `live.stream_active` | boolean | MJPEG live stream (web-grid helper) currently polled. |
+| `live.stream_url` | string | URL of the active MJPEG live stream (web-grid helper, TTL limited). |
+| `live.mode` | string | Mode of the experimental native LiveView session (e.g. `idle`, active mode name). |
+| `live.active` | boolean | `true` while a native LiveView session (`commands.start_live`) is running. |
+| `live.url` | string | Playback URL of the current native LiveView session. |
+| `live.expires_at` | string | Expiry timestamp of the current native LiveView session (ISO). |
+| `live.last_error` | string | Last error from the native LiveView session, if any. |
+| `live.session_id` | string | ID of the current native LiveView session. |
+| `live.backend` | string | Backend used to serve the native LiveView session. |
+| `live.unsupported` | boolean | `true` if this camera model does not support the native LiveView session (e.g. older XT/XT2). In that case, `commands.start_live` has no effect. |
 
 ### `video` – Current video
 
@@ -165,15 +177,17 @@ Each camera has **10 slots** containing the 10 most recent clips.
 
 ### `commands` – Trigger datapoints
 
-Set to `true` → action is executed, adapter automatically resets to `false`.
+Set to `true` → action is executed, adapter automatically resets to `false`. (`commands.motion_detect` is the one exception — it is a persistent on/off switch, not a self-resetting trigger.)
 
 | Datapoint | Type | Action |
 |---|---|---|
 | `commands.snapshot` | boolean | Request a new snapshot (stored as Base64 state). |
-| `commands.snapshot_file` | boolean | Additionally save the snapshot to a file. |
+| `commands.snapshot_file` | string | Read-only: absolute path of the last saved snapshot file, set automatically after each snapshot. |
 | `commands.fetch_video` | boolean | Download the latest video. Smart logic: cloud first, then local-storage fallback. |
-| `commands.live_request` | boolean | Open live stream (TTL ~30 s). |
-| `commands.motion_detect` | boolean | Toggle motion detection on the camera. |
+| `commands.live_request` | boolean | Open the MJPEG live stream (web-grid helper, TTL ~60 s). |
+| `commands.start_live` | boolean | Start an experimental native LiveView session (no JavaScript helper / ffmpeg required). Result appears under `live.url` / `live.mode` / `live.session_id`. |
+| `commands.stop_live` | boolean | Stop the native LiveView session started via `commands.start_live`. |
+| `commands.motion_detect` | boolean | Toggle motion detection on the camera (persistent switch, not self-resetting). |
 | `commands.clear_session` | boolean | Clear the auth session (in case of login problems). |
 
 ---
@@ -273,6 +287,7 @@ For the **history gallery** query slots 0–9 individually:
 - In that case, `battery.lastMessage` is set to `no built in battery`.
 - Live image states are updated when a snapshot is fetched or when live snapshots are enabled.
 - MJPEG stream states are only relevant if streaming is enabled in the adapter configuration.
+- The native LiveView session states (`live.mode`, `live.active`, `live.url`, …) are independent of the MJPEG web-grid helper; check `live.unsupported` before calling `commands.start_live` on older camera models.
 - Smart Detection states are updated when classified motion metadata is available from Blink Cloud.
   
 
@@ -287,6 +302,8 @@ script.js.common.blink-video-url-server
 ```
 
 This is intentional and only used for the optional web grid / LiveView helper functionality. Existing user scripts with the same object ID may be overwritten. If you maintain a customized version of this script, please create a backup before enabling or updating this feature.
+
+> **Note:** This web-grid helper is a separate feature from the native LiveView session described above (`commands.start_live` / `live.url`). The native session does not require the JavaScript adapter or `ffmpeg` and is the recommended starting point if you only need a single camera's live URL in VIS or another integration.
 
 ### Requirements
 
@@ -308,7 +325,7 @@ sudo apt install ffmpeg
 
 Not all Blink camera generations expose the same LiveView flow.
 
-Cameras using the current IMMI/MCLV LiveView flow can be converted to an HLS stream for the web grid. Older XT/XT2/LFR based cameras may not provide a usable stream through this method. In that case the adapter detects the unsupported LiveView state and disables the LiveView button for that camera instead of starting a broken stream.
+Cameras using the current IMMI/MCLV LiveView flow can be converted to an HLS stream for the web grid. Older XT/XT2/LFR based cameras may not provide a usable stream through this method. In that case the adapter detects the unsupported LiveView state and disables the LiveView button for that camera instead of starting a broken stream. The same `live.unsupported` flag also applies to the native LiveView session (`commands.start_live`).
 
 ### Notes
 
