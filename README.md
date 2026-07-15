@@ -369,6 +369,8 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
 * Fixed admin JSON configuration layout warnings.
 * Updated archive admin translations.
 
+[Older changelogs can be found there](CHANGELOG_OLD.md)
+
 ## License
 
 MIT License
