@@ -3,6 +3,19 @@
     "name": "blink",
     "version": "0.0.38",
     "news": {
+      "0.0.39": {
+        "en": "Automatically clears the cached Blink session once after HTTP 401/code 101 and retries the connection.\nAllows the clear session command even when the adapter is not connected.",
+        "de": "Löscht den zwischengespeicherten Blink-Session-Cache nach HTTP 401/code 101 einmal automatisch und versucht die Verbindung erneut.\nErlaubt den Befehl zum Löschen der Session auch dann, wenn der Adapter nicht verbunden ist.",
+        "ru": "Автоматически очищает кэшированную сессию Blink один раз после HTTP 401/code 101 и повторяет подключение.\nПозволяет выполнить команду очистки сессии, даже если адаптер не подключен.",
+        "pt": "Limpa automaticamente a sessão Blink em cache uma vez após HTTP 401/code 101 e tenta conectar novamente.\nPermite o comando para limpar a sessão mesmo quando o adaptador não está conectado.",
+        "nl": "Wist automatisch één keer de opgeslagen Blink-sessie na HTTP 401/code 101 en probeert opnieuw verbinding te maken.\nStaat de opdracht voor het wissen van de sessie toe, ook wanneer de adapter niet verbonden is.",
+        "fr": "Efface automatiquement une fois la session Blink mise en cache après HTTP 401/code 101 et réessaie la connexion.\nAutorise la commande d’effacement de session même lorsque l’adaptateur n’est pas connecté.",
+        "it": "Cancella automaticamente una volta la sessione Blink memorizzata nella cache dopo HTTP 401/code 101 e ritenta la connessione.\nConsente il comando di cancellazione della sessione anche quando l’adapter non è connesso.",
+        "es": "Borra automáticamente una vez la sesión Blink almacenada en caché después de HTTP 401/code 101 y vuelve a intentar la conexión.\nPermite el comando para borrar la sesión incluso cuando el adaptador no está conectado.",
+        "pl": "Automatycznie czyści zapisaną w pamięci podręcznej sesję Blink raz po HTTP 401/code 101 i ponawia próbę połączenia.\nZezwala na polecenie czyszczenia sesji nawet wtedy, gdy adapter nie jest połączony.",
+        "uk": "Автоматично очищає кешовану сесію Blink один раз після HTTP 401/code 101 і повторює спробу підключення.\nДозволяє команду очищення сесії навіть тоді, коли адаптер не підключений.",
+        "zh-cn": "在 HTTP 401/code 101 后自动清除一次缓存的 Blink 会话并重试连接。\n即使适配器未连接，也允许执行清除会话命令。"
+      },
       "0.0.38": {
         "en": "Added units for temperature and battery voltage states.\nRemoved duplicate detail roles for Fahrenheit temperature and secondary live URL states.",
         "de": "Einheiten für Temperatur und Batteriespannung hinzugefügt.\nDoppelte Detailrollen für Fahrenheit-Temperatur und sekundäre Live-URL-Zustände wurden entfernt.",
