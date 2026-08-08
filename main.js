@@ -49,6 +49,7 @@ class BlinkAdapter extends utils.Adapter {
 		this.liveStopTimers = new Map();
 		this.liveProcesses = new Map();
 		this.hlsServer = null;
+		this.sessionAutoClearTried = false;
 	}
 
 	isCredentialError(err) {
@@ -61,6 +62,47 @@ class BlinkAdapter extends utils.Adapter {
 			msg.includes('http 401') ||
 			msg.includes('401')
 		);
+	}
+
+	isUnauthorizedSessionError(err) {
+		const msg = String(err?.message || err || '').toLowerCase();
+		const code = String(err?.code ?? '').toLowerCase();
+
+		return (
+			code === '101' ||
+			msg.includes('http 401') ||
+			msg.includes('unauthorized access') ||
+			msg.includes('"code":101') ||
+			msg.includes('code 101') ||
+			msg.includes('code:101')
+		);
+	}
+
+	async connectAndPollOnce(email, password, pin) {
+		this.session = await this.getBlinkSessionSafe(email, password, pin);
+		await this.pollOnce();
+		this.sessionAutoClearTried = false;
+	}
+
+	async connectAndPollWithSessionRecovery(email, password, pin, context) {
+		try {
+			await this.connectAndPollOnce(email, password, pin);
+			return;
+		} catch (err) {
+			if (!this.isUnauthorizedSessionError(err) || this.sessionAutoClearTried) {
+				throw err;
+			}
+
+			this.sessionAutoClearTried = true;
+			this.session = null;
+			blinkApi.clearSession(email);
+			this.log.warn(
+				`${context} failed with HTTP 401/code 101. Cached Blink session may be expired or invalid. ` +
+					'Clearing session cache once and retrying.',
+			);
+
+			await this.connectAndPollOnce(email, password, pin);
+		}
 	}
 
 	isLogin2faRequiredError(err) {
@@ -779,9 +821,8 @@ class BlinkAdapter extends utils.Adapter {
 		this.subscribeStates('sync.*.commands.*');
 
 		try {
-			this.session = await this.getBlinkSessionSafe(email, password, pin);
 			pin = this.cfg?.pin || '';
-			await this.pollOnce();
+			await this.connectAndPollWithSessionRecovery(email, password, pin, 'Initial connect/poll');
 			await this.archiveExistingVideoFiles();
 			if (cleanupOldSnapshots) {
 				this.cleanupSnapshots();
@@ -798,8 +839,7 @@ class BlinkAdapter extends utils.Adapter {
 		this.pollTimer = this.setInterval(async () => {
 			try {
 				pin = this.cfg?.pin || '';
-				this.session = await this.getBlinkSessionSafe(email, password, pin);
-				await this.pollOnce();
+				await this.connectAndPollWithSessionRecovery(email, password, pin, 'Poll');
 			} catch (err) {
 				if (err?.code === 'LOGIN_RATE_LIMIT_ACTIVE' || err?.code === 'LOGIN_2FA_REQUIRED_ACTIVE') {
 					this.log.debug(err.message);
@@ -1999,10 +2039,6 @@ class BlinkAdapter extends utils.Adapter {
 		if (!state || state.ack) {
 			return;
 		}
-		if (!this.session) {
-			this.log.warn('Not connected yet.');
-			return;
-		}
 
 		const parts = id.split('.');
 		const cmd = parts[parts.length - 1];
@@ -2011,8 +2047,15 @@ class BlinkAdapter extends utils.Adapter {
 
 		if (cmd === 'clear_session') {
 			blinkApi.clearSession(this.cfg.email);
+			this.session = null;
+			this.sessionAutoClearTried = false;
 			this.log.info('Blink session cache cleared.');
 			await this.setStateAsync(this.stripNs(id), false, true);
+			return;
+		}
+
+		if (!this.session) {
+			this.log.warn('Not connected yet.');
 			return;
 		}
 

@@ -345,6 +345,10 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* Automatically clears the cached Blink session once after HTTP 401/code 101 and retries the connection.
+* Allows the clear session command even when the adapter is not connected.
+
 ### 0.0.38 (2026-07-13)
 * Added units for temperature and battery voltage states.
 * Removed duplicate detail roles for Fahrenheit temperature and secondary live URL states.
