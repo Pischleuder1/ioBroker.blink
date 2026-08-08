@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "blink",
-    "version": "0.0.38",
+    "version": "0.0.39",
     "news": {
       "0.0.39": {
         "en": "Automatically clears the cached Blink session once after HTTP 401/code 101 and retries the connection.\nAllows the clear session command even when the adapter is not connected.",
@@ -93,19 +93,6 @@
         "pl": "Naprawiono automatyczne aktualizacje siatki kamer dla istniejących instalacji.\nDodano niemieckie tłumaczenia do siatki kamery.",
         "uk": "Виправлено автоматичне оновлення допоміжної сітки камери для існуючих інсталяцій.\nДодано німецькі переклади до сітки камери.",
         "zh-cn": "修复了现有安装的自动相机网格辅助更新问题。\n为相机网格添加了德语翻译。"
-      },
-      "0.0.32": {
-        "en": "Added optional video archive for downloaded MP4 clips on NAS.\nAdded archive support to the camera grid.\nBackfilled existing local video files into the archive.\nSorted and deduplicated archive clips in the camera grid.\nAdded date/time labels for archive clips in the camera grid.",
-        "de": "Optionales Videoarchiv für heruntergeladene MP4-Clips auf dem NAS hinzugefügt.\nDie Archivierungsfunktion wurde dem Kameraraster hinzugefügt.\nVorhandene lokale Videodateien wurden in das Archiv eingefügt.\nArchivclips im Kameraraster sortiert und von Duplikaten befreit.\nIm Kameraraster wurden Datums-/Zeitangaben für Archivclips hinzugefügt.",
-        "ru": "Добавлен дополнительный видеоархив для загруженных MP4-клипов на сетевом хранилище.\nДобавлена поддержка архивирования в сетку камер.\nВ архив были добавлены существующие локальные видеофайлы.\nОтсортированные и дедуплицированные архивные видеоролики в сетке камер.\nДобавлены метки даты/времени для архивных видеороликов в сетке камеры.",
-        "pt": "Adicionada a opção de arquivamento de vídeos para clipes MP4 baixados no NAS.\nAdicionada a funcionalidade de arquivamento à grade da câmera.\nArquivos de vídeo locais existentes foram inseridos no arquivo.\nClipes de arquivo classificados e sem duplicatas na grade da câmera.\nAdicionadas etiquetas de data/hora para os clipes de arquivo na grade da câmera.",
-        "nl": "Optioneel videoarchief toegevoegd voor gedownloade MP4-clips op de NAS.\nArchiveringsondersteuning is toegevoegd aan het cameragrid.\nDe bestaande lokale videobestanden zijn in het archief geplaatst.\nGesorteerde en ontdubbelde archiefclips in het cameragrid.\nEr zijn datum-/tijdlabels toegevoegd aan de archiefclips in het cameragrid.",
-        "fr": "Ajout d'une archive vidéo optionnelle pour les clips MP4 téléchargés sur le NAS.\nAjout de la prise en charge des archives à la grille de la caméra.\nRéintégrer les fichiers vidéo locaux existants dans l'archive.\nClips d'archives triés et dédupliqués dans la grille de la caméra.\nAjout d'étiquettes de date/heure pour les clips d'archive dans la grille de la caméra.",
-        "it": "Aggiunto archivio video opzionale per i clip MP4 scaricati su NAS.\nAggiunto il supporto per l'archiviazione alla griglia delle telecamere.\nI file video locali esistenti sono stati inseriti nuovamente nell'archivio.\nClip d'archivio ordinate e deduplicate nella griglia della telecamera.\nSono state aggiunte etichette con data e ora per i filmati d'archivio nella griglia della telecamera.",
-        "es": "Se ha añadido un archivo de vídeo opcional para los clips MP4 descargados en el NAS.\nSe ha añadido compatibilidad con archivos a la cuadrícula de la cámara.\nSe han añadido al archivo los archivos de vídeo locales existentes.\nClips de archivo ordenados y sin duplicados en la cuadrícula de la cámara.\nSe han añadido etiquetas de fecha y hora a los clips de archivo en la cuadrícula de la cámara.",
-        "pl": "Dodano opcjonalne archiwum wideo dla pobranych klipów MP4 na serwer NAS.\nDodano obsługę archiwum do siatki kamer.\nUzupełniono istniejące lokalne pliki wideo w archiwum.\nPosortowane i zduplikowane klipy archiwalne w siatce kamer.\nDodano etykiety daty/czasu dla klipów archiwalnych w siatce kamer.",
-        "uk": "Додано додатковий відеоархів для завантажених MP4-кліпів на NAS.\nДодано підтримку архіву до сітки камери.\nЗаповнив архів наявними локальними відеофайлами.\nВідсортовані та дедупліковані архівні кліпи в сітці камери.\nДодано позначки дати/часу для архівних кліпів у сітці камери.",
-        "zh-cn": "为NAS上下载的MP4视频片段添加了可选的视频存档功能。\n为相机网格添加了存档支持。\n将现有的本地视频文件回填到存档中。\n已对摄像机网格中的存档片段进行排序和去重。\n在摄像机网格中为存档片段添加了日期/时间标签。"
       }
     },
     "titleLang": {
