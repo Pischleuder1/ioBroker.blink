@@ -28,6 +28,7 @@
   "Enable Pushover for motion notifications": "Enable Pushover for motion notifications",
   "Enable Telegram for battery warnings": "Enable Telegram for battery warnings",
   "Enable Telegram for motion notifications": "Enable Telegram for motion notifications",
+  "Send photo with Telegram motion notifications": "Send photo with Telegram motion notifications",
   "Enable battery warning": "Enable battery warning",
   "Enable email for battery warnings": "Enable email for battery warnings",
   "Enable email for motion notifications": "Enable email for motion notifications",
@@ -67,5 +68,8 @@
   "Polling behavior": "Polling behavior",
   "Stream token": "Stream token",
   "HTTP port": "HTTP port",
-  "After saving, the final URL is available in each camera's live.stream_url state.": "After saving, the final URL is available in each camera's live.stream_url state."
+  "After saving, the final URL is available in each camera's live.stream_url state.": "After saving, the final URL is available in each camera's live.stream_url state.",
+  "Telegram": "Telegram",
+  "Pushover": "Pushover",
+  "Email": "Email"
 }

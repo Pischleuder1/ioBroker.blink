@@ -185,7 +185,8 @@
     "archiveEnabled": false,
     "archiveDir": "/opt/iobroker/iobroker-data/blink-archive",
     "archiveCreateCameraFolders": true,
-    "archiveMaxClipsPerCamera": 50
+    "archiveMaxClipsPerCamera": 50,
+    "motion_telegram_photo_enabled": false
   },
   "objects": [],
   "instanceObjects": [
