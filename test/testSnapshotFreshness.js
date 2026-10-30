@@ -1,0 +1,518 @@
+'use strict';
+
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
+const vm = require('node:vm');
+const { EventEmitter } = require('node:events');
+const { describe, it } = require('mocha');
+
+const source = fs.readFileSync(
+    path.join(__dirname, '../lib/blink-api.js'),
+    'utf8',
+);
+
+const createFixture = thumbnails => {
+    let clock = Date.now();
+
+    const stats = {
+        homescreen: 0,
+        posts: 0,
+        downloads: 0,
+        downloadPath: '',
+    };
+
+    const jpeg = Buffer.from('simulated-new-jpeg');
+
+    class FakeDate extends Date {
+        static now() {
+            return clock;
+        }
+    }
+
+    const https = {
+        request(options, callback) {
+            const request = new EventEmitter();
+
+            request.setTimeout = () => {};
+            request.write = () => {};
+
+            request.end = () => {
+                let responseBody;
+            let statusCode = 200;
+
+                if (
+                    options.method === 'GET' &&
+                    options.path.includes('/homescreen')
+                ) {
+                    const index = Math.min(
+                        stats.homescreen,
+                        thumbnails.length - 1,
+                    );
+
+                    const thumbnail = thumbnails[index];
+                    stats.homescreen++;
+
+                    if (
+                        thumbnail &&
+                        typeof thumbnail === 'object' &&
+                        thumbnail.httpStatus
+                    ) {
+                        statusCode = thumbnail.httpStatus;
+                    }
+
+                    responseBody = Buffer.from(JSON.stringify({
+                        cameras: [{
+                            device: { id: 42 },
+                            camera_status: { thumbnail },
+                        }],
+                    }));
+                } else if (
+                    options.method === 'POST' &&
+                    options.path.includes('/thumbnail')
+                ) {
+                    stats.posts++;
+                    responseBody = Buffer.from('{}');
+                } else if (options.method === 'GET') {
+                    stats.downloads++;
+                    stats.downloadPath = options.path;
+
+                    if (options.path.includes('/unavailable.jpg')) {
+                        statusCode = 503;
+                        responseBody = Buffer.from('Image unavailable');
+                    } else {
+                        responseBody = jpeg;
+                    }
+                } else {
+                    throw new Error(
+                        `Unexpected request: ${options.method} ${options.path}`,
+                    );
+                }
+
+                process.nextTick(() => {
+                    const response = new EventEmitter();
+
+                    response.statusCode = statusCode;
+                    response.headers = {};
+
+                    callback(response);
+                    response.emit('data', responseBody);
+                    response.emit('end');
+                });
+            };
+
+            return request;
+        },
+    };
+
+    const mockRequire = name => {
+        if (name === 'node:https') {
+            return https;
+        }
+
+        if (name === 'node:timers/promises') {
+            return {
+                setTimeout: async ms => {
+                    clock += ms;
+                },
+            };
+        }
+
+        return require(name);
+    };
+
+    const mod = { exports: {} };
+
+    vm.runInNewContext(
+        source,
+        {
+            module: mod,
+            exports: mod.exports,
+            require: mockRequire,
+            process,
+            Buffer,
+            URL,
+            URLSearchParams,
+            Date: FakeDate,
+            console,
+        },
+        {
+            filename: 'lib/blink-api.js',
+            timeout: 3000,
+        },
+    );
+
+    const dir = fs.mkdtempSync(
+        path.join(os.tmpdir(), 'blink-issue56-'),
+    );
+
+    return {
+        api: mod.exports,
+        stats,
+        jpeg,
+        file: path.join(dir, 'snapshot.jpg'),
+        cleanup: () => fs.rmSync(dir, {
+            recursive: true,
+            force: true,
+        }),
+    };
+};
+
+const requestSnapshot = (fixture, info = {}) =>
+    fixture.api.snapshot(
+        {
+            _accountId: 123,
+            accessToken: 'test-token',
+            apiHost: 'example.invalid',
+        },
+        7,
+        42,
+        '/old-thumbnail',
+        fixture.file,
+        'camera',
+        info,
+    );
+
+describe('Issue #56: Fresh Blink snapshots', () => {
+    it('waits for a changed thumbnail and preserves its timestamp', async () => {
+        const captured = Math.floor(
+            (Date.now() - 10000) / 1000,
+        );
+
+        const old = '/images/old?ts=1700000000';
+        const fresh = `/images/new?ts=${captured}`;
+
+        const fixture = createFixture([
+            old,
+            old,
+            old,
+            fresh,
+        ]);
+
+        try {
+            const info = {};
+
+            await requestSnapshot(fixture, info);
+
+            assert.equal(fixture.stats.posts, 1);
+            assert.equal(fixture.stats.homescreen, 4);
+            assert.equal(fixture.stats.downloads, 1);
+
+            assert.equal(
+                fixture.stats.downloadPath,
+                `/images/new.jpg?ts=${captured}`,
+            );
+
+            assert.deepEqual(
+                fs.readFileSync(fixture.file),
+                fixture.jpeg,
+            );
+
+            assert.equal(
+                info.capturedAt,
+                new Date(captured * 1000).toISOString(),
+            );
+        } finally {
+            fixture.cleanup();
+        }
+    });
+
+    it('does not overwrite a previous image on timeout', async () => {
+        const old = '/images/old?ts=1700000000';
+        const fixture = createFixture([old]);
+
+        try {
+            fs.writeFileSync(
+                fixture.file,
+                Buffer.from('existing-picture'),
+            );
+
+            await assert.rejects(
+                requestSnapshot(fixture),
+                /thumbnail did not change within 60s/,
+            );
+
+            assert.equal(
+                fs.readFileSync(fixture.file, 'utf8'),
+                'existing-picture',
+            );
+
+            assert.equal(fixture.stats.downloads, 0);
+        } finally {
+            fixture.cleanup();
+        }
+    });
+
+    it('rejects a missing baseline without triggering a snapshot', async () => {
+        const fixture = createFixture([null]);
+
+        try {
+            await assert.rejects(
+                requestSnapshot(fixture),
+                /no baseline thumbnail available/,
+            );
+
+            assert.equal(fixture.stats.posts, 0);
+            assert.equal(fixture.stats.downloads, 0);
+        } finally {
+            fixture.cleanup();
+        }
+    });
+
+    it('does not invent a timestamp when ts is absent', async () => {
+        const fixture = createFixture([
+            '/images/old',
+            '/images/new',
+        ]);
+
+        try {
+            const info = {};
+
+            await requestSnapshot(fixture, info);
+
+            assert.equal(info.capturedAt, null);
+            assert.equal(fixture.stats.downloads, 1);
+        } finally {
+            fixture.cleanup();
+        }
+    });
+
+    it('rejects an implausibly old timestamp', async () => {
+        const fixture = createFixture([
+            '/images/old?ts=1700000000',
+            '/images/new?ts=1000000000',
+        ]);
+
+        try {
+            const info = {};
+
+            await requestSnapshot(fixture, info);
+
+            assert.equal(info.capturedAt, null);
+        } finally {
+            fixture.cleanup();
+        }
+    });
+
+    it('supports a millisecond timestamp', async () => {
+        const captured = Date.now() - 10000;
+
+        const fixture = createFixture([
+            '/images/old?ts=1700000000',
+            `/images/new?ts=${captured}`,
+        ]);
+
+        try {
+            const info = {};
+
+            await requestSnapshot(fixture, info);
+
+            assert.equal(
+                info.capturedAt,
+                new Date(captured).toISOString(),
+            );
+        } finally {
+            fixture.cleanup();
+        }
+    });
+});
+
+
+describe('Issue #56: live.timestamp integration', () => {
+    const mainSource = fs.readFileSync(
+        path.join(__dirname, '../main.js'),
+        'utf8',
+    );
+
+    const createAdapter = () => {
+        class MockAdapter extends EventEmitter {
+            constructor() {
+                super();
+                this.namespace = 'blink.0';
+            }
+        }
+
+        const mockRequire = name => {
+            if (name === '@iobroker/adapter-core') {
+                return { Adapter: MockAdapter };
+            }
+            if (name === './lib/blink-api') {
+                return {};
+            }
+            if (name === './lib/mjpeg-server') {
+                return { MjpegServer: class {} };
+            }
+            return require(name);
+        };
+
+        const mod = { exports: {} };
+
+        vm.runInNewContext(
+            mainSource,
+            {
+                module: mod,
+                require: mockRequire,
+                Buffer,
+            },
+            {
+                filename: 'main.js',
+                timeout: 3000,
+            },
+        );
+
+        const adapter = mod.exports();
+        const states = new Map();
+
+        adapter.cfg = {
+            storeBase64: false,
+        };
+
+        adapter.setStateAsync = async (
+            id,
+            value,
+            ack,
+        ) => {
+            states.set(id, { value, ack });
+        };
+
+        return { adapter, states };
+    };
+
+    it('stores the confirmed capture time', async () => {
+        const { adapter, states } = createAdapter();
+
+        const capturedAt = '2026-10-30T15:29:24.000Z';
+
+        await adapter.setLiveStates(
+            '42',
+            '/tmp/test-snapshot.jpg',
+            capturedAt,
+        );
+
+        const timestamp = states.get(
+            'cameras.42.live.timestamp',
+        );
+
+        assert.equal(timestamp.value, capturedAt);
+        assert.equal(timestamp.ack, true);
+    });
+
+    it('does not invent a timestamp when unavailable', async () => {
+        const { adapter, states } = createAdapter();
+
+        await adapter.setLiveStates(
+            '42',
+            '/tmp/test-snapshot.jpg',
+            null,
+        );
+
+        const timestamp = states.get(
+            'cameras.42.live.timestamp',
+        );
+
+        assert.equal(timestamp.value, '');
+        assert.equal(timestamp.ack, true);
+    });
+});
+
+
+describe('Issue #56: Blink API failure handling', () => {
+    it('recovers from a temporary homescreen error', async () => {
+        const fixture = createFixture([
+            '/images/old',
+            { httpStatus: 503 },
+            '/images/old',
+            '/images/new',
+        ]);
+
+        try {
+            await requestSnapshot(fixture);
+
+            assert.equal(fixture.stats.homescreen, 4);
+            assert.equal(fixture.stats.posts, 1);
+            assert.equal(fixture.stats.downloads, 1);
+
+            assert.equal(
+                fixture.stats.downloadPath,
+                '/images/new.jpg',
+            );
+        } finally {
+            fixture.cleanup();
+        }
+    });
+
+    it('does not trigger a snapshot when baseline fails', async () => {
+        const fixture = createFixture([
+            { httpStatus: 503 },
+        ]);
+
+        try {
+            await assert.rejects(
+                requestSnapshot(fixture),
+                /HTTP 503/,
+            );
+
+            assert.equal(fixture.stats.posts, 0);
+            assert.equal(fixture.stats.downloads, 0);
+        } finally {
+            fixture.cleanup();
+        }
+    });
+
+    it('preserves an existing image if download fails', async () => {
+        const fixture = createFixture([
+            '/images/old',
+            '/images/unavailable',
+        ]);
+
+        try {
+            fs.writeFileSync(
+                fixture.file,
+                Buffer.from('previous-image'),
+            );
+
+            await assert.rejects(
+                requestSnapshot(fixture),
+                /HTTP 503/,
+            );
+
+            assert.equal(
+                fs.readFileSync(fixture.file, 'utf8'),
+                'previous-image',
+            );
+
+            assert.equal(fixture.stats.downloads, 1);
+        } finally {
+            fixture.cleanup();
+        }
+    });
+
+    it('handles JPEG URLs with encoded ISO timestamps', async () => {
+        const captured = new Date(
+            Date.now() - 10000,
+        ).toISOString();
+
+        const encoded = encodeURIComponent(captured);
+
+        const fixture = createFixture([
+            '/images/old.jpeg',
+            `/images/new.jpeg?ts=${encoded}`,
+        ]);
+
+        try {
+            const info = {};
+
+            await requestSnapshot(fixture, info);
+
+            assert.equal(
+                fixture.stats.downloadPath,
+                `/images/new.jpeg?ts=${encoded}`,
+            );
+
+            assert.equal(info.capturedAt, captured);
+        } finally {
+            fixture.cleanup();
+        }
+    });
+});

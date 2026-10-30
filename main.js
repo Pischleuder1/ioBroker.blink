@@ -1463,8 +1463,17 @@ class BlinkAdapter extends utils.Adapter {
 			const file = path.join(this.cfg.snapshotDir, `${devId}_live.jpg`);
 
 			try {
-				await blinkApi.snapshot(this.session, cam.network_id, cam.id, cam.thumbnail, file, cam.apiType);
-				await this.setLiveStates(devId, file);
+				const snapshotInfo = {};
+				await blinkApi.snapshot(
+					this.session,
+					cam.network_id,
+					cam.id,
+					cam.thumbnail,
+					file,
+					cam.apiType,
+					snapshotInfo,
+				);
+				await this.setLiveStates(devId, file, snapshotInfo.capturedAt);
 				if (this.mjpegServer) {
 					try {
 						const buf = fs.readFileSync(file);
@@ -1490,12 +1499,12 @@ class BlinkAdapter extends utils.Adapter {
 		}
 	}
 
-	async setLiveStates(devId, file) {
+	async setLiveStates(devId, file, capturedAt = null) {
 		const base = `cameras.${devId}`;
 		await this.setStateAsync(`${base}.commands.snapshot_file`, file, true);
 		await this.setStateAsync(`${base}.live.file`, file, true);
 		await this.setStateAsync(`${base}.live.mime_type`, 'image/jpeg', true);
-		await this.setStateAsync(`${base}.live.timestamp`, new Date().toISOString(), true);
+		await this.setStateAsync(`${base}.live.timestamp`, capturedAt || '', true);
 
 		if (this.cfg.storeBase64) {
 			try {
@@ -2088,8 +2097,17 @@ class BlinkAdapter extends utils.Adapter {
 						return;
 					}
 					const file = path.join(this.cfg.snapshotDir, `${devId}.jpg`);
-					await blinkApi.snapshot(this.session, cam.network_id, cam.id, cam.thumbnail, file, cam.apiType);
-					await this.setLiveStates(devId, file);
+					const snapshotInfo = {};
+					await blinkApi.snapshot(
+						this.session,
+						cam.network_id,
+						cam.id,
+						cam.thumbnail,
+						file,
+						cam.apiType,
+						snapshotInfo,
+					);
+					await this.setLiveStates(devId, file, snapshotInfo.capturedAt);
 					await this.setStateAsync(this.stripNs(id), false, true);
 				} else if (cmd === 'fetch_video') {
 					if (state.val !== true) {
