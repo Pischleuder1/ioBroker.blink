@@ -13,13 +13,15 @@ const source = fs.readFileSync(
     'utf8',
 );
 
-const createFixture = thumbnails => {
+const createFixture = (thumbnails, imageResponses = null, deviceGroup = 'cameras') => {
     let clock = Date.now();
 
     const stats = {
         homescreen: 0,
         posts: 0,
+        postPaths: [],
         downloads: 0,
+        baselineDownloads: 0,
         downloadPath: '',
     };
 
@@ -62,27 +64,55 @@ const createFixture = thumbnails => {
                         statusCode = thumbnail.httpStatus;
                     }
 
-                    responseBody = Buffer.from(JSON.stringify({
-                        cameras: [{
-                            device: { id: 42 },
-                            camera_status: { thumbnail },
-                        }],
-                    }));
+                    const homescreen = {
+                        cameras: [],
+                        owls: [],
+                        doorbells: [],
+                    };
+
+                    if (!Object.hasOwn(homescreen, deviceGroup)) {
+                        throw new Error('Invalid device group');
+                    }
+
+                    homescreen[deviceGroup] = [{
+                        device: { id: 42 },
+                        camera_status: { thumbnail },
+                    }];
+
+                    responseBody = Buffer.from(
+                        JSON.stringify(homescreen),
+                    );
                 } else if (
                     options.method === 'POST' &&
                     options.path.includes('/thumbnail')
                 ) {
                     stats.posts++;
+                    stats.postPaths.push(options.path);
                     responseBody = Buffer.from('{}');
                 } else if (options.method === 'GET') {
-                    stats.downloads++;
+                    const baseline = stats.posts === 0;
+
+                    if (baseline) {
+                        stats.baselineDownloads++;
+                    } else {
+                        stats.downloads++;
+                    }
+
                     stats.downloadPath = options.path;
 
                     if (options.path.includes('/unavailable.jpg')) {
                         statusCode = 503;
                         responseBody = Buffer.from('Image unavailable');
+                    } else if (Array.isArray(imageResponses)) {
+                        const index = Math.min(
+                            stats.downloads,
+                            imageResponses.length - 1,
+                        );
+                        responseBody = imageResponses[index];
                     } else {
-                        responseBody = jpeg;
+                        responseBody = baseline
+                            ? Buffer.from('simulated-previous-jpeg')
+                            : jpeg;
                     }
                 } else {
                     throw new Error(
@@ -159,7 +189,7 @@ const createFixture = thumbnails => {
     };
 };
 
-const requestSnapshot = (fixture, info = {}) =>
+const requestSnapshot = (fixture, info = {}, apiType = 'camera') =>
     fixture.api.snapshot(
         {
             _accountId: 123,
@@ -170,7 +200,7 @@ const requestSnapshot = (fixture, info = {}) =>
         42,
         '/old-thumbnail',
         fixture.file,
-        'camera',
+        apiType,
         info,
     );
 
@@ -482,7 +512,11 @@ describe('Issue #56: Blink API failure handling', () => {
                 'previous-image',
             );
 
-            assert.equal(fixture.stats.downloads, 1);
+            assert.equal(
+                fixture.stats.downloads,
+                30,
+                'Failed JPEG downloads must be retried until timeout',
+            );
         } finally {
             fixture.cleanup();
         }
@@ -515,4 +549,125 @@ describe('Issue #56: Blink API failure handling', () => {
             fixture.cleanup();
         }
     });
+});
+
+
+describe('Issue #56: delayed image availability', () => {
+    it('URL changes before JPEG content is ready', async () => {
+        const captured = Math.floor(Date.now() / 1000);
+
+        const previousImage = Buffer.from('previous-image');
+        const newImage = Buffer.from('fresh-image');
+
+        const fixture = createFixture(
+            [
+                '/images/camera?ts=1700000000',
+                `/images/camera?ts=${captured}`,
+            ],
+            [
+                previousImage,
+                previousImage,
+                newImage,
+            ],
+        );
+
+        try {
+            fs.writeFileSync(fixture.file, previousImage);
+
+            const info = {};
+
+            await requestSnapshot(fixture, info);
+
+            assert.equal(
+                fixture.stats.downloads,
+                2,
+                'The adapter must retry when JPEG bytes are unchanged',
+            );
+
+            assert.deepEqual(
+                fs.readFileSync(fixture.file),
+                newImage,
+                'Only the fresh JPEG may replace the existing file',
+            );
+
+            assert.equal(
+                info.capturedAt,
+                new Date(captured * 1000).toISOString(),
+            );
+        } finally {
+            fixture.cleanup();
+        }
+    });
+});
+
+
+describe('Issue #56: additional camera and content checks', () => {
+    it('keeps the old image when URL changes but JPEG never does', async () => {
+        const previousImage = Buffer.from('unchanged-jpeg');
+
+        const fixture = createFixture(
+            [
+                '/images/old?ts=1700000000',
+                `/images/old?ts=${Math.floor(Date.now() / 1000)}`,
+            ],
+            [
+                previousImage,
+                previousImage,
+            ],
+        );
+
+        try {
+            fs.writeFileSync(fixture.file, previousImage);
+
+            await assert.rejects(
+                requestSnapshot(fixture),
+                /JPEG content remained unchanged/,
+            );
+
+            assert.equal(fixture.stats.downloads, 30);
+
+            assert.deepEqual(
+                fs.readFileSync(fixture.file),
+                previousImage,
+            );
+        } finally {
+            fixture.cleanup();
+        }
+    });
+
+    for (const [apiType, deviceGroup, endpoint] of [
+        ['mini', 'owls', '/owls/42/thumbnail'],
+        ['doorbell', 'doorbells', '/doorbells/42/thumbnail'],
+    ]) {
+        it(`supports ${apiType} snapshot refresh`, async () => {
+            const fixture = createFixture(
+                ['/images/old', '/images/new'],
+                null,
+                deviceGroup,
+            );
+
+            try {
+                await requestSnapshot(
+                    fixture,
+                    {},
+                    apiType,
+                );
+
+                assert.equal(fixture.stats.posts, 1);
+
+                assert.ok(
+                    fixture.stats.postPaths[0].includes(endpoint),
+                );
+
+                assert.equal(fixture.stats.downloads, 1);
+
+                assert.deepEqual(
+                    fs.readFileSync(fixture.file),
+                    fixture.jpeg,
+                );
+            } finally {
+                fixture.cleanup();
+            }
+        });
+    }
 });
