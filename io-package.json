@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "blink",
-    "version": "0.0.39",
+    "version": "0.0.40",
     "news": {
+      "0.0.40": {
+        "en": "Improved snapshot freshness verification and capture timestamps.\nAdded motion snapshots for VIS and optional Telegram photos.\nOptimized USB/microSD manifest requests, HTTP 409 handling and logging.",
+        "de": "Erkennung neuer Snapshots und Aufnahmezeitpunkte verbessert.\nBewegungssnapshots für VIS und optionale Telegram-Fotos ergänzt.\nUSB-/microSD-Manifestabfragen, HTTP-409-Behandlung und Protokollierung optimiert.",
+        "ru": "Улучшена проверка новых снимков и времени их создания.\nДобавлены снимки движения для VIS и необязательные фото Telegram.\nОптимизированы запросы USB/microSD, обработка HTTP 409 и журналирование.",
+        "pt": "Melhorada a verificação de novas imagens e dos horários de captura.\nAdicionadas imagens de movimento para VIS e fotos opcionais no Telegram.\nOtimizadas as consultas USB/microSD, o tratamento HTTP 409 e os registros.",
+        "nl": "Controle van nieuwe snapshots en opnametijdstippen verbeterd.\nBewegingssnapshots voor VIS en optionele Telegram-foto's toegevoegd.\nUSB/microSD-manifestaanvragen, HTTP 409-afhandeling en logging verbeterd.",
+        "fr": "Amélioration de la vérification des nouveaux instantanés et des heures de capture.\nAjout d'images de mouvement pour VIS et de photos Telegram facultatives.\nOptimisation des requêtes USB/microSD, de la gestion HTTP 409 et des journaux.",
+        "it": "Migliorata la verifica dei nuovi snapshot e degli orari di acquisizione.\nAggiunti snapshot di movimento per VIS e foto Telegram opzionali.\nOttimizzate le richieste USB/microSD, la gestione HTTP 409 e i log.",
+        "es": "Mejorada la verificación de nuevas capturas y sus horas de creación.\nAñadidas capturas de movimiento para VIS y fotos opcionales de Telegram.\nOptimizadas las consultas USB/microSD, la gestión HTTP 409 y los registros.",
+        "pl": "Ulepszono weryfikację nowych zdjęć i czasu ich wykonania.\nDodano zdjęcia ruchu dla VIS i opcjonalne zdjęcia Telegram.\nZoptymalizowano zapytania USB/microSD, obsługę HTTP 409 i logowanie.",
+        "uk": "Покращено перевірку нових знімків і часу їх створення.\nДодано знімки руху для VIS та необов'язкові фото Telegram.\nОптимізовано запити USB/microSD, обробку HTTP 409 і журналювання.",
+        "zh-cn": "改进了新快照验证和拍摄时间记录。\n新增用于 VIS 的运动快照和可选的 Telegram 照片通知。\n优化了 USB/microSD 清单请求、HTTP 409 处理和日志记录。"
+      },
       "0.0.39": {
         "en": "Automatically clears the cached Blink session once after HTTP 401/code 101 and retries the connection.\nAllows the clear session command even when the adapter is not connected.",
         "de": "Löscht den zwischengespeicherten Blink-Session-Cache nach HTTP 401/code 101 einmal automatisch und versucht die Verbindung erneut.\nErlaubt den Befehl zum Löschen der Session auch dann, wenn der Adapter nicht verbunden ist.",
