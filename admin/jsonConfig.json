@@ -337,8 +337,8 @@
           "xs": 12,
           "sm": 12,
           "md": 6,
-          "lg": 4,
-          "xl": 4
+          "lg": 6,
+          "xl": 6
         },
         "motionNotifyCooldownMinutes": {
           "type": "number",
@@ -349,12 +349,22 @@
           "xs": 12,
           "sm": 12,
           "md": 6,
-          "lg": 4,
-          "xl": 4
+          "lg": 6,
+          "xl": 6
         },
         "motion_channels_header": {
           "type": "staticText",
           "text": "Motion notification channels",
+          "newLine": true,
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
+        },
+        "motion_telegram_section": {
+          "type": "staticText",
+          "text": "Telegram",
           "newLine": true,
           "xs": 12,
           "sm": 12,
@@ -368,8 +378,9 @@
           "xs": 12,
           "sm": 12,
           "md": 6,
-          "lg": 4,
-          "xl": 4
+          "lg": 6,
+          "xl": 6,
+          "newLine": true
         },
         "motion_telegram_instance": {
           "type": "text",
@@ -378,8 +389,8 @@
           "xs": 12,
           "sm": 12,
           "md": 6,
-          "lg": 4,
-          "xl": 4
+          "lg": 6,
+          "xl": 6
         },
         "motion_telegram_users": {
           "type": "text",
@@ -388,8 +399,30 @@
           "xs": 12,
           "sm": 12,
           "md": 12,
-          "lg": 4,
-          "xl": 4
+          "lg": 8,
+          "xl": 8,
+          "newLine": true
+        },
+        "motion_telegram_photo_enabled": {
+          "type": "checkbox",
+          "label": "Send photo with Telegram motion notifications",
+          "default": false,
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12,
+          "newLine": true
+        },
+        "motion_pushover_section": {
+          "type": "staticText",
+          "text": "Pushover",
+          "newLine": true,
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
         },
         "motion_pushover_enabled": {
           "type": "checkbox",
@@ -398,8 +431,8 @@
           "xs": 12,
           "sm": 12,
           "md": 6,
-          "lg": 4,
-          "xl": 4
+          "lg": 6,
+          "xl": 6
         },
         "motion_pushover_instance": {
           "type": "text",
@@ -408,8 +441,18 @@
           "xs": 12,
           "sm": 12,
           "md": 6,
-          "lg": 4,
-          "xl": 4
+          "lg": 6,
+          "xl": 6
+        },
+        "motion_email_section": {
+          "type": "staticText",
+          "text": "Email",
+          "newLine": true,
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
         },
         "motion_email_enabled": {
           "type": "checkbox",
@@ -418,8 +461,8 @@
           "xs": 12,
           "sm": 12,
           "md": 6,
-          "lg": 4,
-          "xl": 4
+          "lg": 6,
+          "xl": 6
         },
         "motion_email_instance": {
           "type": "text",
@@ -428,8 +471,8 @@
           "xs": 12,
           "sm": 12,
           "md": 6,
-          "lg": 4,
-          "xl": 4
+          "lg": 6,
+          "xl": 6
         },
         "motion_email_to": {
           "type": "text",
@@ -438,8 +481,9 @@
           "xs": 12,
           "sm": 12,
           "md": 12,
-          "lg": 4,
-          "xl": 4
+          "lg": 8,
+          "xl": 8,
+          "newLine": true
         }
       }
     },

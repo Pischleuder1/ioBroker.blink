@@ -406,11 +406,17 @@ describe('Issue #56: live.timestamp integration', () => {
             states.set(id, { value, ack });
         };
 
-        return { adapter, states };
+        const published = [];
+
+        adapter.publishSnapshotToStorage = async (devId, file) => {
+            published.push({ devId, file });
+        };
+
+        return { adapter, states, published };
     };
 
     it('stores the confirmed capture time', async () => {
-        const { adapter, states } = createAdapter();
+        const { adapter, states, published } = createAdapter();
 
         const capturedAt = '2026-10-30T15:29:24.000Z';
 
@@ -426,10 +432,15 @@ describe('Issue #56: live.timestamp integration', () => {
 
         assert.equal(timestamp.value, capturedAt);
         assert.equal(timestamp.ack, true);
+
+        assert.deepEqual(published, [{
+            devId: '42',
+            file: '/tmp/test-snapshot.jpg',
+        }]);
     });
 
     it('does not invent a timestamp when unavailable', async () => {
-        const { adapter, states } = createAdapter();
+        const { adapter, states, published } = createAdapter();
 
         await adapter.setLiveStates(
             '42',
@@ -443,7 +454,135 @@ describe('Issue #56: live.timestamp integration', () => {
 
         assert.equal(timestamp.value, '');
         assert.equal(timestamp.ack, true);
+
+        assert.deepEqual(published, [{
+            devId: '42',
+            file: '/tmp/test-snapshot.jpg',
+        }]);
     });
+
+    it('writes the JPEG to ioBroker VIS storage', async () => {
+        const { adapter, states } = createAdapter();
+
+        // Echte Methode verwenden statt der Testsimulation.
+        delete adapter.publishSnapshotToStorage;
+
+        const folder = fs.mkdtempSync(
+            path.join(os.tmpdir(), 'blink-vis-test-'),
+        );
+
+        const file = path.join(folder, 'snapshot.jpg');
+        const image = Buffer.from([0xff, 0xd8, 0xff, 0xd9]);
+
+        const writes = [];
+        const warnings = [];
+
+        adapter.log = {
+            warn: message => warnings.push(message),
+        };
+
+        adapter.writeFileAsync = async (id, name, data) => {
+            writes.push({ id, name, data });
+        };
+
+        try {
+            fs.writeFileSync(file, image);
+
+            await adapter.setLiveStates(
+                '42',
+                file,
+                '2026-10-30T15:29:24.000Z',
+            );
+
+            assert.equal(writes.length, 1);
+            assert.equal(writes[0].id, 'blink.0.storage');
+            assert.equal(
+                writes[0].name,
+                'snapshots/42_live.jpg',
+            );
+            assert.deepEqual(writes[0].data, image);
+
+            const url = states.get(
+                'cameras.42.live.image_url',
+            );
+
+            assert.ok(url);
+
+            assert.match(
+                url.value,
+                /^\/blink\.0\.storage\/snapshots\/42_live\.jpg\?t=\d+$/,
+            );
+
+            assert.equal(
+                states.get('cameras.42.live.timestamp').value,
+                '2026-10-30T15:29:24.000Z',
+            );
+
+            assert.equal(warnings.length, 0);
+        } finally {
+            fs.rmSync(folder, {
+                recursive: true,
+                force: true,
+            });
+        }
+    });
+
+    it('preserves snapshot states if VIS storage fails', async () => {
+        const { adapter, states } = createAdapter();
+
+        delete adapter.publishSnapshotToStorage;
+
+        const folder = fs.mkdtempSync(
+            path.join(os.tmpdir(), 'blink-vis-error-test-'),
+        );
+
+        const file = path.join(folder, 'snapshot.jpg');
+        const warnings = [];
+
+        adapter.log = {
+            warn: message => warnings.push(message),
+        };
+
+        adapter.writeFileAsync = async () => {
+            throw new Error('Storage unavailable');
+        };
+
+        try {
+            fs.writeFileSync(
+                file,
+                Buffer.from([0xff, 0xd8, 0xff, 0xd9]),
+            );
+
+            await adapter.setLiveStates(
+                '42',
+                file,
+                '2026-10-30T15:29:24.000Z',
+            );
+
+            assert.equal(
+                states.get('cameras.42.live.timestamp').value,
+                '2026-10-30T15:29:24.000Z',
+            );
+
+            assert.equal(warnings.length, 1);
+
+            assert.match(
+                warnings[0],
+                /VIS snapshot storage failed/,
+            );
+
+            assert.equal(
+                states.has('cameras.42.live.image_url'),
+                false,
+            );
+        } finally {
+            fs.rmSync(folder, {
+                recursive: true,
+                force: true,
+            });
+        }
+    });
+
 });
 
 

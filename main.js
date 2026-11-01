@@ -9,6 +9,10 @@ const http = require('node:http');
 const os = require('node:os');
 const path = require('node:path');
 const crypto = require('node:crypto');
+const { execFile } = require('node:child_process');
+const { promisify } = require('node:util');
+
+const execFileAsync = promisify(execFile);
 const blinkApi = require('./lib/blink-api');
 const { MjpegServer } = require('./lib/mjpeg-server');
 
@@ -27,6 +31,7 @@ class BlinkAdapter extends utils.Adapter {
 		this.videoCheckCooldownMs = 25 * 1000;
 		this.lastVideoCheckByDevId = new Map();
 		this.lastMotionNotifyByDevId = new Map();
+		this.motionSnapshotBackfillAttempted = new Set();
 		this.videoBusyUntilByDevId = new Map();
 		this.videoBusyCooldownMs = 2 * 60 * 1000;
 		this.localStorageBusyCooldownMs = 2 * 60 * 1000;
@@ -709,6 +714,7 @@ class BlinkAdapter extends utils.Adapter {
 				cooldownMinutes: Math.max(1, Number(this.config.motionNotifyCooldownMinutes) || 5),
 				telegram: {
 					enabled: this.config.motion_telegram_enabled === true,
+					photoEnabled: this.config.motion_telegram_photo_enabled === true,
 					instance: (this.config.motion_telegram_instance || 'telegram.0').trim(),
 					users: (this.config.motion_telegram_users || '').trim(),
 				},
@@ -1024,6 +1030,15 @@ class BlinkAdapter extends utils.Adapter {
 		await this.ensureObjectType('cameras', 'folder', 'Cameras');
 		await this.ensureObjectType('sync', 'folder', 'Sync modules');
 
+		await this.setObjectNotExistsAsync('storage', {
+			type: 'meta',
+			common: {
+				name: 'Blink VIS snapshots',
+				type: 'meta.folder',
+			},
+			native: {},
+		});
+
 		await this.setObjectNotExistsAsync('archive', {
 			type: 'channel',
 			common: { name: 'Video archive' },
@@ -1177,6 +1192,14 @@ class BlinkAdapter extends utils.Adapter {
 		await this.ensureState(`${base}.video.size`, 'MP4 file size', 'number', 'value', false);
 		await this.ensureState(`${base}.video.ready`, 'MP4 ready', 'boolean', 'indicator', false);
 		await this.ensureState(`${base}.video.lastError`, 'MP4 last error', 'string', 'text', false);
+		await this.ensureState(`${base}.video.snapshot_url`, 'Motion snapshot URL', 'string', 'text.url', false);
+		await this.ensureState(
+			`${base}.video.snapshot_timestamp`,
+			'Motion snapshot timestamp',
+			'string',
+			'date',
+			false,
+		);
 
 		await this.ensureObjectType(`${base}.video.history`, 'folder', 'History');
 
@@ -1212,6 +1235,7 @@ class BlinkAdapter extends utils.Adapter {
 
 		await this.ensureState(`${base}.live.file`, 'Live snapshot file', 'string', 'text', false);
 		await this.ensureState(`${base}.live.image_base64`, 'Live snapshot Base64', 'string', 'text', false);
+		await this.ensureState(`${base}.live.image_url`, 'VIS snapshot URL', 'string', 'text', false);
 		await this.ensureState(`${base}.live.mime_type`, 'Image MIME type', 'string', 'text', false);
 		await this.ensureState(`${base}.live.timestamp`, 'Live snapshot timestamp', 'string', 'date', false);
 		await this.ensureState(`${base}.live.stream_url`, 'MJPEG-Stream URL', 'string', 'text.url', false);
@@ -1275,6 +1299,8 @@ class BlinkAdapter extends utils.Adapter {
 		await this.initStateIfUnset(`${base}.video.size`, 0);
 		await this.initStateIfUnset(`${base}.video.ready`, false);
 		await this.initStateIfUnset(`${base}.video.lastError`, '');
+		await this.initStateIfUnset(`${base}.video.snapshot_url`, '');
+		await this.initStateIfUnset(`${base}.video.snapshot_timestamp`, '');
 		for (let i = 0; i < 10; i++) {
 			await this.initStateIfUnset(`${base}.video.history.${i}.file`, '');
 			await this.initStateIfUnset(`${base}.video.history.${i}.timestamp`, '');
@@ -1283,6 +1309,7 @@ class BlinkAdapter extends utils.Adapter {
 		}
 		await this.initStateIfUnset(`${base}.live.file`, '');
 		await this.initStateIfUnset(`${base}.live.image_base64`, '');
+		await this.initStateIfUnset(`${base}.live.image_url`, '');
 		await this.initStateIfUnset(`${base}.live.mime_type`, '');
 		await this.initStateIfUnset(`${base}.live.timestamp`, '');
 		await this.initStateIfUnset(`${base}.live.stream_url`, '');
@@ -1505,6 +1532,7 @@ class BlinkAdapter extends utils.Adapter {
 		await this.setStateAsync(`${base}.live.file`, file, true);
 		await this.setStateAsync(`${base}.live.mime_type`, 'image/jpeg', true);
 		await this.setStateAsync(`${base}.live.timestamp`, capturedAt || '', true);
+		await this.publishSnapshotToStorage(devId, file);
 
 		if (this.cfg.storeBase64) {
 			try {
@@ -1513,6 +1541,21 @@ class BlinkAdapter extends utils.Adapter {
 			} catch {
 				// base64-State ist optional – Lesefehler nicht eskalieren.
 			}
+		}
+	}
+
+	async publishSnapshotToStorage(devId, file) {
+		try {
+			const storagePath = `snapshots/${devId}_live.jpg`;
+			const image = fs.readFileSync(file);
+
+			await this.writeFileAsync(`${this.namespace}.storage`, storagePath, image);
+
+			const url = `/${this.namespace}.storage/${storagePath}?t=${Date.now()}`;
+
+			await this.setStateAsync(`cameras.${devId}.live.image_url`, url, true);
+		} catch (e) {
+			this.log.warn(`VIS snapshot storage failed (${devId}): ${e?.message || e}`);
 		}
 	}
 
@@ -2399,6 +2442,70 @@ class BlinkAdapter extends utils.Adapter {
 		}
 	}
 
+	async publishMotionSnapshotFromVideo(devId, videoFile) {
+		try {
+			const ffmpeg = this.cfg?.ffmpegPath || 'ffmpeg';
+			let image = null;
+
+			for (const seconds of ['2', '0']) {
+				try {
+					const { stdout } = await execFileAsync(
+						ffmpeg,
+						[
+							'-nostdin',
+							'-hide_banner',
+							'-loglevel',
+							'error',
+							'-ss',
+							seconds,
+							'-i',
+							videoFile,
+							'-frames:v',
+							'1',
+							'-q:v',
+							'3',
+							'-f',
+							'image2pipe',
+							'-vcodec',
+							'mjpeg',
+							'pipe:1',
+						],
+						{
+							encoding: 'buffer',
+							maxBuffer: 8 * 1024 * 1024,
+							timeout: 30000,
+						},
+					);
+
+					if (Buffer.isBuffer(stdout) && stdout.length > 100 && stdout[0] === 0xff && stdout[1] === 0xd8) {
+						image = stdout;
+						break;
+					}
+				} catch {
+					// Bei kurzen Clips das erste Bild versuchen.
+				}
+			}
+
+			if (!image) {
+				throw new Error('No JPEG frame extracted');
+			}
+
+			const storagePath = `snapshots/${devId}_motion.jpg`;
+
+			await this.writeFileAsync(`${this.namespace}.storage`, storagePath, image);
+
+			const url = `/${this.namespace}.storage/${storagePath}?t=${Date.now()}`;
+
+			await this.setStateAsync(`cameras.${devId}.video.snapshot_url`, url, true);
+
+			await this.setStateAsync(`cameras.${devId}.video.snapshot_timestamp`, new Date().toISOString(), true);
+			return image;
+		} catch (e) {
+			this.log.warn(`Motion snapshot failed (${devId}): ${e?.message || e}`);
+			return null;
+		}
+	}
+
 	async syncLatestCloudVideos(cameras) {
 		if (this.videoSyncInProgress || !this.session) {
 			return;
@@ -2412,6 +2519,19 @@ class BlinkAdapter extends utils.Adapter {
 		try {
 			for (const cam of cameras) {
 				const devId = this.sanitizeId(cam.id || cam.name);
+
+				// Vorhandenes lokales Video einmalig als VIS-Bild bereitstellen.
+				// Funktioniert auch dann, wenn Blink keinen Clip mehr meldet.
+				const snapshotFile = path.join(this.cfg.snapshotDir, `${devId}_latest.mp4`);
+
+				if (this.isUsableFile(snapshotFile) && !this.motionSnapshotBackfillAttempted.has(devId)) {
+					const snapshotState = await this.getStateAsync(`cameras.${devId}.video.snapshot_url`);
+
+					if (!snapshotState?.val) {
+						this.motionSnapshotBackfillAttempted.add(devId);
+						await this.publishMotionSnapshotFromVideo(devId, snapshotFile);
+					}
+				}
 				if (this.isVideoBusyCooldownActive(devId)) {
 					continue;
 				}
@@ -2504,6 +2624,7 @@ class BlinkAdapter extends utils.Adapter {
 						await this.setStateAsync(`cameras.${devId}.video.lastError`, '', true);
 						await this.setStateAsync(`cameras.${devId}.video.size`, this.fileSize(currentFile), true);
 						await this.updateDetectionStates(devId, summary);
+
 						try {
 							await this.syncCameraHistory(cam, devId, localManifest);
 						} catch (e) {
@@ -2554,11 +2675,12 @@ class BlinkAdapter extends utils.Adapter {
 					}
 
 					await this.updateVideoStates(devId, res);
+					const motionSnapshot = await this.publishMotionSnapshotFromVideo(devId, res.file || file);
 
 					// Motion notification: Es wurde ein NEUES Video heruntergeladen
 					// (isSameVideo war false), das entspricht einer neuen Aufnahme/Bewegung.
 					try {
-						await this.notifyMotion(devId, cam, latestTs);
+						await this.notifyMotion(devId, cam, latestTs, motionSnapshot);
 					} catch (e) {
 						this.log.debug(`Motion notification skipped (${cam.name || devId}): ${e?.message || e}`);
 					}
@@ -2801,9 +2923,10 @@ class BlinkAdapter extends utils.Adapter {
 	 * @param {object} channelCfg - Kanal-Konfiguration (z. B. this.cfg.notify.battery).
 	 * @param {string} title - Titel/Betreff der Nachricht.
 	 * @param {string} message - Nachrichtentext.
+	 * @param {Buffer|null} [telegramPhoto] - Optionales JPEG-Bild für Telegram.
 	 * @returns {Promise<string[]>} Liste der Kanäle, an die erfolgreich gesendet wurde.
 	 */
-	async sendNotification(channelCfg, title, message) {
+	async sendNotification(channelCfg, title, message, telegramPhoto = null) {
 		const sent = [];
 		if (!channelCfg) {
 			return sent;
@@ -2812,7 +2935,14 @@ class BlinkAdapter extends utils.Adapter {
 		// Telegram
 		if (channelCfg.telegram?.enabled && channelCfg.telegram.instance) {
 			try {
-				const payload = { text: `${title}\n\n${message}` };
+				const payload =
+					Buffer.isBuffer(telegramPhoto) && channelCfg.telegram.photoEnabled === true
+						? {
+								text: telegramPhoto,
+								type: 'photo',
+								caption: `${title}\n\n${message}`.slice(0, 200),
+							}
+						: { text: `${title}\n\n${message}` };
 				const users = channelCfg.telegram.users;
 				if (users) {
 					// Mehrere User kommagetrennt – an jeden einzeln senden.
@@ -2889,9 +3019,10 @@ class BlinkAdapter extends utils.Adapter {
 	 * @param {string} devId - Bereinigte Geräte-ID.
 	 * @param {object} cam - Kamera-Objekt.
 	 * @param {string} [videoTs] - Zeitstempel des neuen Videos.
+	 * @param {Buffer|null} [telegramPhoto] - Optionales JPEG-Bild für Telegram.
 	 * @returns {Promise<void>}
 	 */
-	async notifyMotion(devId, cam, videoTs) {
+	async notifyMotion(devId, cam, videoTs, telegramPhoto = null) {
 		const motionCfg = this.cfg.notify?.motion;
 		if (!motionCfg || !motionCfg.enabled) {
 			return;
@@ -2908,7 +3039,7 @@ class BlinkAdapter extends utils.Adapter {
 		const title = 'Blink motion detected';
 		const message = `Camera: ${cam.name || devId}\nTime: ${when}`;
 
-		const sent = await this.sendNotification(motionCfg, title, message);
+		const sent = await this.sendNotification(motionCfg, title, message, telegramPhoto);
 		if (sent.length) {
 			this.lastMotionNotifyByDevId.set(devId, Date.now());
 			this.log.debug(`Motion notification (${cam.name || devId}) sent via: ${sent.join(', ')}`);
