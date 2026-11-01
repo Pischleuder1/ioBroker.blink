@@ -31,6 +31,8 @@ class BlinkAdapter extends utils.Adapter {
 		this.videoCheckCooldownMs = 25 * 1000;
 		this.lastVideoCheckByDevId = new Map();
 		this.lastMotionNotifyByDevId = new Map();
+		this.lastLiveSnapshotBusyInfoByDevId = new Map();
+		this.liveSnapshotBusyInfoIntervalMs = 10 * 60 * 1000;
 		this.motionSnapshotBackfillAttempted = new Set();
 		this.videoBusyUntilByDevId = new Map();
 		this.videoBusyCooldownMs = 2 * 60 * 1000;
@@ -1501,6 +1503,7 @@ class BlinkAdapter extends utils.Adapter {
 					snapshotInfo,
 				);
 				await this.setLiveStates(devId, file, snapshotInfo.capturedAt);
+				this.lastLiveSnapshotBusyInfoByDevId.delete(devId);
 				if (this.mjpegServer) {
 					try {
 						const buf = fs.readFileSync(file);
@@ -1512,7 +1515,16 @@ class BlinkAdapter extends utils.Adapter {
 			} catch (e) {
 				const msg = String(e?.message || e);
 				if (msg.includes('HTTP 409') && msg.includes('System is busy')) {
-					this.log.debug(`Live snapshot skipped for ${cam.name}: ${msg}`);
+					const now = Date.now();
+					const lastInfo = this.lastLiveSnapshotBusyInfoByDevId.get(devId);
+					const message = `Live snapshot skipped for ${cam.name || devId}: ${msg}`;
+
+					if (lastInfo === undefined || now - lastInfo >= this.liveSnapshotBusyInfoIntervalMs) {
+						this.log.info(message);
+						this.lastLiveSnapshotBusyInfoByDevId.set(devId, now);
+					} else {
+						this.log.debug(message);
+					}
 				} else {
 					this.log.warn(`Live snapshot error for ${cam.name}: ${msg}`);
 				}
@@ -2626,7 +2638,7 @@ class BlinkAdapter extends utils.Adapter {
 						await this.updateDetectionStates(devId, summary);
 
 						try {
-							await this.syncCameraHistory(cam, devId, localManifest);
+							await this.syncCameraHistory(cam, devId, localManifest, manifestCacheBySyncId);
 						} catch (e) {
 							this.log.debug(`History sync skipped (${cam.name || devId}): ${e?.message || e}`);
 						}
@@ -2687,7 +2699,7 @@ class BlinkAdapter extends utils.Adapter {
 
 					// Galerie pflegen – Local-Storage zuerst, Cloud nur Fallback.
 					try {
-						await this.syncCameraHistory(cam, devId, localManifest);
+						await this.syncCameraHistory(cam, devId, localManifest, manifestCacheBySyncId);
 					} catch (e) {
 						this.log.debug(`History sync skipped (${cam.name || devId}): ${e?.message || e}`);
 					}
@@ -2713,8 +2725,9 @@ class BlinkAdapter extends utils.Adapter {
 	 * @param {object} cam - Kamera-Objekt aus getDevices.
 	 * @param {string} devId - sanitized Device-ID.
 	 * @param {object} [localManifestHint] - Optionales bereits geholtes Local-Manifest.
+	 * @param {Map<string, object|null>|null} [manifestCacheBySyncId] - Gemeinsamer Manifest-Cache des Synchronisationslaufs.
 	 */
-	async syncCameraHistory(cam, devId, localManifestHint = null) {
+	async syncCameraHistory(cam, devId, localManifestHint = null, manifestCacheBySyncId = null) {
 		const HISTORY_SIZE = 10;
 		const base = `cameras.${devId}.video.history`;
 
@@ -2726,7 +2739,7 @@ class BlinkAdapter extends utils.Adapter {
 		// 1) Local Storage / USB-Stick zuerst.
 		if (syncId) {
 			if (!localManifest) {
-				localManifest = await this.getLocalStorageManifestCached(cam.network_id, syncId);
+				localManifest = await this.getLocalStorageManifestCached(cam.network_id, syncId, manifestCacheBySyncId);
 			}
 
 			if (localManifest) {
@@ -2741,7 +2754,9 @@ class BlinkAdapter extends utils.Adapter {
 		if (!wanted.length) {
 			try {
 				const result = await blinkApi.getHistoryClips(this.session, cam.network_id, cam.id, cam.name, {
-					syncId,
+					// Keine erneute Manifest-Anforderung nach
+					// bereits erfolgter Prüfung oder Cooldown.
+					syncId: localManifest ? syncId : null,
 					localManifest,
 					limit: HISTORY_SIZE,
 				});
@@ -2827,7 +2842,11 @@ class BlinkAdapter extends utils.Adapter {
 					await blinkApi.downloadCloudClip(this.session, clip, tmpFile(i));
 				} else {
 					if (!localManifest?.manifestId) {
-						localManifest = await this.getLocalStorageManifestCached(cam.network_id, syncId);
+						localManifest = await this.getLocalStorageManifestCached(
+							cam.network_id,
+							syncId,
+							manifestCacheBySyncId,
+						);
 					}
 					await blinkApi.downloadLocalClip(
 						this.session,
