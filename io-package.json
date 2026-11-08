@@ -93,19 +93,6 @@
         "pl": "Naprawiono ostrzeżenia dotyczące układu konfiguracji JSON administratora.\nZaktualizowano tłumaczenia administratora archiwum.",
         "uk": "Виправлено попередження щодо макета конфігурації JSON адміністратора.\nОновлено архів перекладів адміністратора.",
         "zh-cn": "修复了管理员JSON配置布局警告。\n已更新存档管理员翻译。"
-      },
-      "0.0.33": {
-        "en": "Fixed automatic camera grid helper updates for existing installations.\nAdded German translations to the camera grid.",
-        "de": "Automatische Aktualisierungen der Kamerarasterhilfe für bestehende Installationen behoben.\nDeutsche Übersetzungen wurden dem Kameraraster hinzugefügt.",
-        "ru": "Исправлены автоматические обновления вспомогательной сетки камер для существующих установок.\nДобавлен немецкий перевод в сетку камер.",
-        "pt": "Correção nas atualizações automáticas do auxiliar de grade de câmeras para instalações existentes.\nAdicionadas traduções em alemão à grade da câmera.",
-        "nl": "De automatische updates van de cameragrid-helper voor bestaande installaties zijn gecorrigeerd.\nDuitse vertalingen toegevoegd aan het cameraraster.",
-        "fr": "Correction des mises à jour automatiques de l'assistant de grille de caméra pour les installations existantes.\nAjout de traductions allemandes à la grille de la caméra.",
-        "it": "Risolto il problema relativo agli aggiornamenti automatici del sistema di supporto per la griglia delle telecamere nelle installazioni esistenti.\nSono state aggiunte le traduzioni in tedesco alla griglia della fotocamera.",
-        "es": "Se corrigieron las actualizaciones automáticas del asistente de cuadrícula de cámaras para las instalaciones existentes.\nSe han añadido traducciones al alemán a la cuadrícula de la cámara.",
-        "pl": "Naprawiono automatyczne aktualizacje siatki kamer dla istniejących instalacji.\nDodano niemieckie tłumaczenia do siatki kamery.",
-        "uk": "Виправлено автоматичне оновлення допоміжної сітки камери для існуючих інсталяцій.\nДодано німецькі переклади до сітки камери.",
-        "zh-cn": "修复了现有安装的自动相机网格辅助更新问题。\n为相机网格添加了德语翻译。"
       }
     },
     "titleLang": {
