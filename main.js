@@ -35,6 +35,9 @@ class BlinkAdapter extends utils.Adapter {
 		this.liveSnapshotBusyInfoIntervalMs = 10 * 60 * 1000;
 		this.motionSnapshotBackfillAttempted = new Set();
 		this.videoBusyUntilByDevId = new Map();
+		this.historySyncInProgressByDevId = new Set();
+		this.corruptCloudClipUntil = new Map();
+		this.corruptCloudClipCooldownMs = 24 * 60 * 60 * 1000;
 		this.videoBusyCooldownMs = 2 * 60 * 1000;
 		this.localStorageBusyCooldownMs = 2 * 60 * 1000;
 		this.localStorageBusyUntilBySyncId = new Map();
@@ -2728,184 +2731,438 @@ class BlinkAdapter extends utils.Adapter {
 	 * @param {Map<string, object|null>|null} [manifestCacheBySyncId] - Gemeinsamer Manifest-Cache des Synchronisationslaufs.
 	 */
 	async syncCameraHistory(cam, devId, localManifestHint = null, manifestCacheBySyncId = null) {
-		const HISTORY_SIZE = 10;
-		const base = `cameras.${devId}.video.history`;
+		const historyKey = String(devId);
 
-		const syncId = this.findSyncIdForNetwork(cam.network_id);
-		let wanted = [];
-		let source = '';
-		let localManifest = localManifestHint || null;
-
-		// 1) Local Storage / USB-Stick zuerst.
-		if (syncId) {
-			if (!localManifest) {
-				localManifest = await this.getLocalStorageManifestCached(cam.network_id, syncId, manifestCacheBySyncId);
-			}
-
-			if (localManifest) {
-				wanted = this.findLocalClipsForCamera(localManifest, cam).slice(0, HISTORY_SIZE);
-				if (wanted.length) {
-					source = 'local_storage';
-				}
-			}
+		if (this.historySyncInProgressByDevId.has(historyKey)) {
+			this.log.debug(`History sync already running for ${cam.name || devId}; skipping concurrent request.`);
+			return;
 		}
 
-		// 2) Cloud nur als Fallback.
-		if (!wanted.length) {
-			try {
-				const result = await blinkApi.getHistoryClips(this.session, cam.network_id, cam.id, cam.name, {
-					// Keine erneute Manifest-Anforderung nach
-					// bereits erfolgter Prüfung oder Cooldown.
-					syncId: localManifest ? syncId : null,
-					localManifest,
-					limit: HISTORY_SIZE,
-				});
+		this.historySyncInProgressByDevId.add(historyKey);
 
-				wanted = Array.isArray(result?.clips) ? result.clips.slice(0, HISTORY_SIZE) : [];
-				source = result?.source || 'cloud';
+		try {
+			const HISTORY_SIZE = 10;
+			const base = `cameras.${devId}.video.history`;
+
+			// Zurückgelassene Backups nach Absturz oder Rollback-Fehler
+			// dürfen nicht durch einen neuen History-Abgleich überholt werden.
+			const backupPrefix = `.blink-history-backup-${devId}-`;
+			const historyDirectory = this.cfg?.snapshotDir;
+
+			if (!historyDirectory) {
+				this.log.error(
+					`History backup check failed (${cam.name || devId}): snapshot directory unavailable; sync skipped.`,
+				);
+				return;
+			}
+
+			let pendingHistoryBackups;
+
+			try {
+				pendingHistoryBackups = fs
+					.readdirSync(historyDirectory, { withFileTypes: true })
+					.filter(entry => entry.isDirectory() && entry.name.startsWith(backupPrefix))
+					.map(entry => path.join(historyDirectory, entry.name));
 			} catch (e) {
-				if (this.isBlinkSystemBusyError(e)) {
-					await this.markVideoBusy(devId, cam, e);
-					return;
-				}
-				throw e;
+				this.log.error(`History backup check failed (${cam.name || devId}): ${e.message}; sync skipped.`);
+				return;
 			}
-		}
 
-		if (!wanted.length) {
-			return;
-		}
-
-		// 2) Bekannte Clip IDs pro Slot einsammeln.
-		const knownIds = [];
-		for (let i = 0; i < HISTORY_SIZE; i++) {
-			const st = await this.getStateAsync(`${base}.${i}.id`);
-			knownIds.push(String(st?.val || ''));
-		}
-
-		const slotFile = i => path.join(this.cfg.snapshotDir, `${devId}_history_${i}.mp4`);
-		const tmpFile = i => path.join(this.cfg.snapshotDir, `.${devId}_history_${i}.tmp.mp4`);
-
-		const isValidHistoryFile = filePath => {
-			try {
-				const st = fs.statSync(filePath);
-				return st.isFile() && st.size > 0;
-			} catch {
-				return false;
+			if (pendingHistoryBackups.length) {
+				this.log.error(
+					`History backup recovery required (${cam.name || devId}): ` +
+						`${pendingHistoryBackups.join(', ')}; history sync blocked to protect existing data.`,
+				);
+				return;
 			}
-		};
 
-		// 3) History gilt nur als aktuell, wenn Clip IDs UND lokale MP4 fileen passen.
-		const wantedIds = wanted.map(c => this.getClipId(c));
-		const sameIds = wantedIds.every((id, idx) => id === knownIds[idx]);
-		const sameFilesExist = wantedIds.every((_id, idx) => isValidHistoryFile(slotFile(idx)));
+			const syncId = this.findSyncIdForNetwork(cam.network_id);
+			let wanted = [];
+			let source = '';
+			let localManifest = localManifestHint || null;
 
-		if (sameIds && sameFilesExist) {
-			return;
-		}
-
-		if (sameIds && !sameFilesExist) {
-			this.log.info(`History files are missing or 0 bytes for ${cam.name || devId}; reloading affected slots.`);
-		}
-
-		// 4) Für jeden Slot festlegen: Reuse aus altem Slot oder neu downloaden?
-		const sources = new Array(HISTORY_SIZE).fill(null); // 'reuse:<oldIdx>' | 'download'
-		for (let newIdx = 0; newIdx < wanted.length; newIdx++) {
-			const oldIdx = knownIds.indexOf(wantedIds[newIdx]);
-			sources[newIdx] = oldIdx >= 0 && isValidHistoryFile(slotFile(oldIdx)) ? `reuse:${oldIdx}` : 'download';
-		}
-
-		// 4a) Reuse: alte Slot-Datei → Temp-Datei.
-		for (let i = 0; i < wanted.length; i++) {
-			const src = sources[i];
-			if (typeof src === 'string' && src.startsWith('reuse:')) {
-				const oldIdx = Number(src.slice(6));
-				const from = slotFile(oldIdx);
-				const to = tmpFile(i);
-				try {
-					fs.copyFileSync(from, to);
-				} catch (e) {
-					sources[i] = 'download';
-					this.log.debug(`History reuse failed for slot ${oldIdx}→${i}: ${e.message}`);
-				}
-			}
-		}
-
-		// 4b) Download: je nach Quelle Cloud oder Local Storage.
-		for (let i = 0; i < wanted.length; i++) {
-			if (sources[i] !== 'download') {
-				continue;
-			}
-			const clip = wanted[i];
-			try {
-				if (source === 'cloud') {
-					await blinkApi.downloadCloudClip(this.session, clip, tmpFile(i));
-				} else {
-					if (!localManifest?.manifestId) {
-						localManifest = await this.getLocalStorageManifestCached(
-							cam.network_id,
-							syncId,
-							manifestCacheBySyncId,
-						);
-					}
-					await blinkApi.downloadLocalClip(
-						this.session,
+			// 1) Local Storage / USB-Stick zuerst.
+			if (syncId) {
+				if (!localManifest) {
+					localManifest = await this.getLocalStorageManifestCached(
 						cam.network_id,
 						syncId,
-						localManifest.manifestId,
-						this.getClipId(clip),
-						tmpFile(i),
+						manifestCacheBySyncId,
 					);
 				}
-			} catch (e) {
-				if (this.isBlinkSystemBusyError(e)) {
-					if (source === 'local_storage') {
-						this.markLocalStorageBusy(syncId, cam.network_id, e);
-					} else {
-						await this.markVideoBusy(devId, cam, e);
+
+				if (localManifest) {
+					wanted = this.findLocalClipsForCamera(localManifest, cam).slice(0, HISTORY_SIZE);
+					if (wanted.length) {
+						source = 'local_storage';
 					}
-					return; // Nur diese Kamera/dieses Sync-Modul pausieren, andere Kameras laufen weiter.
+				}
+			}
+
+			// 2) Cloud nur als Fallback.
+			if (!wanted.length) {
+				try {
+					const result = await blinkApi.getHistoryClips(this.session, cam.network_id, cam.id, cam.name, {
+						// Keine erneute Manifest-Anforderung nach
+						// bereits erfolgter Prüfung oder Cooldown.
+						syncId: localManifest ? syncId : null,
+						localManifest,
+						limit: HISTORY_SIZE,
+					});
+
+					wanted = Array.isArray(result?.clips) ? result.clips.slice(0, HISTORY_SIZE) : [];
+					source = result?.source || 'cloud';
+				} catch (e) {
+					if (this.isBlinkSystemBusyError(e)) {
+						await this.markVideoBusy(devId, cam, e);
+						return;
+					}
+					throw e;
+				}
+			}
+
+			// Fehlerhafte Cloud-Clips während ihres Cooldowns auslassen.
+			// Die verbleibenden Clips werden neu auf Slots verteilt.
+			if (source === 'cloud') {
+				const now = Date.now();
+
+				for (const [key, until] of this.corruptCloudClipUntil) {
+					if (until <= now) {
+						this.corruptCloudClipUntil.delete(key);
+					}
 				}
 
-				this.log.warn(
-					`History-Download failed (${cam.name} Slot ${i}, clip ${this.getClipId(clip)}): ${e.message}`,
+				const countBefore = wanted.length;
+
+				wanted = wanted.filter(clip => {
+					const key = `${devId}:${this.getClipId(clip)}`;
+					return !this.corruptCloudClipUntil.has(key);
+				});
+
+				if (wanted.length < countBefore) {
+					this.log.debug(
+						`History filtered ${countBefore - wanted.length} corrupt cloud clip(s) for ${cam.name || devId}`,
+					);
+				}
+			}
+
+			if (!wanted.length) {
+				return;
+			}
+
+			// 2) Bekannte Clip IDs pro Slot einsammeln.
+			const knownIds = [];
+			for (let i = 0; i < HISTORY_SIZE; i++) {
+				const st = await this.getStateAsync(`${base}.${i}.id`);
+				knownIds.push(String(st?.val || ''));
+			}
+
+			const slotFile = i => path.join(this.cfg.snapshotDir, `${devId}_history_${i}.mp4`);
+			const tmpFile = i => path.join(this.cfg.snapshotDir, `.${devId}_history_${i}.tmp.mp4`);
+
+			const isValidHistoryFile = filePath => {
+				try {
+					const st = fs.statSync(filePath);
+					return st.isFile() && st.size > 0;
+				} catch {
+					return false;
+				}
+			};
+
+			// 3) History gilt nur als aktuell, wenn Clip IDs UND lokale MP4 fileen passen.
+			const wantedIds = wanted.map(c => this.getClipId(c));
+			const sameIds =
+				wantedIds.every((id, idx) => id === knownIds[idx]) && knownIds.slice(wanted.length).every(id => !id);
+			const sameFilesExist = wantedIds.every((_id, idx) => isValidHistoryFile(slotFile(idx)));
+
+			if (sameIds && sameFilesExist) {
+				return;
+			}
+
+			if (sameIds && !sameFilesExist) {
+				this.log.info(
+					`History files are missing or 0 bytes for ${cam.name || devId}; reloading affected slots.`,
 				);
-				return; // Slot-Lauf abbrechen, alte Daten bleiben erhalten
 			}
-		}
 
-		// 4c) Temp → Slot umbenennen (atomar), überzählige Slots löschen.
-		for (let i = 0; i < wanted.length; i++) {
 			try {
-				fs.renameSync(tmpFile(i), slotFile(i));
-			} catch (e) {
-				this.log.warn(`History rename slot ${i} failed: ${e.message}`);
-			}
-		}
-		for (let i = wanted.length; i < HISTORY_SIZE; i++) {
-			try {
-				fs.unlinkSync(slotFile(i));
-			} catch {
-				// Slot-Datei existiert ggf. nicht; ignorieren.
-			}
-		}
+				// 4) Für jeden Slot festlegen: Reuse aus altem Slot oder neu downloaden?
+				const sources = new Array(HISTORY_SIZE).fill(null); // 'reuse:<oldIdx>' | 'download'
+				for (let newIdx = 0; newIdx < wanted.length; newIdx++) {
+					const oldIdx = knownIds.indexOf(wantedIds[newIdx]);
+					sources[newIdx] =
+						oldIdx >= 0 && isValidHistoryFile(slotFile(oldIdx)) ? `reuse:${oldIdx}` : 'download';
+				}
 
-		// 5) States schreiben.
-		for (let i = 0; i < HISTORY_SIZE; i++) {
-			if (i < wanted.length) {
-				const clip = wanted[i];
-				await this.setStateAsync(`${base}.${i}.file`, slotFile(i), true);
-				await this.setStateAsync(`${base}.${i}.timestamp`, this.getClipTimestamp(clip), true);
-				await this.setStateAsync(`${base}.${i}.id`, this.getClipId(clip), true);
-				await this.setStateAsync(`${base}.${i}.source`, source, true);
-			} else {
-				await this.setStateAsync(`${base}.${i}.file`, '', true);
-				await this.setStateAsync(`${base}.${i}.timestamp`, '', true);
-				await this.setStateAsync(`${base}.${i}.id`, '', true);
-				await this.setStateAsync(`${base}.${i}.source`, '', true);
+				// 4a) Reuse: alte Slot-Datei → Temp-Datei.
+				for (let i = 0; i < wanted.length; i++) {
+					const src = sources[i];
+					if (typeof src === 'string' && src.startsWith('reuse:')) {
+						const oldIdx = Number(src.slice(6));
+						const from = slotFile(oldIdx);
+						const to = tmpFile(i);
+						try {
+							fs.copyFileSync(from, to);
+						} catch (e) {
+							sources[i] = 'download';
+							this.log.debug(`History reuse failed for slot ${oldIdx}→${i}: ${e.message}`);
+						}
+					}
+				}
+
+				// 4b) Download: je nach Quelle Cloud oder Local Storage.
+				for (let i = 0; i < wanted.length; i++) {
+					if (sources[i] !== 'download') {
+						continue;
+					}
+					const clip = wanted[i];
+					try {
+						if (source === 'cloud') {
+							await blinkApi.downloadCloudClip(this.session, clip, tmpFile(i));
+						} else {
+							if (!localManifest?.manifestId) {
+								localManifest = await this.getLocalStorageManifestCached(
+									cam.network_id,
+									syncId,
+									manifestCacheBySyncId,
+								);
+							}
+							await blinkApi.downloadLocalClip(
+								this.session,
+								cam.network_id,
+								syncId,
+								localManifest.manifestId,
+								this.getClipId(clip),
+								tmpFile(i),
+							);
+						}
+					} catch (e) {
+						// Blink HTTP 400 / Code 723: beschädigter Cloud-Clip.
+						const errorMessage = String(e?.message || e || '');
+						const isCorruptCloudClip =
+							source === 'cloud' &&
+							(e?.statusCode === 400 || /HTTP\s+400/i.test(errorMessage)) &&
+							(/"code"\s*:\s*723\b/.test(errorMessage) || /Media corrupt/i.test(errorMessage));
+
+						if (isCorruptCloudClip) {
+							const clipId = String(this.getClipId(clip));
+							const key = `${devId}:${clipId}`;
+							const until = Date.now() + this.corruptCloudClipCooldownMs;
+
+							this.corruptCloudClipUntil.set(key, until);
+
+							this.log.warn(
+								`History cloud clip corrupt (${cam.name}, clip ${clipId}): ` +
+									`download paused until ${new Date(until).toISOString()} ` +
+									`(${errorMessage})`,
+							);
+							return;
+						}
+
+						if (this.isBlinkSystemBusyError(e)) {
+							if (source === 'local_storage') {
+								this.markLocalStorageBusy(syncId, cam.network_id, e);
+							} else {
+								await this.markVideoBusy(devId, cam, e);
+							}
+							return; // Nur diese Kamera/dieses Sync-Modul pausieren, andere Kameras laufen weiter.
+						}
+
+						this.log.warn(
+							`History-Download failed (${cam.name} Slot ${i}, clip ${this.getClipId(clip)}): ${e.message}`,
+						);
+						return; // Slot-Lauf abbrechen, alte Daten bleiben erhalten
+					}
+				}
+
+				// Alle vorbereiteten MP4-Dateien vor der Umstellung prüfen.
+				// Bei einer fehlenden oder leeren Datei bleiben die alten
+				// History-Slots und States unverändert.
+				for (let i = 0; i < wanted.length; i++) {
+					if (!isValidHistoryFile(tmpFile(i))) {
+						this.log.warn(`History staging invalid (${cam.name} Slot ${i}): missing or empty MP4`);
+						return;
+					}
+				}
+
+				// 4c) Dateien und States vor der Aktualisierung sichern.
+				const backupDir = fs.mkdtempSync(
+					path.join(path.dirname(slotFile(0)), `.blink-history-backup-${devId}-`),
+				);
+				const originalFiles = new Array(HISTORY_SIZE).fill(false);
+				const previousStates = [];
+				const stateFields = ['file', 'timestamp', 'id', 'source'];
+				let keepBackup = false;
+				let filesTouched = false;
+
+				try {
+					// Bisherige State-Werte vollständig einlesen.
+					for (let i = 0; i < HISTORY_SIZE; i++) {
+						for (const field of stateFields) {
+							const key = `${base}.${i}.${field}`;
+							const state = await this.getStateAsync(key);
+							previousStates.push({
+								key,
+								value: state?.val ?? '',
+							});
+						}
+					}
+
+					// Alle bisherigen MP4-Dateien sichern.
+					for (let i = 0; i < HISTORY_SIZE; i++) {
+						if (fs.existsSync(slotFile(i))) {
+							fs.copyFileSync(slotFile(i), path.join(backupDir, `${i}.mp4`));
+							originalFiles[i] = true;
+						}
+					}
+
+					// History backup manifest: Zustand vor dem ersten
+					// Dateiaustausch dauerhaft dokumentieren.
+					const backupManifest = {
+						version: 1,
+						cameraId: String(devId),
+						createdAt: new Date().toISOString(),
+						historySize: HISTORY_SIZE,
+						originalFiles,
+						previousStates,
+					};
+
+					const manifestTempPath = path.join(backupDir, 'manifest.json.tmp');
+					const manifestPath = path.join(backupDir, 'manifest.json');
+
+					let manifestFd;
+					try {
+						manifestFd = fs.openSync(manifestTempPath, 'wx');
+						fs.writeFileSync(manifestFd, JSON.stringify(backupManifest, null, 2), 'utf8');
+						fs.fsyncSync(manifestFd);
+					} finally {
+						if (manifestFd !== undefined) {
+							fs.closeSync(manifestFd);
+						}
+					}
+
+					fs.renameSync(manifestTempPath, manifestPath);
+
+					this.log.debug(`History backup manifest prepared (${cam.name || devId})`);
+
+					try {
+						filesTouched = true;
+
+						// Neue MP4-Dateien übernehmen.
+						for (let i = 0; i < wanted.length; i++) {
+							fs.renameSync(tmpFile(i), slotFile(i));
+						}
+
+						// Nicht mehr benötigte Slots entfernen.
+						for (let i = wanted.length; i < HISTORY_SIZE; i++) {
+							try {
+								fs.unlinkSync(slotFile(i));
+							} catch (e) {
+								if (e.code !== 'ENOENT') {
+									throw e;
+								}
+							}
+						}
+
+						// Erst jetzt sämtliche ioBroker-States schreiben.
+						for (let i = 0; i < HISTORY_SIZE; i++) {
+							if (i < wanted.length) {
+								const clip = wanted[i];
+
+								await this.setStateAsync(`${base}.${i}.file`, slotFile(i), true);
+								await this.setStateAsync(`${base}.${i}.timestamp`, this.getClipTimestamp(clip), true);
+								await this.setStateAsync(`${base}.${i}.id`, this.getClipId(clip), true);
+								await this.setStateAsync(`${base}.${i}.source`, source, true);
+							} else {
+								for (const field of stateFields) {
+									await this.setStateAsync(`${base}.${i}.${field}`, '', true);
+								}
+							}
+						}
+					} catch (e) {
+						this.log.warn(`History update failed (${cam.name}): ${e.message}`);
+
+						let rollbackFailed = false;
+
+						// Ursprüngliche MP4-Dateien zurücksichern.
+						if (filesTouched) {
+							for (let i = 0; i < HISTORY_SIZE; i++) {
+								try {
+									if (originalFiles[i]) {
+										fs.copyFileSync(path.join(backupDir, `${i}.mp4`), slotFile(i));
+									} else {
+										try {
+											fs.unlinkSync(slotFile(i));
+										} catch (removeError) {
+											if (removeError.code !== 'ENOENT') {
+												throw removeError;
+											}
+										}
+									}
+								} catch (restoreError) {
+									rollbackFailed = true;
+									this.log.error(
+										`History file rollback failed (${cam.name} Slot ${i}): ${restoreError.message}`,
+									);
+								}
+							}
+						}
+
+						// Veränderte ioBroker-States zurücksetzen.
+						for (const previous of previousStates) {
+							try {
+								const current = await this.getStateAsync(previous.key);
+
+								if (current?.val !== previous.value) {
+									await this.setStateAsync(previous.key, previous.value, true);
+								}
+							} catch (restoreError) {
+								rollbackFailed = true;
+								this.log.error(
+									`History state rollback failed (${previous.key}): ${restoreError.message}`,
+								);
+							}
+						}
+
+						keepBackup = rollbackFailed;
+
+						if (rollbackFailed) {
+							this.log.error(`History rollback incomplete; backup retained: ${backupDir}`);
+						}
+
+						return;
+					}
+
+					this.log.debug(`History updated for ${cam.name}: ${wanted.length} slots (${source})`);
+				} finally {
+					// Backups erst nach erfolgreicher Verarbeitung oder
+					// vollständiger Rücksicherung entfernen.
+					if (!keepBackup) {
+						try {
+							fs.rmSync(backupDir, {
+								recursive: true,
+								force: true,
+							});
+						} catch (e) {
+							this.log.warn(`History backup cleanup failed: ${e.message}`);
+						}
+					}
+				}
+			} finally {
+				// Temporary history files must never survive an aborted update.
+				for (let i = 0; i < HISTORY_SIZE; i++) {
+					try {
+						fs.unlinkSync(tmpFile(i));
+					} catch (e) {
+						if (e.code !== 'ENOENT') {
+							this.log.debug(`History temp cleanup slot ${i} failed: ${e.message}`);
+						}
+					}
+				}
 			}
+		} finally {
+			this.historySyncInProgressByDevId.delete(historyKey);
 		}
-		this.log.debug(`History updated for ${cam.name}: ${wanted.length} slots (${source})`);
 	}
 
 	async updateDetectionStates(devId, summary) {
@@ -3142,6 +3399,13 @@ class BlinkAdapter extends utils.Adapter {
 				continue;
 			}
 			if (!/\.(jpg|jpeg|mp4)$/i.test(e.name)) {
+				continue;
+			}
+
+			// History-Dateien werden durch die History-Synchronisierung
+			// verwaltet und dürfen hier nicht nach Alter gelöscht werden.
+			// Das gilt auch für temporäre Dateien laufender Updates.
+			if (/_history_\d+\.mp4$/i.test(e.name) || /^\..+_history_\d+\.tmp\.mp4$/i.test(e.name)) {
 				continue;
 			}
 			const full = path.join(dir, e.name);
