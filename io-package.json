@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "blink",
-    "version": "0.0.40",
+    "version": "0.0.41",
     "news": {
+      "0.0.41": {
+        "en": "Improved video history handling for corrupt Blink cloud clips (HTTP 400/code 723) with a 24-hour retry cooldown.\nValid recordings can continue to synchronize while corrupt clips are skipped.\nAdded file/state rollback, crash-backup protection and safer history cleanup.",
+        "de": "Video-History bei beschädigten Blink-Cloud-Clips (HTTP 400/Code 723) mit 24-Stunden-Cooldown verbessert.\nGültige Aufnahmen werden trotz beschädigter Clips weiter synchronisiert.\nDatei-/State-Rollback, Schutz zurückgelassener Backups und sichere History-Bereinigung ergänzt.",
+        "ru": "Улучшена история видео при поврежденных облачных клипах Blink (HTTP 400/код 723) с 24-часовой паузой перед повтором.\nИсправные записи продолжают синхронизироваться.\nДобавлены откат файлов и состояний, защита резервных копий и безопасная очистка истории.",
+        "pt": "Melhorado o histórico de vídeos para clipes Blink corrompidos (HTTP 400/código 723), com espera de 24 horas.\nAs gravações válidas continuam a sincronizar.\nAdicionados restauro de ficheiros/estados, proteção de cópias de segurança e limpeza segura do histórico.",
+        "nl": "Videogeschiedenis verbeterd bij beschadigde Blink-cloudclips (HTTP 400/code 723), met een wachttijd van 24 uur.\nGeldige opnamen blijven synchroniseren.\nTerugdraaien van bestanden/statussen, back-upbeveiliging en veilig opschonen van de geschiedenis toegevoegd.",
+        "fr": "Amélioration de l'historique vidéo pour les clips Blink corrompus (HTTP 400/code 723), avec un délai de 24 heures.\nLes enregistrements valides continuent à se synchroniser.\nAjout du retour arrière des fichiers/états, de la protection des sauvegardes et du nettoyage sécurisé.",
+        "it": "Migliorata la cronologia video per clip Blink danneggiati (HTTP 400/codice 723), con attesa di 24 ore.\nLe registrazioni valide continuano a sincronizzarsi.\nAggiunti ripristino di file/stati, protezione dei backup e pulizia sicura della cronologia.",
+        "es": "Mejorado el historial de vídeo para clips Blink dañados (HTTP 400/código 723), con espera de 24 horas.\nLas grabaciones válidas siguen sincronizándose.\nAñadidos reversión de archivos/estados, protección de copias de seguridad y limpieza segura del historial.",
+        "pl": "Ulepszono historię wideo dla uszkodzonych klipów Blink (HTTP 400/kod 723), z 24-godzinną przerwą przed ponowieniem.\nPrawidłowe nagrania są nadal synchronizowane.\nDodano przywracanie plików i stanów, ochronę kopii zapasowych oraz bezpieczne czyszczenie historii.",
+        "uk": "Покращено історію відео для пошкоджених хмарних кліпів Blink (HTTP 400/код 723) із 24-годинною паузою.\nСправні записи продовжують синхронізуватися.\nДодано відновлення файлів і станів, захист резервних копій та безпечне очищення історії.",
+        "zh-cn": "改进了 Blink 云端损坏视频片段（HTTP 400/错误码 723）的历史记录处理，增加 24 小时重试冷却时间。\n有效录像仍可继续同步。\n增加文件与状态回滚、备份保护以及安全的历史记录清理。"
+      },
       "0.0.40": {
         "en": "Improved snapshot freshness verification and capture timestamps.\nAdded motion snapshots for VIS and optional Telegram photos.\nOptimized USB/microSD manifest requests, HTTP 409 handling and logging.",
         "de": "Erkennung neuer Snapshots und Aufnahmezeitpunkte verbessert.\nBewegungssnapshots für VIS und optionale Telegram-Fotos ergänzt.\nUSB-/microSD-Manifestabfragen, HTTP-409-Behandlung und Protokollierung optimiert.",
