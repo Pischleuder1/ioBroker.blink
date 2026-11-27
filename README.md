@@ -390,6 +390,25 @@ Older entries are available in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### 0.0.42 (2026-11-27)
+
+- Fixed outdated Blink cloud video history and latest-video
+  retrieval by switching to the v4 media API (issue #65).
+- Updated cloud video retrieval for history synchronization
+  and `fetch_video`.
+- Preserved large pagination keys without JavaScript number
+  precision loss and improved selection of the newest clips
+  across API pages.
+- Preserved additional cloud video metadata without assuming
+  unsupported Smart Detection classifications.
+- Restricted authenticated media downloads to trusted Blink
+  HTTPS hosts and validated redirects.
+- Retained local USB/microSD history fallback when cloud
+  recordings are unavailable or cloud requests fail.
+- Added regression tests for v4 responses, pagination,
+  latest-video selection, download diagnostics and
+  local-storage fallback.
+
 ### 0.0.41 (2026-11-26)
 
 - Fixed video history updates when Blink returns HTTP 400/code 723
