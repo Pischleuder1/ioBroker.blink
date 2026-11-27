@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "blink",
-    "version": "0.0.41",
+    "version": "0.0.42",
     "news": {
+      "0.0.42": {
+        "en": "Fixed outdated cloud video history and latest-video retrieval using the Blink v4 media API (issue #65). Improved pagination, metadata handling and download security. Preserved local-storage fallback.",
+        "de": "Veraltete Cloud-Video-History und Abfrage des neuesten Videos durch Umstellung auf die Blink-v4-Medien-API behoben (Issue #65). Paginierung, Metadaten und Download-Sicherheit verbessert. Lokaler Speicher-Fallback bleibt erhalten.",
+        "ru": "Исправлено получение истории облачных видео и последней записи через Blink Media API v4 (issue #65). Улучшены пагинация, обработка метаданных и безопасность загрузок. Сохранён локальный резервный режим.",
+        "pt": "Corrigida a obtenção do histórico de vídeos na nuvem e do vídeo mais recente através da API Blink v4 (issue #65). Melhoradas a paginação, a gestão de metadados e a segurança dos downloads. Mantida a alternativa de armazenamento local.",
+        "nl": "Verouderde cloudvideogeschiedenis en ophalen van de nieuwste video hersteld met de Blink v4-media-API (issue #65). Paginering, metadataverwerking en downloadbeveiliging verbeterd. Terugval op lokale opslag blijft beschikbaar.",
+        "fr": "Correction de l'historique des vidéos cloud et de la récupération de la dernière vidéo grâce à l'API média Blink v4 (issue #65). Amélioration de la pagination, des métadonnées et de la sécurité des téléchargements. Repli sur le stockage local conservé.",
+        "it": "Corretti lo storico dei video cloud e il recupero dell'ultimo video tramite l'API multimediale Blink v4 (issue #65). Migliorate paginazione, gestione dei metadati e sicurezza dei download. Mantenuto il fallback alla memoria locale.",
+        "es": "Corregidos el historial de vídeos en la nube y la recuperación del vídeo más reciente mediante la API multimedia Blink v4 (issue #65). Mejoradas la paginación, la gestión de metadatos y la seguridad de las descargas. Se mantiene el respaldo local.",
+        "pl": "Naprawiono historię nagrań w chmurze i pobieranie najnowszego filmu przy użyciu API Blink Media v4 (issue #65). Ulepszono stronicowanie, obsługę metadanych i bezpieczeństwo pobierania. Zachowano dostęp do pamięci lokalnej.",
+        "uk": "Виправлено історію хмарних відео та отримання найновішого запису через Blink Media API v4 (issue #65). Покращено пагінацію, обробку метаданих і безпеку завантаження. Збережено резервний доступ до локального сховища.",
+        "zh-cn": "使用 Blink v4 媒体 API 修复云端视频历史记录和最新视频获取问题（issue #65）。改进分页、元数据处理和下载安全性。保留本地存储回退功能。"
+      },
       "0.0.41": {
         "en": "Improved video history handling for corrupt Blink cloud clips (HTTP 400/code 723) with a 24-hour retry cooldown.\nValid recordings can continue to synchronize while corrupt clips are skipped.\nAdded file/state rollback, crash-backup protection and safer history cleanup.",
         "de": "Video-History bei beschädigten Blink-Cloud-Clips (HTTP 400/Code 723) mit 24-Stunden-Cooldown verbessert.\nGültige Aufnahmen werden trotz beschädigter Clips weiter synchronisiert.\nDatei-/State-Rollback, Schutz zurückgelassener Backups und sichere History-Bereinigung ergänzt.",

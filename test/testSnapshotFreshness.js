@@ -194,7 +194,7 @@ const requestSnapshot = (fixture, info = {}, apiType = 'camera') =>
         {
             _accountId: 123,
             accessToken: 'test-token',
-            apiHost: 'example.invalid',
+            apiHost: 'rest-e001.immedia-semi.com',
         },
         7,
         42,
