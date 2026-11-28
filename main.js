@@ -2287,7 +2287,101 @@ class BlinkAdapter extends utils.Adapter {
 	archiveTimestamp(value) {
 		const d = value ? new Date(value) : new Date();
 		const valid = Number.isFinite(d.getTime()) ? d : new Date();
-		return valid.toISOString().replace(/[:.]/g, '-').replace(/Z$/, '');
+		const pad = (number, width = 2) => String(number).padStart(width, '0');
+
+		const offsetMinutes = -valid.getTimezoneOffset();
+		const offsetSign = offsetMinutes >= 0 ? '+' : '-';
+		const offsetHours = Math.floor(Math.abs(offsetMinutes) / 60);
+		const offsetRemainder = Math.abs(offsetMinutes) % 60;
+
+		const timestamp =
+			`${valid.getFullYear()}-${pad(valid.getMonth() + 1)}-${pad(valid.getDate())}` +
+			`T${pad(valid.getHours())}-${pad(valid.getMinutes())}-${pad(valid.getSeconds())}` +
+			`-${pad(valid.getMilliseconds(), 3)}`;
+
+		return `${timestamp}${offsetSign}${pad(offsetHours)}${pad(offsetRemainder)}`;
+	}
+
+	async cleanupOrphanedArchiveFiles() {
+		if (!this.cfg?.archiveEnabled) {
+			return 0;
+		}
+
+		const root = path.resolve(String(this.cfg.archiveDir || '').trim());
+		const minimumAgeMs = 48 * 60 * 60 * 1000;
+		const now = Date.now();
+
+		const temporaryName = /^\.[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}\.blink-archive\.tmp$/i;
+
+		const dirs = [root];
+
+		if (this.cfg.archiveCreateCameraFolders !== false) {
+			const cameraIds = new Set(Array.from(this.camerasById || [], ([id]) => this.safeArchiveSegment(id)));
+
+			try {
+				const entries = await fs.promises.readdir(root, {
+					withFileTypes: true,
+				});
+
+				for (const entry of entries) {
+					if (!entry.isDirectory()) {
+						continue;
+					}
+
+					const matchingCamera = Array.from(cameraIds).some(
+						id => entry.name === id || entry.name.startsWith(`${id}_`),
+					);
+
+					if (matchingCamera) {
+						dirs.push(path.join(root, entry.name));
+					}
+				}
+			} catch (e) {
+				this.log.debug(`Archive cleanup directory scan skipped: ${e.message}`);
+			}
+		}
+
+		let removed = 0;
+
+		for (const dir of dirs) {
+			let entries;
+
+			try {
+				entries = await fs.promises.readdir(dir, {
+					withFileTypes: true,
+				});
+			} catch (e) {
+				this.log.debug(`Archive cleanup skipped ${dir}: ${e.message}`);
+				continue;
+			}
+
+			for (const entry of entries) {
+				if (!entry.isFile() || !temporaryName.test(entry.name)) {
+					continue;
+				}
+
+				const file = path.join(dir, entry.name);
+
+				try {
+					const stat = await fs.promises.lstat(file);
+
+					if (!stat.isFile() || now - stat.mtimeMs < minimumAgeMs) {
+						continue;
+					}
+
+					await fs.promises.unlink(file);
+					removed++;
+				} catch (e) {
+					this.log.warn(`Archive temporary file cleanup failed for ${file}: ${e.message}`);
+				}
+			}
+		}
+
+		if (removed > 0) {
+			this.log.info(`Removed ${removed} orphaned archive temporary file(s).`);
+		}
+
+		return removed;
 	}
 
 	async archiveExistingVideoFiles() {
@@ -2303,6 +2397,8 @@ class BlinkAdapter extends utils.Adapter {
 			if (!available) {
 				return;
 			}
+
+			await this.cleanupOrphanedArchiveFiles();
 
 			for (const [devId] of this.camerasById || []) {
 				archived += await this.archiveExistingVideoFilesForCamera(devId);
@@ -2371,7 +2467,7 @@ class BlinkAdapter extends utils.Adapter {
 				const videoId = String(idState?.val || fallbackId);
 				const source = String(sourceState?.val || item.label);
 
-				await this.archiveVideo(devId, {
+				const wasArchived = await this.archiveVideo(devId, {
 					file: sourceFile,
 					created_at: createdAt,
 					id: videoId,
@@ -2380,7 +2476,9 @@ class BlinkAdapter extends utils.Adapter {
 					source,
 				});
 
-				archived++;
+				if (wasArchived === true) {
+					archived++;
+				}
 			} catch (e) {
 				this.log.debug(`Archive backfill skipped ${item.label} for ${devId}: ${e?.message || e}`);
 			}
@@ -2389,9 +2487,88 @@ class BlinkAdapter extends utils.Adapter {
 		return archived;
 	}
 
+	async archiveFileHash(file) {
+		const hash = crypto.createHash('sha256');
+
+		for await (const chunk of fs.createReadStream(file)) {
+			hash.update(chunk);
+		}
+
+		return hash.digest('hex');
+	}
+
+	async findIdenticalArchivedVideo(targetDir, devId, videoId, sourceFile) {
+		const sourceStat = await fs.promises.stat(sourceFile);
+		const cameraMarker = `_${this.safeArchiveSegment(devId)}_`;
+		const videoSuffix = `_${videoId}.mp4`;
+
+		const entries = await fs.promises.readdir(targetDir, {
+			withFileTypes: true,
+		});
+
+		let sourceHash = null;
+
+		for (const entry of entries) {
+			if (!entry.isFile()) {
+				continue;
+			}
+
+			if (!entry.name.includes(cameraMarker) || !entry.name.endsWith(videoSuffix)) {
+				continue;
+			}
+
+			const candidate = path.join(targetDir, entry.name);
+			const stat = await fs.promises.stat(candidate);
+
+			if (!stat.isFile() || stat.size !== sourceStat.size) {
+				continue;
+			}
+
+			if (sourceHash === null) {
+				sourceHash = await this.archiveFileHash(sourceFile);
+			}
+
+			if ((await this.archiveFileHash(candidate)) === sourceHash) {
+				return candidate;
+			}
+		}
+
+		return null;
+	}
+
 	async archiveVideo(devId, res) {
+		// Serialize archive operations for each camera.
+		// Different cameras may continue concurrently.
+		if (!this.archiveVideoQueueByDevId) {
+			this.archiveVideoQueueByDevId = new Map();
+		}
+
+		const key = String(devId);
+		const previous = this.archiveVideoQueueByDevId.get(key) || Promise.resolve();
+
+		let release;
+		const current = new Promise(resolve => {
+			release = resolve;
+		});
+
+		this.archiveVideoQueueByDevId.set(key, current);
+
+		await previous;
+
+		try {
+			return await this.archiveVideoUnlocked(devId, res);
+		} finally {
+			if (this.archiveVideoQueueByDevId.get(key) === current) {
+				this.archiveVideoQueueByDevId.delete(key);
+			}
+
+			release();
+		}
+	}
+
+	async archiveVideoUnlocked(devId, res) {
 		if (!this.cfg?.archiveEnabled) {
-			return;
+			return false;
 		}
 
 		try {
@@ -2407,7 +2584,7 @@ class BlinkAdapter extends utils.Adapter {
 
 			const available = await this.updateArchiveAvailabilityState();
 			if (!available) {
-				return;
+				return false;
 			}
 
 			const cam = this.camerasById.get(devId);
@@ -2420,21 +2597,90 @@ class BlinkAdapter extends utils.Adapter {
 			const targetDir =
 				this.cfg.archiveCreateCameraFolders !== false ? path.join(archiveDir, cameraDirName) : archiveDir;
 
+			const resolvedRoot = path.resolve(archiveDir);
+			const resolvedTargetDir = path.resolve(targetDir);
+
+			if (resolvedTargetDir !== resolvedRoot && !resolvedTargetDir.startsWith(resolvedRoot + path.sep)) {
+				throw new Error('Archive target escaped archive directory');
+			}
+
 			await fs.promises.mkdir(targetDir, { recursive: true });
+
+			// Resolve symbolic links before writing archive files.
+			// The configured archive root may itself be a symlink.
+			const realArchiveRoot = await fs.promises.realpath(archiveDir);
+			const realTargetDir = await fs.promises.realpath(targetDir);
+
+			if (realTargetDir !== realArchiveRoot && !realTargetDir.startsWith(realArchiveRoot + path.sep)) {
+				throw new Error('Archive target escaped archive directory via symbolic link');
+			}
 
 			const videoId = this.safeArchiveSegment(res?.id || res?.video_id || path.parse(sourceFile).name, 'clip');
 			const source = this.safeArchiveSegment(res?.source || 'clip', 'clip');
 			const ts = this.archiveTimestamp(res?.created_at);
-			const targetFile = path.join(targetDir, `${ts}_${this.safeArchiveSegment(devId)}_${source}_${videoId}.mp4`);
+			const existing = await this.findIdenticalArchivedVideo(targetDir, devId, videoId, sourceFile);
 
-			const resolvedRoot = path.resolve(archiveDir) + path.sep;
-			const resolvedTarget = path.resolve(targetFile);
-			if (!resolvedTarget.startsWith(resolvedRoot)) {
-				throw new Error('Archive target escaped archive directory');
+			if (existing) {
+				this.log.debug(`Archive already contains identical video: ${existing}`);
+				return false;
 			}
 
-			if (path.resolve(sourceFile) !== resolvedTarget) {
-				await fs.promises.copyFile(sourceFile, targetFile);
+			const baseName = `${ts}_${this.safeArchiveSegment(devId)}_${source}`;
+			const temporaryFile = path.join(targetDir, `.${crypto.randomUUID()}.blink-archive.tmp`);
+
+			const sourceStat = await fs.promises.stat(sourceFile);
+			const sourceHash = await this.archiveFileHash(sourceFile);
+
+			let targetFile;
+
+			try {
+				// Write the temporary copy on the destination filesystem.
+				await fs.promises.copyFile(sourceFile, temporaryFile, fs.constants.COPYFILE_EXCL);
+
+				const temporaryStat = await fs.promises.stat(temporaryFile);
+
+				if (!temporaryStat.isFile() || temporaryStat.size <= 0 || temporaryStat.size !== sourceStat.size) {
+					throw new Error('Temporary archive copy has an invalid size');
+				}
+
+				if ((await this.archiveFileHash(temporaryFile)) !== sourceHash) {
+					throw new Error('Temporary archive copy SHA-256 mismatch');
+				}
+
+				// Unique final names avoid ordinary collisions across processes.
+				// Keep the numeric video ID at the end for the archive grid.
+				for (let attempt = 0; attempt < 5; attempt++) {
+					const candidate = path.join(
+						targetDir,
+						`${baseName}_sha256-${sourceHash}_archive-${crypto.randomUUID()}_${videoId}.mp4`,
+					);
+
+					try {
+						await fs.promises.lstat(candidate);
+					} catch (e) {
+						if (e.code !== 'ENOENT') {
+							throw e;
+						}
+
+						targetFile = candidate;
+						break;
+					}
+				}
+
+				if (!targetFile) {
+					throw new Error('Could not allocate a unique archive filename');
+				}
+
+				// Same-directory rename publishes the completed copy.
+				await fs.promises.rename(temporaryFile, targetFile);
+			} finally {
+				try {
+					await fs.promises.unlink(temporaryFile);
+				} catch (e) {
+					if (e.code !== 'ENOENT') {
+						this.log.warn(`Archive temporary file cleanup failed: ${e.message}`);
+					}
+				}
 			}
 
 			const stat = await fs.promises.stat(targetFile);
@@ -2449,11 +2695,13 @@ class BlinkAdapter extends utils.Adapter {
 			await this.setStateAsync('archive.lastError', '', true);
 
 			this.log.debug(`Video archived: ${targetFile}`);
+			return true;
 		} catch (e) {
 			const msg = `Video archive failed: ${e?.message || e}`;
 			await this.setStateAsync('archive.available', false, true);
 			await this.setStateAsync('archive.lastError', msg, true);
 			this.log.warn(msg);
+			return false;
 		}
 	}
 

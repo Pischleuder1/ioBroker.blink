@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "blink",
-    "version": "0.0.42",
+    "version": "0.0.43",
     "news": {
+      "0.0.43": {
+        "en": "Improved video archiving with local timestamps including daylight-saving offsets. Added SHA-256 duplicate detection, collision-safe filenames, safer archive downloads and temporary-file cleanup. Fixed the count of newly archived videos.",
+        "de": "Videoarchivierung mit lokalen Zeitstempeln einschließlich Sommer-/Winterzeit verbessert. SHA-256-Duplikaterkennung, kollisionssichere Dateinamen, sicherere Archivdownloads und Bereinigung temporärer Dateien ergänzt. Zählung neu archivierter Videos korrigiert.",
+        "ru": "Улучшено архивирование видео с локальными временными метками и учётом летнего времени. Добавлены проверка дубликатов SHA-256, безопасные имена файлов, защита загрузок и очистка временных файлов. Исправлен подсчёт новых архивных видео.",
+        "pt": "Melhorado o arquivo de vídeos com horários locais e ajustes de horário de verão. Adicionadas deteção de duplicados SHA-256, proteção contra colisões de nomes, transferências mais seguras e limpeza de ficheiros temporários. Corrigida a contagem de novos vídeos arquivados.",
+        "nl": "Videoarchivering verbeterd met lokale tijdstempels en zomertijdcorrecties. SHA-256-duplicaatdetectie, veilige bestandsnamen bij conflicten, veiligere downloads en opruiming van tijdelijke bestanden toegevoegd. Telling van nieuw gearchiveerde video’s gecorrigeerd.",
+        "fr": "Archivage vidéo amélioré avec horodatages locaux et gestion de l’heure d’été. Ajout de la détection des doublons SHA-256, de noms de fichiers sans collision, de téléchargements plus sûrs et du nettoyage des fichiers temporaires. Correction du comptage des nouvelles vidéos archivées.",
+        "it": "Archiviazione video migliorata con timestamp locali e gestione dell’ora legale. Aggiunti rilevamento dei duplicati SHA-256, nomi file senza collisioni, download più sicuri e pulizia dei file temporanei. Corretto il conteggio dei nuovi video archiviati.",
+        "es": "Archivado de vídeos mejorado con marcas de tiempo locales y horario de verano. Añadidos detección de duplicados SHA-256, nombres de archivo sin colisiones, descargas más seguras y limpieza de archivos temporales. Corregido el recuento de vídeos recién archivados.",
+        "pl": "Ulepszono archiwizację nagrań z lokalnymi znacznikami czasu i obsługą czasu letniego. Dodano wykrywanie duplikatów SHA-256, bezpieczne nazwy plików, ochronę pobierania i czyszczenie plików tymczasowych. Poprawiono liczenie nowych nagrań.",
+        "uk": "Покращено архівування відео з локальними часовими мітками та врахуванням літнього часу. Додано виявлення дублікатів SHA-256, захист від конфліктів назв файлів, безпечніше завантаження й очищення тимчасових файлів. Виправлено підрахунок нових відео.",
+        "zh-cn": "改进视频归档，使用包含夏令时偏移的本地时间戳。新增 SHA-256 重复检测、文件名冲突保护、更安全的归档下载及临时文件清理。修复新归档视频数量统计。"
+      },
       "0.0.42": {
         "en": "Fixed outdated cloud video history and latest-video retrieval using the Blink v4 media API (issue #65). Improved pagination, metadata handling and download security. Preserved local-storage fallback.",
         "de": "Veraltete Cloud-Video-History und Abfrage des neuesten Videos durch Umstellung auf die Blink-v4-Medien-API behoben (Issue #65). Paginierung, Metadaten und Download-Sicherheit verbessert. Lokaler Speicher-Fallback bleibt erhalten.",
